@@ -13,7 +13,7 @@ zusätzliche Infos:
 - https://www.youtube.com/watch?v=md20lQut9EE
 
 DB-Commands für das Erstellen des DB-Schemas
-1. bestehende Datenbank löschen
+1. bestehende Datenbank löschen mit "drop database "GruppenVerwaltungApi";"
 2. Entfernen einer bestehenden Migration über "dotnet ef migrations remove" oder Migrations-Verzeichnis löschen
 3. dotnet ef migrations add InitialMigration -v  
 4. dotnet ef database update

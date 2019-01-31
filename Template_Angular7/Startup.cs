@@ -81,7 +81,7 @@ namespace Template_Angular7
             });
 
             // configure DI for application services
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, AppUserService>();
             
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

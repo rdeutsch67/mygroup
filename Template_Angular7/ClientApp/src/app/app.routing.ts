@@ -14,7 +14,6 @@ import {TerminListeComponent} from "./components/termin/termin-liste.component";
 import {TerminEditComponent} from "./components/termin/termin-edit.component";
 import {KalenderComponent} from "./components/kalender/kalender.component";
 import {AboutComponent} from "./components/about/about.component";
-import {PageNotFoundComponent} from "./components/pagenotfound.component/pagenotfound.component";
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },

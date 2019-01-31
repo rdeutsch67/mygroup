@@ -25,7 +25,7 @@ namespace Template_Angular7.Data
         public string Beschreibung { get; set; }
         
         [Required]
-        public string UserId { get; set; }
+        public int IdUser { get; set; }
         
         [DefaultValue(0)]
         public bool Aktiv { get; set; }
@@ -40,8 +40,8 @@ namespace Template_Angular7.Data
         /// Ersteller der Gruppe author: it will be loaded
         /// on first use thanks to the EF Lazy-Loading feature.
         /// </summary>
-        [ForeignKey("UserId")]
-        public virtual ApplicationUser User { get; set; }
+        [ForeignKey("IdUser")]
+        public virtual AppUser User { get; set; }
         
         /// <summary>
         /// Liste aller Aktivitätscodes zu dieser Gruppe.
@@ -54,7 +54,7 @@ namespace Template_Angular7.Data
         public virtual List<Teilnehmer> Teilnehmer { get; set; }
         
         /// <summary>
-        /// Liste aller Teilnehmer zu dieser Gruppe.
+        /// Liste aller Termine zu dieser Gruppe.
         /// </summary>
         public virtual List<Termin> Termine { get; set; }
         

@@ -9,31 +9,31 @@ namespace Template_Angular7.Services
 {
     public interface IUserService
     {
-        LoginBenutzer Authenticate(string username, string password);
-        IEnumerable<LoginBenutzer> GetAll();
-        LoginBenutzer GetById(int id);
-        LoginBenutzer Create(LoginBenutzer user, string password);
-        void Update(LoginBenutzer user, string password = null);
+        AppUser Authenticate(string username, string password);
+        IEnumerable<AppUser> GetAll();
+        AppUser GetById(int id);
+        AppUser Create(AppUser user, string password);
+        void Update(AppUser user, string password = null);
         void Delete(int id);
     }
 
-    public class UserService : IUserService
+    public class AppUserService : IUserService
     {
         //private DataContext _context;
         private ApplicationDbContext _context;
 
-        public UserService(ApplicationDbContext context)
+        public AppUserService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public LoginBenutzer Authenticate(string username, string password)
+        public AppUser Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
             //var user = _context.Users.SingleOrDefault(x => x.Username == username);
-            var user = _context.LoginBenutzer.SingleOrDefault(x => x.UserName == username);
+            var user = _context.AppUsers.SingleOrDefault(x => x.UserName == username);
 
             // check if username exists
             if (user == null)
@@ -47,23 +47,23 @@ namespace Template_Angular7.Services
             return user;
         }
 
-        public IEnumerable<LoginBenutzer> GetAll()
+        public IEnumerable<AppUser> GetAll()
         {
-            return _context.LoginBenutzer;
+            return _context.AppUsers;
         }
 
-        public LoginBenutzer GetById(int id)
+        public AppUser GetById(int id)
         {
-            return _context.LoginBenutzer.Find(id);
+            return _context.AppUsers.Find(id);
         }
 
-        public LoginBenutzer Create(LoginBenutzer user, string password)
+        public AppUser Create(AppUser user, string password)
         {
             // validation
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
-            if (_context.LoginBenutzer.Any(x => x.UserName == user.UserName))
+            if (_context.AppUsers.Any(x => x.UserName == user.UserName))
                 throw new AppException("Username \"" + user.UserName + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
@@ -72,15 +72,15 @@ namespace Template_Angular7.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            _context.LoginBenutzer.Add(user);
+            _context.AppUsers.Add(user);
             _context.SaveChanges();
 
             return user;
         }
 
-        public void Update(LoginBenutzer userParam, string password = null)
+        public void Update(AppUser userParam, string password = null)
         {
-            var user = _context.LoginBenutzer.Find(userParam.Id);
+            var user = _context.AppUsers.Find(userParam.Id);
 
             if (user == null)
                 throw new AppException("User not found");
@@ -88,7 +88,7 @@ namespace Template_Angular7.Services
             if (userParam.UserName != user.UserName)
             {
                 // username has changed so check if the new username is already taken
-                if (_context.LoginBenutzer.Any(x => x.UserName == userParam.UserName))
+                if (_context.AppUsers.Any(x => x.UserName == userParam.UserName))
                     throw new AppException("Username " + userParam.UserName + " is already taken");
             }
 
@@ -107,16 +107,16 @@ namespace Template_Angular7.Services
                 user.PasswordSalt = passwordSalt;
             }
 
-            _context.LoginBenutzer.Update(user);
+            _context.AppUsers.Update(user);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var user = _context.LoginBenutzer.Find(id);
+            var user = _context.AppUsers.Find(id);
             if (user != null)
             {
-                _context.LoginBenutzer.Remove(user);
+                _context.AppUsers.Remove(user);
                 _context.SaveChanges();
             }
         }

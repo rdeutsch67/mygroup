@@ -61,6 +61,7 @@ namespace Template_Angular7.Controllers
             var gruppe = new Gruppe();
             
             // properties taken from the request
+            gruppe.IdUser = model.IdUser;
             gruppe.Code = model.Code;
             gruppe.Beschreibung = model.Beschreibung;
             gruppe.Bezeichnung = model.Bezeichnung;
@@ -71,7 +72,7 @@ namespace Template_Angular7.Controllers
             
             // Set a temporary author using the Admin user's userId
             // as user login isn't supported yet: we'll change this later on.
-            gruppe.UserId = DbContext.Benutzer.FirstOrDefault(u => u.UserName == "Admin").Id;
+            //gruppe.IdUser = DbContext.AppUsers.FirstOrDefault(u => u.UserName == "Admin").Id;
             
             // add the new quiz
             DbContext.Gruppen.Add(gruppe);
@@ -158,8 +159,8 @@ namespace Template_Angular7.Controllers
         #endregion
         
         // GET api/gruppen/alle
-        [HttpGet("Alle/{num?}")]
-        public IActionResult Alle(int num = 10)
+        [HttpGet("Alle/{num?}")]  // num = Anzahl Datensätze
+        public IActionResult Alle(int num = 10)  
         {
 
             if (num > 0)
@@ -186,6 +187,53 @@ namespace Template_Angular7.Controllers
                     {
                         Formatting = Formatting.Indented
                     });
+            }
+            
+        }
+        
+        // GET api/gruppen/proUser/{idUser}
+        [HttpGet("proUser/{idUser}")]
+        public IActionResult ProUser (int idUser)
+        {
+
+            if (idUser > 0)
+            {
+                var query = (from ug in DbContext.Gruppen
+                    where ug.IdUser == idUser
+                    select new
+                    {
+                        ug.Id,
+                        ug.IdUser,
+                        ug.Code,
+                        ug.Bezeichnung,
+                        ug.Beschreibung,
+                        ug.Aktiv,
+                        ug.CreatedDate,
+                        ug.LastModifiedDate
+                    }).OrderBy(x => x.Id)
+                      .ToList();
+                return new JsonResult(
+                    query.Adapt<GruppenViewModel[]>(),
+                    JsonSettings); 
+            }
+            else
+            {
+                var query = (from ug in DbContext.Gruppen
+                    select new
+                    {
+                        ug.Id,
+                        ug.IdUser,
+                        ug.Code,
+                        ug.Bezeichnung,
+                        ug.Beschreibung,
+                        ug.Aktiv,
+                        ug.CreatedDate,
+                        ug.LastModifiedDate
+                    }).OrderBy(x => x.Id)
+                      .ToList();
+                return new JsonResult(
+                    query.Adapt<GruppenViewModel[]>(),
+                    JsonSettings); 
             }
             
         }

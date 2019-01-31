@@ -33,7 +33,7 @@ export class GruppenListeComponent implements OnInit {
     if (isNaN(count)) {
       count = 0;
     }
-    this.loadData(count);
+    this.loadData(this.globals.logged_in_User.id);
   }
 
   ngOnInit() {
@@ -48,9 +48,9 @@ export class GruppenListeComponent implements OnInit {
     this.resizeSubscription$.unsubscribe()
   }*/
 
-  loadData(myCount: number) {
-    console.log(myCount);
-    let url = this.baseUrl + "api/gruppen/alle/" + myCount;
+  loadData(idUser: number) {
+    console.log(idUser);
+    let url = this.baseUrl + "api/gruppen/proUser/" + idUser;
     this.http.get<Gruppe[]>(url).subscribe(result => {
       this.gruppen = result;
     }, error => console.error(error));

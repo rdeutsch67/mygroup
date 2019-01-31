@@ -1,5 +1,5 @@
 <!--<div *ngIf="currentUser || nav.visible" class="main-nav">-->
-<div *ngIf="currentUser" class="main-nav">
+<!--<div *ngIf="currentUser" class="main-nav">
   <nav class="navbar navbar-default navbar-expand-md navbar-light box-shadow">
     <a class="navbar-image" [routerLink]="['/home']">
       <img src="/dist/logo.png" alt="Gruppenplaner"/>
@@ -61,9 +61,9 @@
   </nav>
 </div>
 
-<!-- main app container -->
+&lt;!&ndash; main app container &ndash;&gt;
 <div class="jumbotron">
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
         <alert></alert>
@@ -71,12 +71,13 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
-<!--<app-nav-menu ></app-nav-menu>
+<app-nav-menu></app-nav-menu>
 <div class="container-fluid">
   <div class="starter-template">
+    <alert></alert>
     <router-outlet></router-outlet>
   </div>
-</div>-->
+</div>
 

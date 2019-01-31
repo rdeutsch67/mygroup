@@ -73,7 +73,8 @@ export class TeilnehmerListeComponent implements OnChanges {
           console.log("Teilnehmer " + myTeilnehmer.Id + " wurde gelöscht.");
           // refresh the question list
           this.loadVTeilnehmer(0);
-        }, error => console.log(error));
+        },
+            error => console.log(error));
     }
   }
 }

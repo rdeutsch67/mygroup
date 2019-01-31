@@ -49,7 +49,7 @@ export class Code_aktivitaetenEditComponent {
       }, error => console.error(error));
     }
     else {
-      this.code_aktivitaet.GruppenId = id;
+      this.code_aktivitaet.IdGruppe = id;
       this.title = "Erstelle neue Gruppenaktivität";
     }
   }
@@ -115,7 +115,7 @@ export class Code_aktivitaetenEditComponent {
     var tempAkt = <Code_aktivitaet>{};
     tempAkt.Code = this.form.value.Code;
     tempAkt.Bezeichnung = this.form.value.Bezeichnung;
-    tempAkt.GruppenId = this.code_aktivitaet.GruppenId;
+    tempAkt.IdGruppe = this.code_aktivitaet.IdGruppe;
     tempAkt.Farbe = this.form.value.Farbe;
     tempAkt.Summieren = this.form.value.Summieren;
     tempAkt.GanzerTag = this.form.value.GanzerTag;
@@ -137,7 +137,7 @@ export class Code_aktivitaetenEditComponent {
           this.code_aktivitaet = res;
           console.log("Aktivität " + this.code_aktivitaet.Id + " wurde mutiert.");
           //this.router.navigate(["home"]);
-          this.router.navigate(["gruppen/edit", this.code_aktivitaet.GruppenId]);
+          this.router.navigate(["gruppen/edit", this.code_aktivitaet.IdGruppe]);
         }, error => console.log(error));
     }
     else {
@@ -147,13 +147,13 @@ export class Code_aktivitaetenEditComponent {
           var q = res;
           console.log("Aktivität " + q.Id + " erstellt.");
           //this.router.navigate(["home"]);
-          this.router.navigate(["gruppen/edit", this.code_aktivitaet.GruppenId]);
+          this.router.navigate(["gruppen/edit", this.code_aktivitaet.IdGruppe]);
         }, error => console.log(error));
     }
   }
 
   onBack() {
-    this.router.navigate(["gruppen/edit", this.code_aktivitaet.GruppenId]);
+    this.router.navigate(["gruppen/edit", this.code_aktivitaet.IdGruppe]);
   }
 
   createForm() {

@@ -1,6 +1,6 @@
 interface Teilnehmer {
   Id: number;
-  GruppenId: number;
+  IdGruppe: number;
   Vorname: string;
   Nachname: string;
   Berechtigungen: number;
@@ -8,7 +8,7 @@ interface Teilnehmer {
 
 interface VTeilnehmer {
   Id: number;
-  GruppenId: number;
+  IdGruppe: number;
   Vorname: string;
   Nachname: string;
   Berechtigungen: number;

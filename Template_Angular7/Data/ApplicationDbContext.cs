@@ -18,12 +18,9 @@ namespace Template_Angular7.Data
             modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationUser>().ToTable("TUsers");
-            modelBuilder.Entity<ApplicationUser>().HasMany(u => u.Gruppen).WithOne(i => i.User);
-            
-            modelBuilder.Entity<LoginBenutzer>().ToTable("TLoginBenutzer");
-            modelBuilder.Entity<LoginBenutzer>().Property(i => i.Id).ValueGeneratedOnAdd();
-            //modelBuilder.Entity<ApplicationUser>().HasMany(u => u.Gruppen).WithOne(i => i.User);
+            modelBuilder.Entity<AppUser>().ToTable("TAppUser");
+            modelBuilder.Entity<AppUser>().Property(i => i.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<AppUser>().HasMany(u => u.Gruppen).WithOne(i => i.User);
             
             modelBuilder.Entity<Gruppe>().ToTable("TGruppen");
             modelBuilder.Entity<Gruppe>().Property(i => i.Id).ValueGeneratedOnAdd();
@@ -51,8 +48,7 @@ namespace Template_Angular7.Data
         #endregion Methods
         
         #region Properties
-        public DbSet<ApplicationUser> Benutzer { get; set; }
-        public DbSet<LoginBenutzer> LoginBenutzer { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Gruppe> Gruppen { get; set; }
         public DbSet<CodeAktivitaeten> CodesAktivitaeten { get; set; }
         public DbSet<Teilnehmer> Teilnehmer { get; set; }

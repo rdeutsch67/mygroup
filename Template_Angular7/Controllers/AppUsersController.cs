@@ -19,13 +19,13 @@ namespace Template_Angular7.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : ControllerBase
+    public class AppUsersController : ControllerBase
     {
         private IUserService _userService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
 
-        public UsersController(
+        public AppUsersController(
             IUserService userService,
             IMapper mapper,
             IOptions<AppSettings> appSettings)
@@ -73,7 +73,7 @@ namespace Template_Angular7.Controllers
         public IActionResult Register([FromBody]UserDto userDto)
         {
             // map dto to entity
-            var user = _mapper.Map<LoginBenutzer>(userDto);
+            var user = _mapper.Map<AppUser>(userDto);
 
             try 
             {
@@ -108,7 +108,7 @@ namespace Template_Angular7.Controllers
         public IActionResult Update(int id, [FromBody]UserDto userDto)
         {
             // map dto to entity and set id
-            var user = _mapper.Map<LoginBenutzer>(userDto);
+            var user = _mapper.Map<AppUser>(userDto);
             user.Id = id;
 
             try 

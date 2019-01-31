@@ -60,7 +60,7 @@ namespace Template_Angular7.Controllers
             var codeAktivitaet = new CodeAktivitaeten();
             
             // properties taken from the request
-            codeAktivitaet.GruppenId = model.GruppenId;
+            codeAktivitaet.IdGruppe = model.IdGruppe;
             codeAktivitaet.Code = model.Code;
             codeAktivitaet.Bezeichnung = model.Bezeichnung;
             codeAktivitaet.Summieren = model.Summieren;
@@ -110,7 +110,7 @@ namespace Template_Angular7.Controllers
             // handle the update (without object-mapping)
             // by manually assigning the properties
             // we want to accept from the request
-            codeAktivitaet.GruppenId = model.GruppenId;
+            codeAktivitaet.IdGruppe = model.IdGruppe;
             codeAktivitaet.Code = model.Code;
             codeAktivitaet.Bezeichnung = model.Bezeichnung;
             codeAktivitaet.Summieren = model.Summieren;
@@ -162,13 +162,13 @@ namespace Template_Angular7.Controllers
         #endregion
         
         // GET api/codesaktivitaeten/alle
-        [HttpGet("alle/{gruppenId}")]
-        public IActionResult alle(int gruppenId)
+        [HttpGet("alle/{idGruppe}")]
+        public IActionResult alle(int idGruppe)
         {
-            if (gruppenId > 0)
+            if (idGruppe > 0)
             {
                 var codeAktivitaeten = DbContext.CodesAktivitaeten
-                    .Where(q => q.GruppenId == gruppenId)
+                    .Where(q => q.IdGruppe == idGruppe)
                     .OrderBy(q => q.Code)
                     .ToArray();
                 return new JsonResult(
@@ -178,7 +178,7 @@ namespace Template_Angular7.Controllers
             else
             {   // alle Aktiviäten
                 var codeAktivitaeten = DbContext.CodesAktivitaeten
-                    .OrderBy(q => q.GruppenId).ThenBy(q => q.Code)    
+                    .OrderBy(q => q.IdGruppe).ThenBy(q => q.Code)    
                     .ToArray();
                 return new JsonResult(
                     codeAktivitaeten.Adapt<CodeAktivitaetenViewModel[]>(),
@@ -195,12 +195,12 @@ namespace Template_Angular7.Controllers
             if (idGruppe > 0)
             {
                 var query = (from ut in DbContext.CodesAktivitaeten
-                    join ug in DbContext.Gruppen on ut.GruppenId equals ug.Id
-                    where ut.GruppenId == idGruppe
+                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
+                    where ut.IdGruppe == idGruppe
                     select new
                     {
                         ut.Id,
-                        ut.GruppenId,
+                        ut.IdGruppe,
                         ut.Code,
                         ut.Bezeichnung,
                         ut.Summieren,
@@ -212,7 +212,7 @@ namespace Template_Angular7.Controllers
                         ShowZeiten = !(ut.GanzerTag || ut.ZeitUnbestimmt), 
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
-                        GruppeUserId = ug.UserId,
+                        GruppeUserId = ug.IdUser,
                         GruppeAktiv = ug.Aktiv
                     }).ToList();
                 return new JsonResult(
@@ -222,11 +222,11 @@ namespace Template_Angular7.Controllers
             else
             {
                 var query = (from ut in DbContext.CodesAktivitaeten
-                    join ug in DbContext.Gruppen on ut.GruppenId equals ug.Id
+                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
                     select new
                     {
                         ut.Id,
-                        ut.GruppenId,
+                        ut.IdGruppe,
                         ut.Code,
                         ut.Bezeichnung,
                         ut.Summieren,
@@ -238,7 +238,7 @@ namespace Template_Angular7.Controllers
                         ShowZeiten = !(ut.GanzerTag || ut.ZeitUnbestimmt),
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
-                        GruppeUserId = ug.UserId,
+                        GruppeUserId = ug.IdUser,
                         GruppeAktiv = ug.Aktiv
                     }).ToList();
                 return new JsonResult(

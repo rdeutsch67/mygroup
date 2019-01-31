@@ -4,8 +4,8 @@ import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {GlobalVariables} from "./global.variables";
 import { Meta } from '@angular/platform-browser';
 import { AuthenticationService } from './_services';
-import { User } from './_models';
-import {Router} from "@angular/router";
+import { Router} from "@angular/router";
+import { AppUser} from "@app/interface/appuser";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ import {Router} from "@angular/router";
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: AppUser;
   title = 'app';
   resizeObservable$: Observable<Event>;
   resizeSubscription$: Subscription;
@@ -25,7 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
               private breakpointObserver: BreakpointObserver,
               private globals: GlobalVariables) {
 
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    //this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.authenticationService.currentUser.subscribe(x => globals.logged_in_User = x);
 
     //<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     this.meta.addTags([

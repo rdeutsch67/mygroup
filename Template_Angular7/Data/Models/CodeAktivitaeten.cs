@@ -19,7 +19,7 @@ namespace Template_Angular7.Data
         [Required]
         public int Id { get; set; }
         [Required]
-        public int GruppenId { get; set; }
+        public int IdGruppe { get; set; }
         [Required]
         public string Code { get; set; }
         [Required]
@@ -45,13 +45,13 @@ namespace Template_Angular7.Data
         
         #region Lazy-Load Properties
         /// <summary>
-        /// Codes, welche zur Gruppe gehÃ¶ren
+        /// Codes, welche zur Gruppe gehören
         /// </summary>
-        [ForeignKey("GruppenId")]
+        [ForeignKey("IdGruppe")]
         public virtual Gruppe Gruppe  { get; set; }
         
         /// <summary>
-        /// Termin, welche zum Teilnehmer gehÃ¶ren
+        /// Liste aller Termine zum dieser Aktivität
         /// </summary>
         public virtual List<Termin> Termine { get; set; }
         #endregion

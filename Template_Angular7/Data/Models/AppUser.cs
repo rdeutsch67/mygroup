@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Template_Angular7.Data
 {
-    public class LoginBenutzer
+    public class AppUser
     {
         #region Constructor
-        public LoginBenutzer()
+        public AppUser()
         {
         }
         #endregion
@@ -35,6 +36,13 @@ namespace Template_Angular7.Data
         
         [Required]
         public DateTime LastModifiedDate { get; set; }
+        #endregion
+        
+        #region Lazy-Load Properties
+        /// <summary>
+        /// A list of all the quiz created by this users.
+        /// </summary>
+        public virtual List<Gruppe> Gruppen { get; set; }
         #endregion
     }
 }

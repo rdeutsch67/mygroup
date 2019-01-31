@@ -61,7 +61,7 @@ namespace Template_Angular7.Controllers
             var teilnehmer = new Teilnehmer();
             
             // properties taken from the request
-            teilnehmer.GruppenId = model.GruppenId;
+            teilnehmer.IdGruppe = model.IdGruppe;
             teilnehmer.Vorname = model.Vorname;
             teilnehmer.Nachname = model.Nachname;
             teilnehmer.Berechtigungen = model.Berechtigungen;
@@ -106,7 +106,7 @@ namespace Template_Angular7.Controllers
             // handle the update (without object-mapping)
             // by manually assigning the properties
             // we want to accept from the request
-            teilnehmer.GruppenId = model.GruppenId;
+            teilnehmer.IdGruppe = model.IdGruppe;
             teilnehmer.Vorname = model.Vorname;
             teilnehmer.Nachname = model.Nachname;
             teilnehmer.Berechtigungen = model.Berechtigungen;
@@ -153,13 +153,13 @@ namespace Template_Angular7.Controllers
         #endregion
         
         // GET api/teilnehmer/alle
-        [HttpGet("alle/{gruppenId}")]
-        public IActionResult alle(int gruppenId)
+        [HttpGet("alle/{IdGruppe}")]
+        public IActionResult alle(int IdGruppe)
         {
-            if (gruppenId > 0)
+            if (IdGruppe > 0)
             {
                 var teilnehmer = DbContext.Teilnehmer
-                    .Where(q => q.GruppenId == gruppenId)
+                    .Where(q => q.IdGruppe == IdGruppe)
                     .OrderBy(q => q.Vorname)
                     .ToArray();
                 return new JsonResult(
@@ -169,8 +169,8 @@ namespace Template_Angular7.Controllers
             else
             {   // alle Aktiviäten
                 var teilnehmer = DbContext.Teilnehmer
-                    .Where(q => q.GruppenId != gruppenId)
-                    .OrderBy(q => q.GruppenId).ThenBy(q => q.Vorname)
+                    .Where(q => q.IdGruppe != IdGruppe)
+                    .OrderBy(q => q.IdGruppe).ThenBy(q => q.Vorname)
                     .ToArray();
                 return new JsonResult(
                     teilnehmer.Adapt<TeilnehmerViewModel[]>(),
@@ -188,18 +188,18 @@ namespace Template_Angular7.Controllers
             if (idGruppe > 0)
             {
                 var query = (from ut in DbContext.Teilnehmer
-                    join ug in DbContext.Gruppen on ut.GruppenId equals ug.Id
-                    where ut.GruppenId == idGruppe
+                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
+                    where ut.IdGruppe == idGruppe
                     select new
                     {
                         ut.Id,
-                        ut.GruppenId,
+                        ut.IdGruppe,
                         ut.Vorname,
                         ut.Nachname,
                         ut.Berechtigungen,
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
-                        GruppeUserId = ug.UserId,
+                        GruppeUserId = ug.IdUser,
                         GruppeAktiv = ug.Aktiv
                     }).ToList();
                 return new JsonResult(
@@ -209,17 +209,17 @@ namespace Template_Angular7.Controllers
             else
             {
                 var query = (from ut in DbContext.Teilnehmer
-                    join ug in DbContext.Gruppen on ut.GruppenId equals ug.Id
+                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
                     select new
                     {
                         ut.Id,
-                        ut.GruppenId,
+                        ut.IdGruppe,
                         ut.Vorname,
                         ut.Nachname,
                         ut.Berechtigungen,
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
-                        GruppeUserId = ug.UserId,
+                        GruppeUserId = ug.IdUser,
                         GruppeAktiv = ug.Aktiv
                     }).ToList();
                 return new JsonResult(

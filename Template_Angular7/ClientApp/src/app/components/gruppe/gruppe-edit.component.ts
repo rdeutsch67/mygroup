@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {NavbarService} from "../../services/navbar.service";
+import {GlobalVariables} from "@app/global.variables";
 
 @Component({
   selector: "gruppe-edit",
@@ -23,6 +24,7 @@ export class GruppeEditComponent implements OnInit {
               private http: HttpClient,
               private fb: FormBuilder,
               public nav: NavbarService,
+              private globals: GlobalVariables,
               @Inject('BASE_URL') private baseUrl: string) {
 
     // create an empty object from the Gruppe interface
@@ -72,8 +74,8 @@ export class GruppeEditComponent implements OnInit {
         }, error => console.log(error));
     }
     else {  // neue Gruppe erstellen
+      tempGruppe.IdUser = this.globals.logged_in_User.id;
       this.http
-        /*.put<Gruppe>(url, this.gruppe)*/
         .put<Gruppe>(url, tempGruppe)
         .subscribe(res => {
           var q = res;

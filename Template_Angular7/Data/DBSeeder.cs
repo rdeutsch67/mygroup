@@ -14,11 +14,8 @@ namespace Template_Angular7.Data
         #region Public Methods
         public static void Seed(ApplicationDbContext dbContext)
         {
-            // Dummy-Benutzer erstellen
-            if (!dbContext.Benutzer.Any()) CreateBenutzer(dbContext);
-            
-            // Dummy-Loginbenutzer erstellen
-            if (!dbContext.LoginBenutzer.Any()) CreateLoginBenutzer(dbContext);
+            // Dummy-AppUser Admin erstellen
+            if (!dbContext.AppUsers.Any()) CreateAppUser(dbContext);
 
             // Dummy-Gruppen erstellen
             if (!dbContext.Gruppen.Any()) CreateGruppen(dbContext);
@@ -35,28 +32,6 @@ namespace Template_Angular7.Data
         #endregion
         
         #region Seed Methods
-        private static void CreateBenutzer(ApplicationDbContext dbContext)
-        {
-            // local variables
-            DateTime createdDate = new DateTime(2016, 03, 01, 12, 30, 00);
-            DateTime lastModifiedDate = DateTime.Now;
-
-            // Create the "Admin" ApplicationUser account (if it doesn't exist already)
-            var user_Admin = new ApplicationUser()
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserName = "Admin",
-                Email = "admin@gruppenverwaltung.com",
-                CreatedDate = createdDate,
-                LastModifiedDate = lastModifiedDate
-            };
-
-            // Insert the Admin user into the Database
-            dbContext.Benutzer.Add(user_Admin);
-            dbContext.SaveChanges();
-        }
-        
-        
         // private helper methods
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -71,17 +46,17 @@ namespace Template_Angular7.Data
             }
         }
         
-        private static void CreateLoginBenutzer(ApplicationDbContext dbContext)
+        private static void CreateAppUser(ApplicationDbContext dbContext)
         {
             // local variables
-            DateTime createdDate = new DateTime(2016, 03, 01, 12, 30, 00);
+            DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
 
-            // Create the "Admin" LoginBenutzer account (if it doesn't exist already)
+            // Create the "Admin" AppUser account (if it doesn't exist already)
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash("admin", out passwordHash, out passwordSalt);
             
-            var userAdmin = new LoginBenutzer()
+            var userAdmin = new AppUser()
             {
                 Id = 1,
                 UserName = "Admin",
@@ -89,24 +64,23 @@ namespace Template_Angular7.Data
                 LastName =  "Kunz",
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                //Email = "admin@gruppenverwaltung.com",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             };
 
             // Insert the Admin user into the Database
-            dbContext.LoginBenutzer.Add(userAdmin);
+            dbContext.AppUsers.Add(userAdmin);
             dbContext.SaveChanges();
         }
         
         private static void CreateGruppen(ApplicationDbContext dbContext)
         {
             // local variables
-            DateTime createdDate = new DateTime(2017, 08, 08, 12, 30, 00);
+            DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
 
             // retrieve the admin user, which we'll use as default author.
-            var authorId = dbContext.Benutzer
+            var authorId = dbContext.AppUsers
                 .Where(u => u.UserName == "Admin")
                 .FirstOrDefault()
                 .Id;
@@ -114,10 +88,10 @@ namespace Template_Angular7.Data
             // erstelle die erste Demogruppe
             EntityEntry<Gruppe> e1 = dbContext.Gruppen.Add(new Gruppe()
             {
-                UserId = authorId,
+                IdUser = authorId,
                 Code = "Jassrunde",
                 Beschreibung = "Jassrunde mit Trogner Jässler",
-                Bezeichnung = @"Jassrunde, welche sich aus Trogner Jässler zusammensetzt.",
+                Bezeichnung = "Jassrunde, welche sich aus Trogner Jässler zusammensetzt.",
                 //ViewCount = 2343,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
@@ -148,11 +122,11 @@ namespace Template_Angular7.Data
             DateTime lastModifiedDate = DateTime.Now;
 
             // retrieve the admin user, which we'll use as default author.
-            var authorId = dbContext.Benutzer
+            var authorId = dbContext.AppUsers
                 .Where(u => u.UserName == "Admin")
                 .FirstOrDefault()
                 .Id;
-            var gruppeId = dbContext.Gruppen
+            var idGruppe = dbContext.Gruppen
                 .Where(u => u.Code == "Jassrunde")
                 .FirstOrDefault()
                 .Id;
@@ -160,7 +134,7 @@ namespace Template_Angular7.Data
             // erstelle Aktivitätencodes
             EntityEntry<CodeAktivitaeten> e1 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Code = "Ja",
                 Bezeichnung = "Jasser, Teilnehmer",
                 Summieren = false,
@@ -174,7 +148,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<CodeAktivitaeten> e2 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Code = "JT",
                 Bezeichnung = "Jasser + Teilnehmer",
                 Summieren = false,
@@ -188,7 +162,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<CodeAktivitaeten> e3 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Code = "Re",
                 Bezeichnung = "Reserve, einsetzbar bei Bedarf",
                 Summieren = false,
@@ -202,7 +176,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<CodeAktivitaeten> e4 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Code = "??",
                 Bezeichnung = "Klärt noch ab",
                 Summieren = false,
@@ -216,7 +190,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<CodeAktivitaeten> e5 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Code = "??",
                 Bezeichnung = "Jasser-Ausflug",
                 Summieren = false,
@@ -238,7 +212,7 @@ namespace Template_Angular7.Data
             DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
 
-            var gruppeId = dbContext.Gruppen
+            var idGruppe = dbContext.Gruppen
                 .Where(u => u.Code == "Jassrunde")
                 .FirstOrDefault()
                 .Id;
@@ -246,7 +220,7 @@ namespace Template_Angular7.Data
             // erstelle Teilnehmer
             EntityEntry<Teilnehmer> e1 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Vorname = "Alex",
                 Nachname = "Britschgi",
                 CreatedDate = createdDate,
@@ -255,7 +229,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Teilnehmer> e2 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Vorname = "René",
                 Nachname = "Graf",
                 CreatedDate = createdDate,
@@ -264,7 +238,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Teilnehmer> e3 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Vorname = "Thomas",
                 Nachname = "Hollenstein",
                 CreatedDate = createdDate,
@@ -273,7 +247,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Teilnehmer> e4 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Vorname = "René",
                 Nachname = "Keller",
                 CreatedDate = createdDate,
@@ -282,7 +256,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Teilnehmer> e5 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Vorname = "Edu",
                 Nachname = "Kozakiewicz",
                 CreatedDate = createdDate,
@@ -291,7 +265,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Teilnehmer> e6 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
-                GruppenId = gruppeId,
+                IdGruppe = idGruppe,
                 Vorname = "Hampi",
                 Nachname = "Krüsi",
                 CreatedDate = createdDate,
@@ -308,7 +282,7 @@ namespace Template_Angular7.Data
             DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
 
-            var gruppeId = dbContext.Gruppen
+            var idGruppe = dbContext.Gruppen
                 .Where(u => u.Code == "Jassrunde")
                 .FirstOrDefault()
                 .Id;
@@ -316,7 +290,7 @@ namespace Template_Angular7.Data
             // erstelle Termine
             EntityEntry<Termin> e1 = dbContext.Termine.Add(new Termin()
             {
-                IdGruppe = gruppeId,
+                IdGruppe = idGruppe,
                 IdTeilnehmer = 1,
                 IdAktivitaet = 1,
                 GanzerTag = false,
@@ -329,7 +303,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Termin> e2 = dbContext.Termine.Add(new Termin()
             {
-                IdGruppe = gruppeId,
+                IdGruppe = idGruppe,
                 IdTeilnehmer = 2,
                 IdAktivitaet = 2,
                 GanzerTag = false,
@@ -342,7 +316,7 @@ namespace Template_Angular7.Data
             
             EntityEntry<Termin> e3 = dbContext.Termine.Add(new Termin()
             {
-                IdGruppe = gruppeId,
+                IdGruppe = idGruppe,
                 IdTeilnehmer = 3,
                 IdAktivitaet = 4,
                 GanzerTag = false,
@@ -369,13 +343,12 @@ namespace Template_Angular7.Data
         private static void ErstelleBeispielGruppen(
             ApplicationDbContext dbContext,
             int num,
-            string authorId,
-            //int viewCount,
+            int authorId,
             DateTime createdDate)
         {
             var gruppe = new Gruppe()
             {
-                UserId = authorId,
+                IdUser = authorId,
                 Code = String.Format("Gruppe {0} Code", num),
                 Bezeichnung = String.Format("Beispielgruppe {0}.", num),
                 Beschreibung = "Dies ist eine automatisch von DBSeeder erstellte Gruppe.",

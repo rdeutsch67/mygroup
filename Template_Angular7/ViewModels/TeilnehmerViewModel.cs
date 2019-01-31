@@ -14,7 +14,7 @@ namespace Template_Angular7.ViewModels
         
         #region Properties
         public int Id { get; set; }
-        public int GruppenId { get; set; }
+        public int IdGruppe { get; set; }
         public string Vorname { get; set; }               
         public string Nachname { get; set; }
         public int Berechtigungen { get; set; }

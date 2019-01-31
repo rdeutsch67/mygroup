@@ -2,7 +2,7 @@ interface Code_aktivitaet {
   Id: number;
   Code: string;
   Bezeichnung: string;
-  GruppenId: number;
+  IdGruppe: number;
   Summieren: boolean;
   Farbe: string;
   GanzerTag: boolean;
@@ -15,7 +15,7 @@ interface VCode_aktivitaet {
   Id: number;
   Code: string;
   Bezeichnung: string;
-  GruppenId: number;
+  IdGruppe: number;
   Summieren: boolean;
   Farbe: string;
   GanzerTag: boolean;

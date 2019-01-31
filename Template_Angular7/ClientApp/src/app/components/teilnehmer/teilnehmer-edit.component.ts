@@ -45,7 +45,7 @@ export class TeilnehmerEditComponent {
       }, error => console.error(error));
     }
     else {
-      this.myTeilnehmer.GruppenId = id;
+      this.myTeilnehmer.IdGruppe = id;
       this.title = "Erstelle neuen Teilnehmer";
     }
   }
@@ -55,7 +55,7 @@ export class TeilnehmerEditComponent {
     var tempTeilnehmer = <Teilnehmer>{};
     tempTeilnehmer.Vorname = this.form.value.Vorname;
     tempTeilnehmer.Nachname = this.form.value.Nachname;
-    tempTeilnehmer.GruppenId = this.myTeilnehmer.GruppenId;
+    tempTeilnehmer.IdGruppe = this.myTeilnehmer.IdGruppe;
 
     let url = this.baseUrl + "api/teilnehmer";
     if (this.editMode) {
@@ -66,7 +66,7 @@ export class TeilnehmerEditComponent {
           this.myTeilnehmer = res;
           console.log("Teilnehmer " + this.myTeilnehmer.Id + " wurde mutiert.");
           //this.router.navigate(["home"]);
-          this.router.navigate(["gruppen/edit", this.myTeilnehmer.GruppenId]);
+          this.router.navigate(["gruppen/edit", this.myTeilnehmer.IdGruppe]);
         }, error => console.log(error));
     }
     else {
@@ -76,13 +76,13 @@ export class TeilnehmerEditComponent {
           var q = res;
           console.log("Teilnehmer " + q.Id + " erstellt.");
           //this.router.navigate(["home"]);
-          this.router.navigate(["gruppen/edit", this.myTeilnehmer.GruppenId]);
+          this.router.navigate(["gruppen/edit", this.myTeilnehmer.IdGruppe]);
         }, error => console.log(error));
     }
   }
 
   onBack() {
-    this.router.navigate(["gruppen/edit", this.myTeilnehmer.GruppenId]);
+    this.router.navigate(["gruppen/edit", this.myTeilnehmer.IdGruppe]);
   }
 
   createForm() {
