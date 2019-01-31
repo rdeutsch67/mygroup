@@ -1,0 +1,93 @@
+<div class="code_aktivitaeten-edit  container-fluid">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>{{title}}</h2>
+    <div class="form-group row">
+      <label for="code" class="col-sm-2 col-form-label">Kurzbezeichnung:</label>
+      <div class="col-sm-3">
+        <input type="text" id="code"
+               formControlName="Code" required
+               placeholder="Kurzbezeichnung eingeben..."
+               class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="bezeichnung" class="col-sm-2 col-form-label">Bezeichnung:</label>
+      <div class="col-sm-3">
+        <input type="text" id="bezeichnung"
+               formControlName="Bezeichnung" required
+               placeholder="Bezeichnung eingeben..."
+               class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="aktcolor" class="col-sm-2 col-form-label">Farbe:</label>
+      <div class="col-sm-3">
+        <input type="color" id="aktcolor" formControlName="Farbe"
+               class="form-control" />
+
+      </div>
+    </div>
+    <div class="input-group row">
+      <label for="ganzertag" class="col-sm-2 col-form-label">Ganztägig:</label>
+      <div class="input-group-prepend col-sm-3">
+        <div class="input-group-text">
+          <input id="ganzertag" type="checkbox" formControlName="GanzerTag"
+                 (change)="onChangeGanzerTag($event)">
+        </div>
+      </div>
+    </div>
+    <div class="input-group row">
+      <label for="zeitUnbestimmt" class="col-sm-2 col-form-label">Dauer unbestimmt:</label>
+      <div class="input-group-prepend col-sm-3">
+        <div class="input-group-text">
+          <input class="formcontrol" id="zeitUnbestimmt" type="checkbox" formControlName="ZeitUnbestimmt"
+                 (change)="onChangeZeitUnbestimmt($event)">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="zeitBeginn" class="col-sm-2 col-form-label">Beginn:</label>
+      <div class="col-sm-3">
+         <input class="form-control" type="time" value="ZeitBeginn" id="zeitBeginn"
+                formControlName="ZeitBeginn"/>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="zeitEnde" class="col-sm-2 col-form-label">Ende:</label>
+      <div class="col-sm-3">
+        <input class="form-control" type="time" value="ZeitEnde" id="zeitEnde"
+               formControlName="ZeitEnde"/>
+      </div>
+    </div>
+
+    <div class="input-group row">
+      <label for="summieren" class="col-sm-2 col-form-label">Summieren:</label>
+      <div class="input-group-prepend col-sm-3">
+        <div class="input-group-text">
+          <input id="summieren" type="checkbox" formControlName="Summieren">
+        </div>
+      </div>
+    </div>
+    <div class="form-group commands">
+      <button *ngIf="editMode" type="submit"
+              [disabled]="form.invalid"
+              class="btn btn-sm btn-success">
+        <i class="fas fa-save"></i>
+        Speichern
+      </button>
+      <button *ngIf="!editMode" type="submit"
+              [disabled]="form.invalid"
+              class="btn btn-sm btn-success">
+        <i class="fas fa-plus-circle"></i>
+        Aktivität erstellen
+      </button>
+      <button type="submit"
+              (click)="onBack()"
+              class="btn btn-sm btn-secondary">
+        <i class="fas fa-arrow-alt-circle-left"></i>
+        Zurück
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,104 @@
+<div class="gruppe-edit container-fluid">
+
+  <h3>{{title}}</h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="code" class="col-sm-3 col-form-label">Kurzbezeichnung:</label>
+      <div class="col-sm-3">
+        <input type="text" id="code"
+               formControlName="Code" required
+               placeholder="Kurzbezeichnung eingeben..."
+               class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="bezeichnung" class="col-sm-3 col-form-label">Bezeichnung:</label>
+      <div class="col-sm-8">
+        <input type="text" id="bezeichnung"
+               formControlName="Bezeichnung" required
+               placeholder="Bezeichnung eingeben..."
+               class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="beschreibung" class="col-sm-3 col-form-label">Gruppenbeschreibung:</label>
+      <div class="col-sm-8">
+        <textarea id="beschreibung"
+                  formControlName="Beschreibung"
+                  placeholder="Beschreibung eingeben..."
+                  class="form-control"></textarea>
+      </div>
+    </div>
+    <!--<div class="input-group row">
+      <label for="aktiv" class="col-sm-3 col-form-label">Aktiv:</label>
+      <div class="input-group-prepend col-sm-8">
+        <div class="input-group-text">
+          <input id="aktiv" type="checkbox" formControlName="Aktiv">
+        </div>
+      </div>
+    </div>-->
+
+<!--
+
+    <div class="container-fluid">
+      <div class="row">
+        <h4>{{title}}</h4>
+        <button *ngIf="!showAllData"
+                class="btn btn-sm btn-primary ml-auto"
+                (click)="onCreate()">
+          <i class="fa fa-plus-circle"></i>
+          neuer Teilnehmer
+        </button>
+      </div>
+    </div>
+-->
+
+
+    <div class="container-fluid">
+      <div class="row">
+   <!-- <div class="form-group commands">-->
+      <button type="submit"
+              (click)="onShowPlaner()"
+              class="btn btn-sm btn-primary">
+        <i class="fas fa-calendar-alt"></i>
+        Zeige Planer
+      </button>
+      <button type="submit"
+              (click)="onBack()"
+              class="btn btn-sm btn-default">
+        <i class="fas fa-arrow-alt-circle-left"></i>
+        Zurück
+      </button>
+
+      <button *ngIf="editMode"
+              type="submit"
+              [disabled]="form.invalid"
+              class="btn btn-sm btn-success ml-auto">
+        <i class="fas fa-save"></i>
+        Speichern
+      </button>
+      <button *ngIf="!editMode" type="submit"
+              [disabled]="form.invalid"
+              class="btn btn-sm btn-success ml-auto">
+        <i class="fas fa-plus-circle"></i>
+        Gruppe erstellen
+      </button>
+
+    </div>
+      </div>
+    <!--</div>-->
+
+  </form>
+
+  <div class="row">
+    <div class="col-md-10">
+      <hr class = "line" />
+    </div>
+  </div>
+
+  <div><termin-liste *ngIf="editMode" [myGruppe]="gruppe" ></termin-liste></div>
+  <br><br>
+  <div><teilnehmer-liste *ngIf="editMode" [myGruppe]="gruppe" ></teilnehmer-liste></div>
+  <br><br>
+  <div><code_aktivitaeten-liste *ngIf="editMode" [myGruppe]="gruppe" ></code_aktivitaeten-liste></div>
+</div>

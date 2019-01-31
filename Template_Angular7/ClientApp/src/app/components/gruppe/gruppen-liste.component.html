@@ -1,0 +1,75 @@
+<h3>{{title}}</h3>
+<div *ngIf="gruppen.length > 0">
+  <div class="table-responsive table-striped">
+    <table class="table table-hover gruppen">
+      <!--<thead>
+      <tr>
+        <th></th>
+        <th *ngIf="globals.bp_isMidOrWideScreen">Id</th>
+        <th>Code</th>
+        <th *ngIf="globals.bp_isMidOrWideScreen">Bezeichnung</th>
+        <th>Aktiv</th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>-->
+      <tbody>
+      <tr *ngFor="let gruppe of gruppen"
+          [class.selected]="gruppe === selectedGruppe"
+          (click)="onSelect(gruppe)">
+        <td>
+          <button type="submit"
+                  (click)="onShowPlaner(gruppe)"
+                  class="btn btn-sm btn-primary">
+            <i class="fas fa-calendar-alt"></i>
+            <a *ngIf="globals.bp_isMidOrWideScreen"> Zeige Planer</a>
+          </button>
+        </td>
+        <td *ngIf="globals.bp_isMidOrWideScreen">{{gruppe.Id}}</td>
+        <td>{{gruppe.Code}}</td>
+        <td *ngIf="globals.bp_isMidOrWideScreen">{{gruppe.Bezeichnung}}</td>
+        <td style="text-align:center;"></td>
+        <td>
+          <button type="submit"
+                  (click)="onEdit(gruppe)"
+                  class="btn btn-sm btn-success">
+            <i class="fas fa-edit"></i>
+            <a *ngIf="globals.bp_isMidOrWideScreen"> Ändern</a>
+          </button>
+        </td>
+        <td>
+          <button type="submit"
+                  (click)="onDelete(gruppe)"
+                  class="btn btn-sm btn-danger">
+            <i class="fas fa-trash-alt"></i>
+            <a *ngIf="globals.bp_isMidOrWideScreen"> Löschen</a>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="container-fluid">
+      <div class="row">
+        <button class="btn btn-sm btn-primary ml-auto"
+                (click)="onCreate()">
+          <i class="fa fa-plus-circle"></i>
+          Gruppe erstellen
+        </button>
+      </div>
+    </div>
+
+
+
+    <!--<button type="submit"
+            (click)="onCreate()"
+            class="btn btn-sm btn-success">
+      <i class="fas fa-plus-circle"></i>
+      Gruppe erstellen
+    </button>-->
+  </div>
+</div>
+
+
+
+
