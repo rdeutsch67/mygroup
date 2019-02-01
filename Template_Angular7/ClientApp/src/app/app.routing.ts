@@ -41,8 +41,6 @@ const appRoutes: Routes = [
   {path: 'kalender/:id', component: KalenderComponent},
   {path: 'kalender_user/:id', component: KalenderComponent},
   {path: 'about', component: AboutComponent},
-  //{path: '**', component: PageNotFoundComponent}
-  // otherwise redirect to home
   { path: '**', redirectTo: '' }
 ];
 
