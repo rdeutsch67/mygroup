@@ -38,15 +38,7 @@ export class GruppenListeComponent implements OnInit {
 
   ngOnInit() {
     this.nav.show();
-    /*this.resizeObservable$ = fromEvent(window, 'resize');
-    this.resizeSubscription$ = this.resizeObservable$.subscribe( evt => {
-      console.log('event: ', evt)
-    });*/
   }
-
-  /*ngOnDestroy() {
-    this.resizeSubscription$.unsubscribe()
-  }*/
 
   loadData(idUser: number) {
     console.log(idUser);
@@ -75,8 +67,7 @@ export class GruppenListeComponent implements OnInit {
         .delete(url)
         .subscribe(res => {
           console.log("Gruppe " + gruppe.Id + " wurde gelöscht.");
-          // refresh the question list
-          //this.loadData(0);
+
           this.router.navigate(["/gruppen/alle/10"]);
         }, error => console.log(error));
     }
@@ -84,8 +75,7 @@ export class GruppenListeComponent implements OnInit {
 
   onSelect(gruppe: Gruppe) {
     this.selectedGruppe = gruppe;
-    console.log("quiz with Id " + this.selectedGruppe.Id + " ist ausgewählt.");
-    /*this.router.navigate(["gruppen", this.selectedGruppe.Id]);*/
+    console.log("Gruppe mit Id " + this.selectedGruppe.Id + " ist ausgewählt.");
     this.router.navigate(["gruppen/edit", this.selectedGruppe.Id]);
   }
 }

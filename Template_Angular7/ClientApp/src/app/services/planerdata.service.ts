@@ -44,6 +44,19 @@ export class PlanerdataService {
     return this.http.get<VTeilnehmer[]>(myUrl);
   }
 
+  loadTeilnehmerVonUser(id: number): Observable<VTeilnehmer[]> {
+
+    let myUrl: string;
+    if (id > 0 ) {
+      myUrl = this.baseUrl + "api/teilnehmer/teilnehmer_user/" + id;
+    }
+    else {
+      myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/0";  // alle holen
+    }
+
+    return this.http.get<VTeilnehmer[]>(myUrl);
+  }
+
   loadAktiviaeten(id: number): Observable<Code_aktivitaet[]> {
     let myUrl: string;
     if (id > 0 ) {
@@ -56,19 +69,23 @@ export class PlanerdataService {
     return this.http.get<Code_aktivitaet[]>(myUrl);
   }
 
-  loadTermine(myID: number): Observable<Termin[]> {
+  loadTermine(myID: number, fetchAllCalenderEventsOfUser: number): Observable<Termin[]> {
     let myUrl: string;
-    if (myID > 0 ) {
-      myUrl = this.baseUrl + "api/termine/vtermine/" + myID;
+    if (fetchAllCalenderEventsOfUser <= 0) {
+      if (myID > 0) {
+        myUrl = this.baseUrl + "api/termine/vtermine/" + myID;
+      } else {
+        myUrl = this.baseUrl + "api/termine/vtermine/0";  // alle holen
+      }
     }
     else {
-      myUrl = this.baseUrl + "api/termine/vtermine/0";  // alle holen
+      myUrl= this.baseUrl + "api/termine/termine_user/" + fetchAllCalenderEventsOfUser;
     }
 
     return this.http.get<Termin[]>(myUrl);
   }
 
-  loadPlanerCalenderEvents(myID: number): Observable<CalendarEvent[]> {
+  loadPlanerCalenderEvents(myID: number, fetchAllCalenderEventsOfUser: number): Observable<CalendarEvent[]> {
 
 
     let termine: Termin[];
@@ -79,7 +96,7 @@ export class PlanerdataService {
 
     return Observable.create(observer => {
       setTimeout(() => {
-          this.loadTermine(myID)
+          this.loadTermine(myID, fetchAllCalenderEventsOfUser)
             .subscribe((data) => {
                 termine = data;
 

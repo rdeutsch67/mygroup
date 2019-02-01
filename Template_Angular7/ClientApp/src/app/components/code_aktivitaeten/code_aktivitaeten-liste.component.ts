@@ -32,11 +32,17 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
     //this.code_aktivitaeten = [];
     this.code_aktivitaeten = <VCode_aktivitaet[]>{};
 
+
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
-    this.showAllData = id <= 0;
-    if (id <= 0) {
-      this.loadData(id);
-    }
+    if (this.activatedRoute.snapshot.url[1].path === "aktivitaeten_user") {
+      this.loadAlleAktivitaetenVonUser(id);
+    };
+    /*else {
+      this.showAllData = id <= 0;
+      if (id > 0) {
+        this.loadData(id);
+      }
+    };*/
     this.onShowDataJson();
   }
 
@@ -46,17 +52,27 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
       // retrieve code_aktivitaet variable change info
       let change = changes['myGruppe'];
       // only perform the task if the value has been changed
-      //if (!change.isFirstChange()) {
+      if (!change.isFirstChange()) {
         // execute the Http request and retrieve the result
+        this.showAllData = this.myGruppe.Id <= 0;
         this.loadData(this.myGruppe.Id);
-      //}
+      }
     }
+  }
+
+  loadAlleAktivitaetenVonUser(myID: number) {
+    let myUrl: string;
+    myUrl = this.baseUrl + "api/codesaktivitaeten/aktivitaeten_user/" + myID;
+
+    this.http.get<VCode_aktivitaet[]>(myUrl).subscribe(res => {
+      this.code_aktivitaeten = res;
+    }, error => console.error(error));
   }
 
   loadData(myID: number) {
     let myUrl: string;
     if (myID > 0 ) {
-      myUrl = this.baseUrl + "api/codesaktivitaeten/vaktivitaeten/" + this.myGruppe.Id;
+      myUrl = this.baseUrl + "api/codesaktivitaeten/vaktivitaeten/" + myID;
     }
     else {
       myUrl = this.baseUrl + "api/codesaktivitaeten/vaktivitaeten/0";  // alle holen

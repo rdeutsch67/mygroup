@@ -29,10 +29,16 @@ export class TeilnehmerListeComponent implements OnChanges {
     this.myTeilnehmer = [];
 
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
-    this.showAllData = id <= 0;
-    if (this.showAllData) {
-      this.loadVTeilnehmer(0);
+    if (this.activatedRoute.snapshot.url[1].path === "teilnehmer_user") {
+      this.loadAlleTeilnehmerVonUser(id);
     }
+    /*else {
+      this.showAllData = id <= 0;
+      if (id > 0) {
+        this.loadVTeilnehmer(id);
+      }
+    }*/
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -41,16 +47,25 @@ export class TeilnehmerListeComponent implements OnChanges {
       // retrieve code_aktivitaet variable change info
       let change = changes['myGruppe'];
       // only perform the task if the value has been changed
-      //if (!change.isFirstChange()) {
+      if (!change.isFirstChange()) {
       // execute the Http request and retrieve the result
-      this.loadVTeilnehmer(this.myGruppe.Id);
-      //}
+        this.showAllData = this.myGruppe.Id <= 0;
+        this.loadVTeilnehmer(this.myGruppe.Id);
+      }
     }
   }
 
   loadVTeilnehmer(id: number) {
 
     this.dataService.loadVTeilnehmer(id).subscribe( res => {
+      this.myTeilnehmer = res;
+    },
+      error => console.error(error));
+  }
+
+  loadAlleTeilnehmerVonUser(id: number){
+    let url = this.baseUrl + "api/teilnehmer/teilnehmer_user/" + id;
+    this.dataService.loadTeilnehmerVonUser(id).subscribe(res => {
       this.myTeilnehmer = res;
     },
       error => console.error(error));

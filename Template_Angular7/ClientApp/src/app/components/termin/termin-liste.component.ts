@@ -39,10 +39,15 @@ export class TerminListeComponent implements OnInit, OnChanges {
     this.termine = [];
 
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
-    this.showAllData = id <= 0;
-    if (id <= 0) {
-      this.loadData(id);
-    }
+    if (this.activatedRoute.snapshot.url[1].path === "termine_user") {
+      this.loadAlleTermineVonUser(id);
+    };
+    /*else {
+      this.showAllData = id <= 0;
+      /!*if (id > 0) {
+        this.loadData(id);
+      }*!/
+    }*/
   }
 
   ngOnInit() {
@@ -56,24 +61,38 @@ export class TerminListeComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (typeof changes['myGruppe'] !== "undefined") {
-
       // retrieve code_aktivitaet variable change info
       let change = changes['myGruppe'];
       // only perform the task if the value has been changed
-      //if (!change.isFirstChange()) {
+      if (!change.isFirstChange()) {
         // execute the Http request and retrieve the result
+        this.showAllData = this.myGruppe.Id <= 0;
         this.loadData(this.myGruppe.Id);
-      //}
+      }
     }
   }
 
   loadData(myID: number) {
     let myUrl: string;
     if (myID > 0 ) {
-      myUrl = this.baseUrl + "api/termine/vtermine/" + this.myGruppe.Id;
+      myUrl = this.baseUrl + "api/termine/vtermine/" + myID;
     }
     else {
       myUrl = this.baseUrl + "api/termine/vtermine/0";  // alle holen
+    }
+
+    this.http.get<Termin[]>(myUrl).subscribe(res => {
+      this.termine = res;
+    }, error => console.error(error));
+  }
+
+  loadAlleTermineVonUser(myID: number) {
+    let myUrl: string;
+    if (myID > 0 ) {
+      myUrl = this.baseUrl + "api/termine/termine_user/" + myID;
+    }
+    else {
+      myUrl = this.baseUrl + "api/termine/termine_user/0";  // alle holen
     }
 
     this.http.get<Termin[]>(myUrl).subscribe(res => {

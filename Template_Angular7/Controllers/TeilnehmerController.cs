@@ -228,5 +228,34 @@ namespace Template_Angular7.Controllers
             }
             
         }
+        
+        // GET api/teilnehmer_user/{idUser}
+        [HttpGet("teilnehmer_user/{idUser}")]
+        public IActionResult teilnehmer_user(int idUser)
+        {
+            if (idUser <= 0) return new StatusCodeResult(500);
+            
+            var query = (from ut in DbContext.Teilnehmer
+                join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
+                where ug.IdUser == idUser
+                select new
+                {
+                    ut.Id,
+                    ut.IdGruppe,
+                    ut.Vorname,
+                    ut.Nachname,
+                    ut.Berechtigungen,
+                    GruppeCode = ug.Code,
+                    GruppeBezeichnung = ug.Bezeichnung,
+                    GruppeUserId = ug.IdUser,
+                    GruppeAktiv = ug.Aktiv
+                }).OrderBy(x => x.GruppeUserId).ThenBy(x => x.Vorname).ThenBy(x => x.Nachname)
+                  .ToList();
+            return new JsonResult(
+                query.Adapt<TeilnehmerViewModel[]>(),
+                JsonSettings); 
+            
+            
+        }
     }
 }

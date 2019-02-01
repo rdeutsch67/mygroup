@@ -50,8 +50,10 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    //this.router.navigate([this.returnUrl]);
+                  //  this.router.navigate([this.returnUrl]);
                   this.router.navigateByUrl('/home');
+                  // hier den aktuellen User in der globalen Variablen setzen
+
                 },
                 error => {
                     this.alertService.error(error);

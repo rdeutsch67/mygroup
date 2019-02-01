@@ -245,6 +245,40 @@ namespace Template_Angular7.Controllers
                     query.Adapt<CodeAktivitaetenViewModel[]>(),
                     JsonSettings); 
             }
+        }
+        
+        // GET api/aktivitaeten_user/{idUser}
+        [HttpGet("aktivitaeten_user/{idUser}")]
+        public IActionResult aktivitaeten_user(int idUser)
+        {
+            if (idUser <= 0) return new StatusCodeResult(500);
+            
+            var query = (from ut in DbContext.CodesAktivitaeten
+                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
+                    where ug.IdUser == idUser
+                    select new
+                    {
+                        ut.Id,
+                        ut.IdGruppe,
+                        ut.Code,
+                        ut.Bezeichnung,
+                        ut.Summieren,
+                        ut.Farbe,
+                        ut.GanzerTag,
+                        ut.ZeitUnbestimmt,
+                        ut.ZeitBeginn,
+                        ut.ZeitEnde,
+                        ShowZeiten = !(ut.GanzerTag || ut.ZeitUnbestimmt),
+                        GruppeCode = ug.Code,
+                        GruppeBezeichnung = ug.Bezeichnung,
+                        GruppeUserId = ug.IdUser,
+                        GruppeAktiv = ug.Aktiv
+                    }).OrderBy(x => x.GruppeUserId).ThenBy(x => x.Code).ThenBy(x => x.Bezeichnung)
+                      .ToList();
+            return new JsonResult(
+                query.Adapt<CodeAktivitaetenViewModel[]>(),
+                JsonSettings); 
+            
             
         }
     }

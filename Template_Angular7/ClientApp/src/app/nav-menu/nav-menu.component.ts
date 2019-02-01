@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import {NavbarService} from "../services/navbar.service";
 import {AuthenticationService, UserService} from "@app/_services";
 import {AppUser} from "@app/interface/appuser";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {GlobalVariables} from "@app/global.variables";
 
 
 @Component({
@@ -14,6 +15,8 @@ import {Router} from "@angular/router";
 
 export class NavMenuComponent {
   currentUser: AppUser;
+  AppUser;
+  currentUserID: number;
   currentUserSubscription: Subscription;
   isCollapsed = true;
 
@@ -21,10 +24,12 @@ export class NavMenuComponent {
   constructor(
     public nav: NavbarService,
     private authenticationService: AuthenticationService,
-    private router: Router)
+    private router: Router,
+    public globals: GlobalVariables)
   {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
+      this.currentUserID = user.id;
     });
   }
 
@@ -37,6 +42,7 @@ export class NavMenuComponent {
   }
 
   logout() {
+    this.collapse();
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }

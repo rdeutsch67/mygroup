@@ -65,6 +65,7 @@ export class KalenderComponent {
   viewDate: Date = new Date();
   clickedDate: Date;
   currentIdGruppe: number;
+  allCalenderEventsOfUser: number;
   modalData: {
     action: string;
     event: CalendarEvent;
@@ -95,8 +96,14 @@ export class KalenderComponent {
               private loadDataService: PlanerdataService) {
 
     let id = +this.activatedRoute.snapshot.params["id"];
+    this.allCalenderEventsOfUser = 0;
+
+    if (this.activatedRoute.snapshot.url[0].path === "kalender_user") {
+      this.allCalenderEventsOfUser = id;
+    };
+
     this.currentIdGruppe = id;
-    this.loadDataService.loadPlanerCalenderEvents(id).subscribe(res => {
+    this.loadDataService.loadPlanerCalenderEvents(id, this.allCalenderEventsOfUser).subscribe(res => {
         this.events = res;
         this.refresh.next();
       },

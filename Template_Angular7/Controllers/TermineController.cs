@@ -264,6 +264,46 @@ namespace Template_Angular7.Controllers
             }
             
         }
+        
+        // GET api/termine_user/{idUser}
+        [HttpGet("termine_user/{idUser}")]
+        public IActionResult termine_user(int idUser)
+        {
+            if (idUser <= 0) return new StatusCodeResult(500);
+            
+            var query = (from ut in DbContext.Termine
+                    from ua in DbContext.CodesAktivitaeten.Where(x => x.Id == ut.IdAktivitaet).DefaultIfEmpty()
+                    from uu in DbContext.Teilnehmer.Where(x => x.Id == ut.IdTeilnehmer).DefaultIfEmpty()
+                    from ug in DbContext.Gruppen.Where(x => x.Id == ut.IdGruppe).DefaultIfEmpty()
+                    where ug.IdUser == idUser
+                    select new
+                    {
+                        ut.Id,
+                        ut.IdTermin,
+                        ut.IdGruppe,
+                        ut.IdTeilnehmer,
+                        ut.IdAktivitaet,
+                        ut.GanzerTag,
+                        ut.DatumBeginn,
+                        ut.DatumEnde,
+                        ut.Hinweis,
+                        ut.CreatedDate,
+                        ut.LastModifiedDate,
+                        AktFarbe = ua.Farbe,
+                        AktCode = ua.Code,
+                        AktBezeichnung = ua.Bezeichnung,
+                        AktSummieren = ua.Summieren,
+                        TnVorname = uu.Vorname,
+                        TnNachname = uu.Nachname,
+                        GrpCode = ug.Code,
+                        GrpBezeichnung = ug.Bezeichnung,
+                        GruppeUserId = ug.IdUser 
+                    }).OrderBy(x => x.GruppeUserId).ThenBy(x => x.DatumBeginn).ThenBy(x => x.DatumEnde)
+                      .ToList();
+            return new JsonResult(
+                query.Adapt<TerminViewModel[]>(),
+                JsonSettings);
+        }
     }
 }
 
