@@ -55,6 +55,9 @@ export class TeilnehmerEditComponent {
     var tempTeilnehmer = <Teilnehmer>{};
     tempTeilnehmer.Vorname = this.form.value.Vorname;
     tempTeilnehmer.Nachname = this.form.value.Nachname;
+    tempTeilnehmer.Rufname = this.form.value.Rufname;
+    tempTeilnehmer.Email = this.form.value.Email;
+
     tempTeilnehmer.IdGruppe = this.myTeilnehmer.IdGruppe;
 
     let url = this.baseUrl + "api/teilnehmer";
@@ -88,14 +91,18 @@ export class TeilnehmerEditComponent {
   createForm() {
     this.form = this.fb.group({
       Vorname: ['', Validators.required],
-      Nachname: ['', Validators.required]
+      Nachname: ['', Validators.required],
+      Rufname: [''],
+      Email: ['', Validators.required]
     });
   }
 
   updateForm() {
     this.form.setValue({
       Vorname: this.myTeilnehmer.Vorname,
-      Nachname: this.myTeilnehmer.Nachname || ''
+      Nachname: this.myTeilnehmer.Nachname || '',
+      Rufname: this.myTeilnehmer.Rufname,
+      Email: this.myTeilnehmer.Email
     });
   }
 }

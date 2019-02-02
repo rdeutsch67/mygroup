@@ -1,32 +1,5 @@
 <div class="teilnehmer-edit container-fluid">
   <h3>{{title}}</h3>
-
-  <!--<form>
-    <div class="form-group row">
-      <label for="name1" class="col-sm-2 col-form-label">Name</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="name1" placeholder=".col-sm-10">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="name2" class="col-sm-2 col-form-label">Other Name</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="name2" placeholder=".col-sm-10">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="name3" class="col-sm-2 col-form-label">Third Name</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="name3" placeholder=".col-sm-10">
-      </div>
-    </div>
-    &lt;!&ndash;<div class="form-group row">
-      <div class="offset-sm-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </div>&ndash;&gt;
-  </form>-->
-
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="form-group row">
       <label for="vorname" class="col-sm-2 col-form-label">Vorname:</label>
@@ -46,23 +19,37 @@
         />
       </div>
     </div>
+    <div class="form-group row">
+      <label for="rufname" class="col-sm-2 col-form-label">Rufname:</label>
+      <div class="col-sm-2">
+        <input class="form-control" formControlName="Rufname" id="rufname"
+               placeholder="Rufname eingeben..."
+               type="text"
+        />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-2 col-form-label">Emailadresse:</label>
+      <div class="col-sm-2">
+        <input class="form-control" formControlName="Email" id="email"
+               placeholder="Emailadresse eingeben..." required
+               type="text"
+        />
+      </div>
+    </div>
 
+    <div>
+      <teilnehmer-einladung [myTeilnehmer]= "myTeilnehmer" [idGruppe]="myTeilnehmer.IdGruppe"></teilnehmer-einladung>
+    </div>
 
     <div class="form-group commands">
-      <!--<button *ngIf="editMode" type="submit"-->
       <button [disabled]="form.invalid"
               class="btn btn-sm btn-success"
               type="submit">
         <i class="fas fa-save"></i>
         Speichern
       </button>
-      <!--<button *ngIf="!editMode" type="submit"
-              [disabled]="form.invalid"
-              class="btn btn-success">
-        <i class="fas fa-plus-circle"></i>
-        Speichern
-      </button>-->
-      <!--<button *ngIf="!editMode" type="submit"-->
+
       <button (click)="onBack()"
               class="btn btn-sm btn-secondary"
               type="submit">

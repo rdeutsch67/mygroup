@@ -37,9 +37,11 @@ export class TerminListeComponent implements OnInit, OnChanges {
 
     this.title = "Termine";
     this.termine = [];
+    this.showAllData = false;
 
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
     if (this.activatedRoute.snapshot.url[1].path === "termine_user") {
+      this.showAllData = true;
       this.loadAlleTermineVonUser(id);
     };
     /*else {

@@ -27,9 +27,11 @@ export class TeilnehmerListeComponent implements OnChanges {
 
     this.title = "Teilnehmer";
     this.myTeilnehmer = [];
+    this.showAllData = false;
 
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
     if (this.activatedRoute.snapshot.url[1].path === "teilnehmer_user") {
+      this.showAllData = true;
       this.loadAlleTeilnehmerVonUser(id);
     }
     /*else {
@@ -49,7 +51,6 @@ export class TeilnehmerListeComponent implements OnChanges {
       // only perform the task if the value has been changed
       if (!change.isFirstChange()) {
       // execute the Http request and retrieve the result
-        this.showAllData = this.myGruppe.Id <= 0;
         this.loadVTeilnehmer(this.myGruppe.Id);
       }
     }

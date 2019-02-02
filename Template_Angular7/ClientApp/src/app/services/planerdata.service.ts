@@ -57,6 +57,16 @@ export class PlanerdataService {
     return this.http.get<VTeilnehmer[]>(myUrl);
   }
 
+  loadGruppenAdmin(id: number): Observable<VTeilnehmer[]> {
+
+    let myUrl: string;
+    if (id > 0 ) {
+      myUrl = this.baseUrl + "api/teilnehmer/gruppenadmin/" + id;
+    }
+
+    return this.http.get<VTeilnehmer[]>(myUrl);
+  }
+
   loadAktiviaeten(id: number): Observable<Code_aktivitaet[]> {
     let myUrl: string;
     if (id > 0 ) {

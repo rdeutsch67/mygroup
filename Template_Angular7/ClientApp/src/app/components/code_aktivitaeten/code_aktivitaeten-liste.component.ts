@@ -29,12 +29,12 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
               @Inject('BASE_URL') private baseUrl: string) {
 
     this.title = "Aktivitäten";
-    //this.code_aktivitaeten = [];
+    this.showAllData = false;
     this.code_aktivitaeten = <VCode_aktivitaet[]>{};
-
 
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
     if (this.activatedRoute.snapshot.url[1].path === "aktivitaeten_user") {
+      this.showAllData = true;
       this.loadAlleAktivitaetenVonUser(id);
     };
     /*else {

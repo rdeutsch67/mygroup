@@ -20,6 +20,11 @@ namespace Template_Angular7.Data
         [Required]
         [MaxLength(128)]
         public string UserName { get; set; }
+        
+        [Required]
+        [MaxLength(128)]
+        public string Email { get; set; }
+        
         [Required]
         [MaxLength(128)]
         public string FirstName { get; set; }

@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {NavbarService} from "../../services/navbar.service";
 import {GlobalVariables} from "@app/global.variables";
+import {PlanerdataService} from "@app/services/planerdata.service";
 
 @Component({
   selector: "gruppe-edit",
@@ -25,6 +26,7 @@ export class GruppeEditComponent implements OnInit {
               private fb: FormBuilder,
               public nav: NavbarService,
               private globals: GlobalVariables,
+              private loadDataService: PlanerdataService,
               @Inject('BASE_URL') private baseUrl: string) {
 
     // create an empty object from the Gruppe interface
@@ -42,6 +44,12 @@ export class GruppeEditComponent implements OnInit {
       this.http.get<Gruppe>(url).subscribe(res => {
         this.gruppe = res;
         this.code = "Edit - " + this.gruppe.Code;
+
+        this.loadDataService.loadGruppenAdmin(this.gruppe.Id).subscribe((data) => {
+            this.globals.gruppenAdmin = data;
+          }
+        );
+
         // update the form with the quiz value
         this.updateForm();
       }, error => console.error(error));

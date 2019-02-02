@@ -21,11 +21,20 @@ namespace Template_Angular7.Data
         
         [Required]
         public int IdGruppe { get; set; }
-        
+      
+        public string Rufname { get; set; }
         [Required]
         public string Vorname { get; set; }
         [Required]
         public string Nachname { get; set; }
+        [Required]
+        public string Email { get; set; }
+        
+        public DateTime EinladungGesendet { get; set; }
+        
+        public DateTime EinladungAngenommen { get; set; }
+        
+        public DateTime EinladungAbgewiesen { get; set; }
         
         [DefaultValue(0)]
         public int Berechtigungen { get; set; }

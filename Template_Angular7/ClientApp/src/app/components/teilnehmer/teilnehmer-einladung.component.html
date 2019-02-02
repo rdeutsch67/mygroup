@@ -1,0 +1,16 @@
+<div class="card">
+  <h4>Einladung in die Gruppe</h4>
+  <div class="card-body">
+    <h5 class="card-title">Einladung für {{strNameTeilnehmer}} zur Teilnahme in der Gruppe {{idGruppe}}</h5>
+    <p class="card-text">Mit Klick auf den untenstehenden Button wird eine Email-Einladung generiert.</p>
+    <div class="form-group commands">
+      <button class="btn btn-sm btn-outline-light btn-block btn-teilnehmer_einladen"
+              (click)="onGeneriereEinladung()"
+              type="button">
+        <i class="fas fa-user-friends "></i>
+        {{strNameTeilnehmer}} einladen...
+      </button>
+    </div>
+  </div>
+</div>
+

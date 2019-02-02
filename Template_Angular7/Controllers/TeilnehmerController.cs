@@ -62,8 +62,10 @@ namespace Template_Angular7.Controllers
             
             // properties taken from the request
             teilnehmer.IdGruppe = model.IdGruppe;
+            teilnehmer.Rufname = model.Rufname;
             teilnehmer.Vorname = model.Vorname;
             teilnehmer.Nachname = model.Nachname;
+            teilnehmer.Email = model.Email;
             teilnehmer.Berechtigungen = model.Berechtigungen;
             // properties set from server-side
             teilnehmer.CreatedDate = DateTime.Now;
@@ -107,9 +109,14 @@ namespace Template_Angular7.Controllers
             // by manually assigning the properties
             // we want to accept from the request
             teilnehmer.IdGruppe = model.IdGruppe;
+            teilnehmer.Rufname = model.Rufname;
             teilnehmer.Vorname = model.Vorname;
             teilnehmer.Nachname = model.Nachname;
+            teilnehmer.Email = model.Email;
             teilnehmer.Berechtigungen = model.Berechtigungen;
+            teilnehmer.EinladungGesendet = model.EinladungGesendet;
+            teilnehmer.EinladungAngenommen = model.EinladungAngenommen;
+            teilnehmer.EinladungAbgewiesen = model.EinladungAbgewiesen;
             // properties set from server-side
             teilnehmer.LastModifiedDate = teilnehmer.CreatedDate;
             
@@ -194,9 +201,14 @@ namespace Template_Angular7.Controllers
                     {
                         ut.Id,
                         ut.IdGruppe,
+                        ut.Rufname,
                         ut.Vorname,
                         ut.Nachname,
+                        ut.Email,
                         ut.Berechtigungen,
+                        ut.EinladungGesendet,
+                        ut.EinladungAngenommen,
+                        ut.EinladungAbgewiesen,
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,
@@ -214,9 +226,14 @@ namespace Template_Angular7.Controllers
                     {
                         ut.Id,
                         ut.IdGruppe,
+                        ut.Rufname,
                         ut.Vorname,
                         ut.Nachname,
+                        ut.Email,
                         ut.Berechtigungen,
+                        ut.EinladungGesendet,
+                        ut.EinladungAngenommen,
+                        ut.EinladungAbgewiesen,
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,
@@ -242,9 +259,14 @@ namespace Template_Angular7.Controllers
                 {
                     ut.Id,
                     ut.IdGruppe,
+                    ut.Rufname,
                     ut.Vorname,
                     ut.Nachname,
+                    ut.Email,
                     ut.Berechtigungen,
+                    ut.EinladungGesendet,
+                    ut.EinladungAngenommen,
+                    ut.EinladungAbgewiesen,
                     GruppeCode = ug.Code,
                     GruppeBezeichnung = ug.Bezeichnung,
                     GruppeUserId = ug.IdUser,
@@ -256,6 +278,35 @@ namespace Template_Angular7.Controllers
                 JsonSettings); 
             
             
+        }
+        
+        // GET api/teilnehmer/vteilnehmer
+        [HttpGet("gruppenadmin/{idGruppe}")]
+        public IActionResult gruppenadmin(int idGruppe)
+        {
+            var query = (from ut in DbContext.Teilnehmer
+                join ug in DbContext.Gruppen on ut.Id equals ug.IdUser
+                where ug.Id == idGruppe 
+                select new
+                {
+                    ut.Id,
+                    ut.IdGruppe,
+                    ut.Rufname,
+                    ut.Vorname,
+                    ut.Nachname,
+                    ut.Email,
+                    ut.Berechtigungen,
+                    ut.EinladungGesendet,
+                    ut.EinladungAngenommen,
+                    ut.EinladungAbgewiesen,
+                    GruppeCode = ug.Code,
+                    GruppeBezeichnung = ug.Bezeichnung,
+                    GruppeUserId = ug.IdUser,
+                    GruppeAktiv = ug.Aktiv
+                }).ToList();
+            return new JsonResult(
+                query.Adapt<TeilnehmerViewModel[]>(),
+                JsonSettings);
         }
     }
 }

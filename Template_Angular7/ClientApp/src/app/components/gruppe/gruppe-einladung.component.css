@@ -1,0 +1,18 @@
+.card {
+  padding-top: 10px;
+  background-color: #34ce57;
+  font-family: "American Typewriter";
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 0px; }
+  .card .card-body {
+    background-color: whitesmoke;
+    padding-bottom: 0px; }
+
+.btn-teilnahme_bestaetigt {
+  padding: 10px;
+  background-color: rgba(17, 74, 164, 0.86);
+  margin-top: 10px;
+  color: whitesmoke; }
+
+/*# sourceMappingURL=gruppe-einladung.component.css.map */

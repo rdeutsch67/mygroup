@@ -54,14 +54,15 @@ namespace Template_Angular7.Data
 
             // Create the "Admin" AppUser account (if it doesn't exist already)
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash("admin", out passwordHash, out passwordSalt);
+            CreatePasswordHash("edu", out passwordHash, out passwordSalt);
             
             var userAdmin = new AppUser()
             {
-                Id = 1,
-                UserName = "Admin",
-                FirstName = "Victor",
-                LastName =  "Kunz",
+                //Id = 1,
+                UserName = "edu",
+                FirstName = "Eduard",
+                LastName =  "Kozakiewicz",
+                Email = "edu.kozakiewicz@ekor.ch",
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 CreatedDate = createdDate,
@@ -78,17 +79,11 @@ namespace Template_Angular7.Data
             // local variables
             DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
-
-            // retrieve the admin user, which we'll use as default author.
-            var authorId = dbContext.AppUsers
-                .Where(u => u.UserName == "Admin")
-                .FirstOrDefault()
-                .Id;
-
+            
             // erstelle die erste Demogruppe
-            EntityEntry<Gruppe> e1 = dbContext.Gruppen.Add(new Gruppe()
+            EntityEntry<Gruppe> e2 = dbContext.Gruppen.Add(new Gruppe()
             {
-                IdUser = authorId,
+                IdUser = 1,
                 Code = "Jassrunde",
                 Beschreibung = "Jassrunde mit Trogner Jässler",
                 Bezeichnung = "Jassrunde, welche sich aus Trogner Jässler zusammensetzt.",
@@ -98,16 +93,16 @@ namespace Template_Angular7.Data
             });
             
 #if DEBUG
-            // noch weitere 4 Demogruppen erstellen
+            /*// noch weitere 4 Demogruppen erstellen
             var num = 4;
             for (int i = 2; i <= num; i++)
             {
                 ErstelleBeispielGruppen(
                     dbContext,
                     i,
-                    authorId,
+                    gruppenAdmin.Id,
                     createdDate.AddDays(-num));
-            }
+            }*/
 #endif
            
             
@@ -120,12 +115,7 @@ namespace Template_Angular7.Data
             // local variables
             DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
-
-            // retrieve the admin user, which we'll use as default author.
-            var authorId = dbContext.AppUsers
-                .Where(u => u.UserName == "Admin")
-                .FirstOrDefault()
-                .Id;
+            
             var idGruppe = dbContext.Gruppen
                 .Where(u => u.Code == "Jassrunde")
                 .FirstOrDefault()
@@ -212,10 +202,24 @@ namespace Template_Angular7.Data
             DateTime createdDate = DateTime.Now;
             DateTime lastModifiedDate = DateTime.Now;
 
-            var idGruppe = dbContext.Gruppen
-                .Where(u => u.Code == "Jassrunde")
-                .FirstOrDefault()
-                .Id;
+            // retrieve the admin user, which we'll use as default author.
+            var gruppenAdmin = dbContext.AppUsers
+                .Where(u => u.UserName == "edu")
+                .FirstOrDefault();
+            
+            var idGruppe = 1; // erste Gruppe
+            
+            // erstelle Admin-Teilnehmer für diese Gruppe 
+            EntityEntry<Teilnehmer> e0 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            {
+                IdGruppe = idGruppe,
+                Vorname = gruppenAdmin.FirstName,
+                Nachname = gruppenAdmin.LastName,
+                Rufname = gruppenAdmin.UserName,
+                Email = gruppenAdmin.Email,
+                CreatedDate = createdDate,
+                LastModifiedDate = lastModifiedDate
+            });
 
             // erstelle Teilnehmer
             EntityEntry<Teilnehmer> e1 = dbContext.Teilnehmer.Add(new Teilnehmer()
@@ -223,6 +227,8 @@ namespace Template_Angular7.Data
                 IdGruppe = idGruppe,
                 Vorname = "Alex",
                 Nachname = "Britschgi",
+                Rufname = "Alex",
+                Email = "alex@xyz.ch",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -232,6 +238,8 @@ namespace Template_Angular7.Data
                 IdGruppe = idGruppe,
                 Vorname = "René",
                 Nachname = "Graf",
+                Rufname = "René",
+                Email = "rene@xyz.ch",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -241,6 +249,8 @@ namespace Template_Angular7.Data
                 IdGruppe = idGruppe,
                 Vorname = "Thomas",
                 Nachname = "Hollenstein",
+                Rufname = "Thomas",
+                Email = "thomas@xyz.ch",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -250,6 +260,8 @@ namespace Template_Angular7.Data
                 IdGruppe = idGruppe,
                 Vorname = "René",
                 Nachname = "Keller",
+                Rufname = "Keller",
+                Email = "keller@xyz.ch",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -257,17 +269,10 @@ namespace Template_Angular7.Data
             EntityEntry<Teilnehmer> e5 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
                 IdGruppe = idGruppe,
-                Vorname = "Edu",
-                Nachname = "Kozakiewicz",
-                CreatedDate = createdDate,
-                LastModifiedDate = lastModifiedDate
-            });
-            
-            EntityEntry<Teilnehmer> e6 = dbContext.Teilnehmer.Add(new Teilnehmer()
-            {
-                IdGruppe = idGruppe,
                 Vorname = "Hampi",
                 Nachname = "Krüsi",
+                Rufname = "Hampi",
+                Email = "hampi@xyz.ch",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });

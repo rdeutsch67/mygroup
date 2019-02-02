@@ -22,6 +22,7 @@ import {Code_aktivitaetenEditComponent} from "./components/code_aktivitaeten/cod
 import {Code_aktivitaetenListeComponent} from "./components/code_aktivitaeten/code_aktivitaeten-liste.component";
 import {TeilnehmerListeComponent} from "./components/teilnehmer/teilnehmer-liste.component";
 import {TeilnehmerEditComponent} from "./components/teilnehmer/teilnehmer-edit.component";
+import {TeilnehmerEinladungComponent} from "@app/components/teilnehmer/teilnehmer-einladung.component";
 import {TerminEditComponent} from "./components/termin/termin-edit.component";
 import {TerminListeComponent} from "./components/termin/termin-liste.component";
 import {PlanerdataService} from "./services/planerdata.service";
@@ -41,6 +42,7 @@ import {AuthGuard} from "./_guards";
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
 import {AlertComponent} from "./_components";
 import {routing} from "./app.routing";
+import {GruppeEinladungComponent} from "@app/components/gruppe/gruppe-einladung.component";
 
 registerLocaleData(localeDECH);
 
@@ -54,10 +56,12 @@ registerLocaleData(localeDECH);
     HomeComponent,
     GruppenListeComponent,
     GruppeEditComponent,
+    GruppeEinladungComponent,
     Code_aktivitaetenEditComponent,
     Code_aktivitaetenListeComponent,
     TeilnehmerListeComponent,
     TeilnehmerEditComponent,
+    TeilnehmerEinladungComponent,
     TerminEditComponent,
     TerminListeComponent,
     KalenderComponent,
@@ -80,33 +84,7 @@ registerLocaleData(localeDECH);
         useFactory: adapterFactory
       },
     ),
-    routing,
-      /*RouterModule.forRoot([
-        /!*{path: '', component: GruppenListeComponent, canActivate: [AuthGuard] },
-        {path: 'login', component: LoginComponent },
-        {path: 'register', component: RegisterComponent },*!/
-        {path: '', redirectTo: 'home', pathMatch: 'full'},
-        {path: 'home', component: GruppenListeComponent},
-        {path: 'gruppen/alle/:count', component: GruppenListeComponent},
-        {path: 'gruppen/create', component: GruppeEditComponent},
-        {path: 'gruppen/edit/:id', component: GruppeEditComponent},
-        {path: 'codesaktivitaeten/vaktivitaeten/:id', component: Code_aktivitaetenListeComponent}, // alle Codes zur Gruppe
-        {path: 'codesaktivitaeten/create/:id', component: Code_aktivitaetenEditComponent},
-        {path: 'codesaktivitaeten/edit/:id', component: Code_aktivitaetenEditComponent},
-        {path: 'codesaktivitaeten/vaktivitaeten/0', component: Code_aktivitaetenListeComponent}, // alle Codes anzeigen
-        {path: 'teilnehmer/alle/:id', component: TeilnehmerListeComponent},
-        {path: 'teilnehmer/vteilnehmer/:id', component: TeilnehmerListeComponent},
-        {path: 'teilnehmer/create/:id', component: TeilnehmerEditComponent},
-        {path: 'teilnehmer/edit/:id', component: TeilnehmerEditComponent},
-        {path: 'termine/vtermine/:id', component: TerminListeComponent},
-        {path: 'termine/create/:id', component: TerminEditComponent},
-        {path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date()}},
-        {path: 'termine/edit/:id', component: TerminEditComponent},
-        {path: 'kalender/:id', component: KalenderComponent},
-        {path: 'about', component: AboutComponent},
-        {path: '**', component: PageNotFoundComponent}
-      ],
-      {anchorScrolling: 'enabled'})*/
+    routing
   ],
 
 providers: [

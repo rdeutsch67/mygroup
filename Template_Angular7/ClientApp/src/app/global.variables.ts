@@ -10,4 +10,5 @@ export class GlobalVariables {
   bp_isMidOrWideScreen: boolean;
 
   logged_in_User: AppUser;
+  gruppenAdmin: VTeilnehmer[];
 }
