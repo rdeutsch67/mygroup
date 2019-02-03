@@ -39,7 +39,7 @@
     </div>
 
     <div>
-      <teilnehmer-einladung [myTeilnehmer]= "myTeilnehmer" [idGruppe]="myTeilnehmer.IdGruppe"></teilnehmer-einladung>
+      <teilnehmer-einladung *ngIf="!gruppeAngenommen" [myTeilnehmer]= "myTeilnehmer" [idGruppe]="myTeilnehmer.IdGruppe"></teilnehmer-einladung>
     </div>
 
     <div class="form-group commands">

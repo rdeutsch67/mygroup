@@ -14,17 +14,20 @@ import {TerminListeComponent} from "./components/termin/termin-liste.component";
 import {TerminEditComponent} from "./components/termin/termin-edit.component";
 import {KalenderComponent} from "./components/kalender/kalender.component";
 import {AboutComponent} from "./components/about/about.component";
-import {GruppeEinladungComponent} from "@app/components/gruppe/gruppe-einladung.component";
+import {EinladungComponent} from "@app/components/einladung/einladung.component";
+
 
 const appRoutes: Routes = [
-  { path: '', component: GruppenListeComponent, canActivate: [AuthGuard] },
+  /*{ path: '', component: GruppenListeComponent, canActivate: [AuthGuard] },*/
+  { path: '', component: GruppenListeComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: GruppenListeComponent},
+  { path: 'confirm/:idp', component: EinladungComponent},
   { path: 'gruppen/alle/:count', component: GruppenListeComponent},
   { path: 'gruppen/create', component: GruppeEditComponent},
+  /*{ path: 'gruppen/edit/:id', component: GruppeEditComponent, canActivate: [AuthGuard]},*/
   { path: 'gruppen/edit/:id', component: GruppeEditComponent},
-  { path: 'gruppe_einladung/:id', component: GruppeEinladungComponent},
   { path: 'codesaktivitaeten/vaktivitaeten/:id', component: Code_aktivitaetenListeComponent}, // alle Aktivitäten der Gruppe x
   { path: 'codesaktivitaeten/create/:id', component: Code_aktivitaetenEditComponent},
   { path: 'codesaktivitaeten/edit/:id', component: Code_aktivitaetenEditComponent},

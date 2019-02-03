@@ -24,7 +24,7 @@ namespace Template_Angular7.ViewModels
         
         public DateTime EinladungGesendet { get; set; }
         public DateTime EinladungAngenommen { get; set; }
-        public DateTime EinladungAbgewiesen { get; set; }
+        public DateTime Sperrung { get; set; }
         
         // Gruppeninfo
         public string GruppeCode { get; set; }

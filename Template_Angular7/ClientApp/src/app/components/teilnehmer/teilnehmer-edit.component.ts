@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import {Component, Inject, Input, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NavbarService} from "../../services/navbar.service";
+import {getTime} from "date-fns";
 
 @Component({
   selector: "teilnehmer-edit.component",
@@ -10,10 +11,12 @@ import {NavbarService} from "../../services/navbar.service";
   styleUrls: ['./teilnehmer-edit.component.css']
 })
 
-export class TeilnehmerEditComponent {
+export class TeilnehmerEditComponent implements OnInit{
+  @Input() myGruppe: Gruppe;
   title: string;
   myTeilnehmer: Teilnehmer;
   editMode: boolean;
+  gruppeAngenommen: boolean = false;
   form: FormGroup;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -22,6 +25,8 @@ export class TeilnehmerEditComponent {
               private fb: FormBuilder,
               public nav: NavbarService,
               @Inject('BASE_URL') private baseUrl: string) {
+
+    this.gruppeAngenommen = false;
 
     // leeres Aktivität-Objekt erstellen
     this.myTeilnehmer = <Teilnehmer>{};
@@ -38,6 +43,7 @@ export class TeilnehmerEditComponent {
       let url = this.baseUrl + "api/teilnehmer/" + id;
       this.http.get<Teilnehmer>(url).subscribe(res => {
         this.myTeilnehmer = res;
+        this.setGruppeAngenommen();
         this.title = "Edit - " + this.myTeilnehmer.Vorname || this.myTeilnehmer.Nachname;
 
         // update the form with the quiz value
@@ -45,9 +51,14 @@ export class TeilnehmerEditComponent {
       }, error => console.error(error));
     }
     else {
+      this.gruppeAngenommen = false;
       this.myTeilnehmer.IdGruppe = id;
       this.title = "Erstelle neuen Teilnehmer";
     }
+  }
+
+  ngOnInit() {
+    this.gruppeAngenommen = false;
   }
 
   onSubmit() {
@@ -105,4 +116,9 @@ export class TeilnehmerEditComponent {
       Email: this.myTeilnehmer.Email
     });
   }
+
+  setGruppeAngenommen() {
+    this.gruppeAngenommen = getTime(this.myTeilnehmer.EinladungAngenommen) > getTime(new Date(2019, 1, 1, 0,0,0,0));
+  }
+
 }

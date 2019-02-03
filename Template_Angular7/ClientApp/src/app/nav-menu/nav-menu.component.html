@@ -57,6 +57,12 @@
             Logout
           </a>
         </li>
+        <li [routerLinkActive]="['link-active']" (click)='collapse()'>
+          <a class="nav-link" [routerLink]="['/einladung/:id']">
+            <i class="fa fa-calendar-alt"></i>
+            Gruppenbestätigung
+          </a>
+        </li>
       </ul>
     </div>
   </nav>

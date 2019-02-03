@@ -1,0 +1,17 @@
+<div class="gruppe-einladung container-fluid">
+  <div class="card">
+    <h5> {{emailTeilnehmer}}</h5>
+    <h4>Danke für deine Bestätigung</h4>
+    <div class="card-body">
+      <h5 class="card-title">Hiermit wird die Teilnahme für die Gruppe {{code}} bestätigt.</h5>
+      <div class="form-group commands">
+        <button class="btn btn-sm btn-outline-light btn-block btn-teilnahme_bestaetigt"
+                (click)="onShowGruppe()"
+                type="submit">
+          <i class="fas fa-user-friends "></i>
+          Gruppe öffnen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

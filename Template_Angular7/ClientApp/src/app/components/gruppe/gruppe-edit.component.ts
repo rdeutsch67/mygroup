@@ -17,7 +17,7 @@ export class GruppeEditComponent implements OnInit {
   code: string;
   gruppe: Gruppe;
   form: FormGroup;
-  editMode: boolean;  // this will be TRUE when editing an existing quiz,
+  editMode: boolean;  // this will be TRUE when editing an existing gruppe
                       // FALSE when creating a new one.
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -40,7 +40,7 @@ export class GruppeEditComponent implements OnInit {
       this.editMode = true;
 
       // fetch the gruppe from the server
-      var url = this.baseUrl + "api/gruppen/" + id;
+      let url = this.baseUrl + "api/gruppen/" + id;
       this.http.get<Gruppe>(url).subscribe(res => {
         this.gruppe = res;
         this.code = "Edit - " + this.gruppe.Code;
@@ -88,6 +88,26 @@ export class GruppeEditComponent implements OnInit {
         .subscribe(res => {
           var q = res;
           console.log("Gruppe " + q.Id + " erstellt.");
+
+          // Admin-Teilnehmer einfügen
+          let tempTeilnehmer = <Teilnehmer>{};
+          tempTeilnehmer.Vorname = this.globals.logged_in_User.firstName;
+          tempTeilnehmer.Nachname = this.globals.logged_in_User.lastName
+          tempTeilnehmer.Rufname = this.globals.logged_in_User.firstName;
+          tempTeilnehmer.Email = this.globals.logged_in_User.email;
+          tempTeilnehmer.IdGruppe = q.Id;
+          tempTeilnehmer.EinladungAngenommen = new Date();
+
+          let url = this.baseUrl + "api/teilnehmer";
+
+          this.http
+            .put<Teilnehmer>(url, tempTeilnehmer)
+            .subscribe(res => {
+              var tt = res;
+              console.log("Teilnehmer " + tt.Id + " erstellt.");
+
+            }, error => console.log(error));
+
           this.router.navigate(["gruppen/edit/"+q.Id]);
         }, error => console.log(error));
     }

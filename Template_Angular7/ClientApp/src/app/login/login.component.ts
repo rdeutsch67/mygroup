@@ -3,8 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, AuthenticationService } from 'app/_services';
+import {GlobalVariables} from "@app/global.variables";
 
-@Component({templateUrl: 'login.component.html'})
+@Component({
+  selector: 'login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
@@ -13,6 +19,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
+        public globals: GlobalVariables,
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,

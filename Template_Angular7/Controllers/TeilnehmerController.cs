@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Template_Angular7.ViewModels;
+using Template_Angular7.ViewModels.special;
 using System.Collections.Generic;
 using System.Linq;
 using Template_Angular7.Data;
@@ -116,7 +117,7 @@ namespace Template_Angular7.Controllers
             teilnehmer.Berechtigungen = model.Berechtigungen;
             teilnehmer.EinladungGesendet = model.EinladungGesendet;
             teilnehmer.EinladungAngenommen = model.EinladungAngenommen;
-            teilnehmer.EinladungAbgewiesen = model.EinladungAbgewiesen;
+            teilnehmer.Sperrung = model.Sperrung;
             // properties set from server-side
             teilnehmer.LastModifiedDate = teilnehmer.CreatedDate;
             
@@ -208,7 +209,7 @@ namespace Template_Angular7.Controllers
                         ut.Berechtigungen,
                         ut.EinladungGesendet,
                         ut.EinladungAngenommen,
-                        ut.EinladungAbgewiesen,
+                        ut.Sperrung,
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,
@@ -233,7 +234,7 @@ namespace Template_Angular7.Controllers
                         ut.Berechtigungen,
                         ut.EinladungGesendet,
                         ut.EinladungAngenommen,
-                        ut.EinladungAbgewiesen,
+                        ut.Sperrung,
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,
@@ -266,7 +267,7 @@ namespace Template_Angular7.Controllers
                     ut.Berechtigungen,
                     ut.EinladungGesendet,
                     ut.EinladungAngenommen,
-                    ut.EinladungAbgewiesen,
+                    ut.Sperrung,
                     GruppeCode = ug.Code,
                     GruppeBezeichnung = ug.Bezeichnung,
                     GruppeUserId = ug.IdUser,
@@ -298,7 +299,7 @@ namespace Template_Angular7.Controllers
                     ut.Berechtigungen,
                     ut.EinladungGesendet,
                     ut.EinladungAngenommen,
-                    ut.EinladungAbgewiesen,
+                    ut.Sperrung,
                     GruppeCode = ug.Code,
                     GruppeBezeichnung = ug.Bezeichnung,
                     GruppeUserId = ug.IdUser,
@@ -306,6 +307,45 @@ namespace Template_Angular7.Controllers
                 }).ToList();
             return new JsonResult(
                 query.Adapt<TeilnehmerViewModel[]>(),
+                JsonSettings);
+        }
+        
+        
+        [HttpPost("confirm_groupmember")]
+        public IActionResult confirm_groupmember([FromBody]EinladungBestaetigenViewmodel model)
+        
+        {
+            // return a generic HTTP Status 500 (Server Error)
+            // if the client payload is invalid.
+            if ((model.Gruppe <= 0) || (model.Email == null)) return new StatusCodeResult(500);
+            
+            // Aktivität holen 
+            var teilnehmer = DbContext.Teilnehmer.Where(q => q.IdGruppe == model.Gruppe && q.Email == model.Email).FirstOrDefault();
+            
+            
+            // handle requests asking for non-existing quizzes
+            if (teilnehmer == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("Teilnehmer {0} in Gruppe {1} nicht gefunden.", model.Email, model.Gruppe)
+                });
+            }
+            
+            // handle the update (without object-mapping)
+            // by manually assigning the properties
+            // we want to accept from the request
+            teilnehmer.EinladungAngenommen = DateTime.Now;
+            // properties set from server-side
+            teilnehmer.LastModifiedDate = DateTime.Now;
+            
+            // persist the changes into the Database.
+            DbContext.SaveChanges();
+
+            model.Result = "OK";
+            
+            return new JsonResult(
+                model.Adapt<EinladungBestaetigenViewmodel>(),
                 JsonSettings);
         }
     }

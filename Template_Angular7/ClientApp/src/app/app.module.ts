@@ -42,7 +42,7 @@ import {AuthGuard} from "./_guards";
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
 import {AlertComponent} from "./_components";
 import {routing} from "./app.routing";
-import {GruppeEinladungComponent} from "@app/components/gruppe/gruppe-einladung.component";
+import {EinladungComponent} from "@app/components/einladung/einladung.component";
 
 registerLocaleData(localeDECH);
 
@@ -50,13 +50,13 @@ registerLocaleData(localeDECH);
   declarations: [
     LoginComponent,
     RegisterComponent,
+    EinladungComponent,
     AlertComponent,
     AppComponent,
     NavMenuComponent,
     HomeComponent,
     GruppenListeComponent,
     GruppeEditComponent,
-    GruppeEinladungComponent,
     Code_aktivitaetenEditComponent,
     Code_aktivitaetenListeComponent,
     TeilnehmerListeComponent,

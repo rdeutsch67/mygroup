@@ -87,14 +87,14 @@ namespace Template_Angular7
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
-                opt.UseNpgsql(Configuration.GetConnectionString("MyWebApiConnection")));
+            /*services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
+                opt.UseNpgsql(Configuration.GetConnectionString("MyWebApiConnection")));*/
             
             
             /* temporär für produktiven Einsatz */
             
-            /*services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql("User ID = ekoradmin;Password=roke_4390;Server=localhost;Port=5432;Database=gruppenverwaltungapi;Integrated Security=true; Pooling=true;"));*/
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
+            opt.UseNpgsql("User ID = ekoradmin;Password=roke_4390;Server=localhost;Port=5432;Database=gruppenverwaltungapi;Integrated Security=true; Pooling=true;"));
             
             
 

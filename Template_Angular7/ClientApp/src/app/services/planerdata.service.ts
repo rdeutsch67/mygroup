@@ -1,5 +1,5 @@
-import { Inject, Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import {Inject, Injectable} from "@angular/core";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, Observer} from "rxjs";
 import {
   CalendarEvent,
@@ -10,6 +10,8 @@ import {
 } from 'angular-calendar';
 import {NgIf} from "@angular/common";
 import {addDays, addHours, endOfMonth, startOfDay, subDays} from "date-fns";
+import {Einladungbestaetigung} from "@app/interface/special/einladungbestaetigung";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class PlanerdataService {
@@ -21,10 +23,9 @@ export class PlanerdataService {
   loadTeilnehmer(id: number): Observable<Teilnehmer[]> {
 
     let myUrl: string;
-    if (id > 0 ) {
+    if (id > 0) {
       myUrl = this.baseUrl + "api/teilnehmer/alle/" + id;
-    }
-    else {
+    } else {
       myUrl = this.baseUrl + "api/teilnehmer/alle/0";  // alle holen
     }
 
@@ -34,10 +35,9 @@ export class PlanerdataService {
   loadVTeilnehmer(id: number): Observable<VTeilnehmer[]> {
 
     let myUrl: string;
-    if (id > 0 ) {
+    if (id > 0) {
       myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/" + id;
-    }
-    else {
+    } else {
       myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/0";  // alle holen
     }
 
@@ -47,10 +47,9 @@ export class PlanerdataService {
   loadTeilnehmerVonUser(id: number): Observable<VTeilnehmer[]> {
 
     let myUrl: string;
-    if (id > 0 ) {
+    if (id > 0) {
       myUrl = this.baseUrl + "api/teilnehmer/teilnehmer_user/" + id;
-    }
-    else {
+    } else {
       myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/0";  // alle holen
     }
 
@@ -60,7 +59,7 @@ export class PlanerdataService {
   loadGruppenAdmin(id: number): Observable<VTeilnehmer[]> {
 
     let myUrl: string;
-    if (id > 0 ) {
+    if (id > 0) {
       myUrl = this.baseUrl + "api/teilnehmer/gruppenadmin/" + id;
     }
 
@@ -69,10 +68,9 @@ export class PlanerdataService {
 
   loadAktiviaeten(id: number): Observable<Code_aktivitaet[]> {
     let myUrl: string;
-    if (id > 0 ) {
+    if (id > 0) {
       myUrl = this.baseUrl + "api/codesaktivitaeten/alle/" + id;
-    }
-    else {
+    } else {
       myUrl = this.baseUrl + "api/codesaktivitaeten/alle/0";  // alle holen
     }
 
@@ -87,9 +85,8 @@ export class PlanerdataService {
       } else {
         myUrl = this.baseUrl + "api/termine/vtermine/0";  // alle holen
       }
-    }
-    else {
-      myUrl= this.baseUrl + "api/termine/termine_user/" + fetchAllCalenderEventsOfUser;
+    } else {
+      myUrl = this.baseUrl + "api/termine/termine_user/" + fetchAllCalenderEventsOfUser;
     }
 
     return this.http.get<Termin[]>(myUrl);
@@ -105,7 +102,7 @@ export class PlanerdataService {
     terminEvents = [];
 
     return Observable.create(observer => {
-      setTimeout(() => {
+        setTimeout(() => {
           this.loadTermine(myID, fetchAllCalenderEventsOfUser)
             .subscribe((data) => {
                 termine = data;
@@ -114,7 +111,7 @@ export class PlanerdataService {
                   for (let i = 0; i < termine.length; i++) {
                     calEvent = <CalendarEvent>{};
                     calEvent.start = new Date(termine[i].DatumBeginn);
-                    calEvent.end  = new Date(termine[i].DatumEnde);
+                    calEvent.end = new Date(termine[i].DatumEnde);
                     var myColors: any = {
                       myTerminColor: {
                         primary: termine[i].AktFarbe,
@@ -126,8 +123,7 @@ export class PlanerdataService {
                     calEvent.draggable = false;
                     if (termine[i].AktSummieren) {
                       calEvent.meta = 'sum'
-                    }
-                    else {
+                    } else {
                       calEvent.meta = 'notsum'
                     }
 
@@ -139,7 +135,7 @@ export class PlanerdataService {
               }
             );
 
-        },10);
+        }, 10);
       }
     );
   }
@@ -149,6 +145,23 @@ export class PlanerdataService {
     myUrl = this.baseUrl + "api/zzterminanzwiederholungen/all/" + num;
 
     return this.http.get<ZzTerminAnzWiederholung[]>(myUrl);
+  }
+
+  commitEinladung(params: Einladungbestaetigung): Observable<Einladungbestaetigung> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+        //'Authorization': 'my-auth-token'
+      })
+    };
+
+
+    let myUrl: string;
+    myUrl = this.baseUrl + "api/teilnehmer/confirm_groupmember";
+
+    return this.http.post<Einladungbestaetigung>(myUrl, params);
+
   }
 
 }

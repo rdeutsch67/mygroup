@@ -8,7 +8,7 @@ interface Teilnehmer {
   Berechtigungen: number;
   EinladungGesendet: Date;
   EinladungAngenommen: Date;
-  EinladungAbgewiesen: Date;
+  Sperrung: Date;
 }
 
 interface VTeilnehmer {
@@ -21,7 +21,7 @@ interface VTeilnehmer {
   Berechtigungen: number;
   EinladungGesendet: Date;
   EinladungAngenommen: Date;
-  EinladungAbgewiesen: Date;
+  Sperrung: Date;
   GruppeCode: string;
   GruppeBezeichnung: string;
   GruppeUserId: string;

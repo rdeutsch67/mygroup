@@ -29,8 +29,10 @@ export class TeilnehmerEinladungComponent implements OnInit, DoCheck {
   ngDoCheck() {
     this.strNameTeilnehmer = this.myTeilnehmer.Vorname+" "+this.myTeilnehmer.Nachname;
 
-    let email: string;
-    let url = this.baseUrl + "gruppe_einladung/"+ "?gruppe="+this.idGruppe+"&teilnehmer="+this.myTeilnehmer.Id;
+    let strCode = btoa(encodeURIComponent(this.myTeilnehmer.Email + ";grp=" + this.idGruppe));
+    //let url = this.baseUrl + "gruppe_einladung/"+ "?gruppe="+this.idGruppe+"&teilnehmer="+this.myTeilnehmer.Id;
+    let url = this.baseUrl + "confirm/:idp;idp="+strCode;
+
 
 
     let emailBody =  "Hallo "+this.myTeilnehmer.Vorname
@@ -41,7 +43,7 @@ export class TeilnehmerEinladungComponent implements OnInit, DoCheck {
 
     this.strEmail =
       "mailto:"   + encodeURIComponent(this.myTeilnehmer.Email) +
-      "?subject=" + encodeURIComponent("Einladung in die Gruppe"+this.idGruppe) +
+      "?subject=" + encodeURIComponent("Einladung in die Gruppe "+this.idGruppe) +
       "&body="    + encodeURIComponent( emailBody);
     this.showEmailref = true;
   }

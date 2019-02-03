@@ -30,11 +30,14 @@ namespace Template_Angular7.Data
         [Required]
         public string Email { get; set; }
         
+        [DefaultValue(null)]
         public DateTime EinladungGesendet { get; set; }
         
+        [DefaultValue(null)]
         public DateTime EinladungAngenommen { get; set; }
         
-        public DateTime EinladungAbgewiesen { get; set; }
+        [DefaultValue(null)]
+        public DateTime Sperrung { get; set; }
         
         [DefaultValue(0)]
         public int Berechtigungen { get; set; }

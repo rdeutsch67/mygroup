@@ -64,6 +64,7 @@ namespace Template_Angular7.Controllers
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                Email = user.Email,
                 Token = tokenString
             });
         }

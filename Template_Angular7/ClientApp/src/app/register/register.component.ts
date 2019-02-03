@@ -5,7 +5,12 @@ import { first } from 'rxjs/operators';
 
 import { AlertService, UserService, AuthenticationService } from 'app/_services';
 
-@Component({templateUrl: 'register.component.html'})
+@Component({
+  selector: 'register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
+})
+
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
@@ -29,6 +34,7 @@ export class RegisterComponent implements OnInit {
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             username: ['', Validators.required],
+            email: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(3)]]
         });
     }
