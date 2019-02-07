@@ -54,7 +54,8 @@
         <td *ngIf="!termin.GanzerTag && !myGlobals.bp_isSmScrPrt">{{termin.DatumEnde | date: 'HH:mm'}}</td>
         <!--<td *ngIf="isWideScreen">{{termin.Hinweis}}</td>-->
         <td>
-          <button type="submit"
+          <button *ngIf="myGlobals.logged_in_User.id == termin.IdTeilnehmer"
+                  type="submit"
                   (click)="onEdit(termin)"
                   class="btn btn-sm btn-success">
             <i class="fas fa-edit"></i>
@@ -62,7 +63,8 @@
           </button>
         </td>
         <td>
-          <button type="submit"
+          <button *ngIf="myGlobals.logged_in_User.id == termin.IdTeilnehmer"
+                  type="submit"
                   (click)="onDelete(termin)"
                   class="btn btn-sm btn-danger">
             <i class="fas fa-trash-alt"></i>

@@ -4,6 +4,8 @@ import {Subscription} from "rxjs";
 import {AuthenticationService, UserService} from "@app/_services";
 import {first} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {environment} from "@environments/environment";
+
 
 @Component({
   selector: "about",
@@ -15,6 +17,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   currentUser: AppUser;
   currentUserSubscription: Subscription;
   users: AppUser[] = [];
+  version: string;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -27,6 +30,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.version = environment.appversion;
     this.loadAllUsers();
   }
 

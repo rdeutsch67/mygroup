@@ -191,7 +191,7 @@ namespace Template_Angular7.Controllers
             
         }
         
-        // GET api/termine/spez
+        // GET 
         [HttpGet("vtermine/{idGruppe}")]
         public IActionResult vtermine(int idGruppe)
         {

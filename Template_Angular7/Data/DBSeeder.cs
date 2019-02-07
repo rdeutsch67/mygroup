@@ -55,15 +55,14 @@ namespace Template_Angular7.Data
 
             // Create the "Admin" AppUser account (if it doesn't exist already)
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash("edu", out passwordHash, out passwordSalt);
+            CreatePasswordHash("rde", out passwordHash, out passwordSalt);
             
             var userAdmin = new AppUser()
             {
-                //Id = 1,
-                UserName = "edu",
-                FirstName = "Eduard",
-                LastName =  "Kozakiewicz",
-                Email = "edu.kozakiewicz@ekor.ch",
+                UserName = "rde",
+                FirstName = "Robert",
+                LastName =  "Deutschmann",
+                Email = "robert.deutschmann@gmx.ch",
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 CreatedDate = createdDate,
@@ -88,24 +87,9 @@ namespace Template_Angular7.Data
                 Code = "Jassrunde",
                 Beschreibung = "Jassrunde mit Trogner Jässler",
                 Bezeichnung = "Jassrunde, welche sich aus Trogner Jässler zusammensetzt.",
-                //ViewCount = 2343,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
-            });
-            
-#if DEBUG
-            /*// noch weitere 4 Demogruppen erstellen
-            var num = 4;
-            for (int i = 2; i <= num; i++)
-            {
-                ErstelleBeispielGruppen(
-                    dbContext,
-                    i,
-                    gruppenAdmin.Id,
-                    createdDate.AddDays(-num));
-            }*/
-#endif
-           
+            });        
             
             // persist the changes on the Database
             dbContext.SaveChanges();
@@ -205,7 +189,7 @@ namespace Template_Angular7.Data
 
             // retrieve the admin user, which we'll use as default author.
             var gruppenAdmin = dbContext.AppUsers
-                .Where(u => u.UserName == "edu")
+                .Where(u => u.UserName == "rde")
                 .FirstOrDefault();
             
             var idGruppe = 1; // erste Gruppe
@@ -218,12 +202,25 @@ namespace Template_Angular7.Data
                 Nachname = gruppenAdmin.LastName,
                 Rufname = gruppenAdmin.UserName,
                 Email = gruppenAdmin.Email,
+                EinladungAngenommen = createdDate,
+                CreatedDate = createdDate,
+                LastModifiedDate = lastModifiedDate
+            });
+            
+            // erstelle Teilnehmer
+            EntityEntry<Teilnehmer> e1 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            {
+                IdGruppe = idGruppe,
+                Vorname = "Eduard",
+                Nachname = "Kozakiewicz",
+                Rufname = "Edu",
+                Email = "edu.kozakiewicz@ekor.ch",
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
 
             // erstelle Teilnehmer
-            EntityEntry<Teilnehmer> e1 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            EntityEntry<Teilnehmer> e2 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
                 IdGruppe = idGruppe,
                 Vorname = "Alex",
@@ -234,7 +231,7 @@ namespace Template_Angular7.Data
                 LastModifiedDate = lastModifiedDate
             });
             
-            EntityEntry<Teilnehmer> e2 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            EntityEntry<Teilnehmer> e3 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
                 IdGruppe = idGruppe,
                 Vorname = "René",
@@ -245,7 +242,7 @@ namespace Template_Angular7.Data
                 LastModifiedDate = lastModifiedDate
             });
             
-            EntityEntry<Teilnehmer> e3 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            EntityEntry<Teilnehmer> e4 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
                 IdGruppe = idGruppe,
                 Vorname = "Thomas",
@@ -256,7 +253,7 @@ namespace Template_Angular7.Data
                 LastModifiedDate = lastModifiedDate
             });
             
-            EntityEntry<Teilnehmer> e4 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            EntityEntry<Teilnehmer> e5 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
                 IdGruppe = idGruppe,
                 Vorname = "René",
@@ -267,7 +264,7 @@ namespace Template_Angular7.Data
                 LastModifiedDate = lastModifiedDate
             });
             
-            EntityEntry<Teilnehmer> e5 = dbContext.Teilnehmer.Add(new Teilnehmer()
+            EntityEntry<Teilnehmer> e6 = dbContext.Teilnehmer.Add(new Teilnehmer()
             {
                 IdGruppe = idGruppe,
                 Vorname = "Hampi",

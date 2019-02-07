@@ -18,19 +18,19 @@ import {EinladungComponent} from "@app/components/einladung/einladung.component"
 
 
 const appRoutes: Routes = [
-  /*{ path: '', component: GruppenListeComponent, canActivate: [AuthGuard] },*/
-  { path: '', component: GruppenListeComponent},
+  { path: '', component: GruppenListeComponent, canActivate: [AuthGuard] },
+  //{ path: '', component: GruppenListeComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: GruppenListeComponent},
   { path: 'confirm/:idp', component: EinladungComponent},
   { path: 'gruppen/alle/:count', component: GruppenListeComponent},
   { path: 'gruppen/create', component: GruppeEditComponent},
-  /*{ path: 'gruppen/edit/:id', component: GruppeEditComponent, canActivate: [AuthGuard]},*/
-  { path: 'gruppen/edit/:id', component: GruppeEditComponent},
+  { path: 'gruppen/edit/:id', component: GruppeEditComponent, canActivate: [AuthGuard]},
+  //{ path: 'gruppen/edit/:id', component: GruppeEditComponent},
   { path: 'codesaktivitaeten/vaktivitaeten/:id', component: Code_aktivitaetenListeComponent}, // alle Aktivitäten der Gruppe x
   { path: 'codesaktivitaeten/create/:id', component: Code_aktivitaetenEditComponent},
-  { path: 'codesaktivitaeten/edit/:id', component: Code_aktivitaetenEditComponent},
+  { path: 'codesaktivitaeten/edit/:id/:readonly', component: Code_aktivitaetenEditComponent},
   { path: 'codesaktivitaeten/vaktivitaeten/0', component: Code_aktivitaetenListeComponent}, // alle Aktivitäten anzeigen
   { path: 'codesaktivitaeten/aktivitaeten_user/:id', component: Code_aktivitaetenListeComponent}, // alle Aktivitäten vom User
   { path: 'teilnehmer/alle/:id', component: TeilnehmerListeComponent},

@@ -22,7 +22,7 @@ export class TeilnehmerListeComponent implements OnChanges {
               private http: HttpClient,
               private router: Router,
               private dataService: PlanerdataService,
-              private globals: GlobalVariables,
+              public globals: GlobalVariables,
               @Inject('BASE_URL') private baseUrl: string) {
 
     this.title = "Teilnehmer";
@@ -34,13 +34,6 @@ export class TeilnehmerListeComponent implements OnChanges {
       this.showAllData = true;
       this.loadAlleTeilnehmerVonUser(id);
     }
-    /*else {
-      this.showAllData = id <= 0;
-      if (id > 0) {
-        this.loadVTeilnehmer(id);
-      }
-    }*/
-
   }
 
   ngOnChanges(changes: SimpleChanges) {

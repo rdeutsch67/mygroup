@@ -10,12 +10,12 @@ import * as moment from "moment";
   styleUrls: ['./code_aktivitaeten-edit.component.css']
 })
 
-export class Code_aktivitaetenEditComponent {
+export class Code_aktivitaetenEditComponent implements OnInit{
   title: string;
   code_aktivitaet: Code_aktivitaet;
   editMode: boolean;
+  readonly: boolean;
   form: FormGroup;
-
   aktZeitBeginn = new Date();
   aktZeitEnde = new Date();
 
@@ -28,12 +28,18 @@ export class Code_aktivitaetenEditComponent {
     // leeres Aktivität-Objekt erstellen
     this.code_aktivitaet = <Code_aktivitaet>{};
 
+    this.readonly = true;
+
     // initialize the form
     this.createForm();
 
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
+
     // check if we're in edit mode or not
-    this.editMode = (this.activatedRoute.snapshot.url[1].path === "edit");
+    this.readonly = (this.activatedRoute.snapshot.params["readonly"] === "true");  // kann die Aktivität mutiert werden
+    //this.editMode = (this.activatedRoute.snapshot.url[1].path === "edit") && !this.readonly;
+    this.editMode = this.activatedRoute.snapshot.url[1].path === "edit";
+
 
     if (this.editMode) {
       // fetch the quiz from the server
@@ -52,6 +58,10 @@ export class Code_aktivitaetenEditComponent {
       this.code_aktivitaet.IdGruppe = id;
       this.title = "Erstelle neue Gruppenaktivität";
     }
+  }
+
+  ngOnInit() {
+    //this.readonly = this.activatedRoute.snapshot.params["readonly"];  // kann die Aktivität mutiert werden
   }
 
   onChangeGanzerTag(event) {

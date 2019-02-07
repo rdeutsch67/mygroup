@@ -6,6 +6,8 @@ import { Meta } from '@angular/platform-browser';
 import { AuthenticationService } from './_services';
 import { Router} from "@angular/router";
 import { AppUser} from "@app/interface/appuser";
+import {error} from "selenium-webdriver";
+import ElementNotSelectableError = error.ElementNotSelectableError;
 
 @Component({
   selector: 'app-root',
@@ -18,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'app';
   resizeObservable$: Observable<Event>;
   resizeSubscription$: Subscription;
+  currentUserSubscription: Subscription;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
@@ -25,10 +28,21 @@ export class AppComponent implements OnInit, OnDestroy {
               private breakpointObserver: BreakpointObserver,
               private globals: GlobalVariables) {
 
-    //this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-    this.authenticationService.currentUser.subscribe(x => globals.logged_in_User = x);
+    //this.authenticationService.currentUser.subscribe(x => globals.logged_in_User = x);
 
-    //<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    this.globals.logged_in_User = <AppUser>{};
+    this.currentUser = <AppUser>{};
+
+    this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
+      this.currentUser = user;
+      if (user) {
+        this.globals.logged_in_User = user;
+      }
+      else {
+        this.globals.logged_in_User.id = 999999;
+      };
+    });
+
     this.meta.addTags([
       {name: 'viewport', content: 'initial-scale=1.0, user-scalable=no'}
 
@@ -41,6 +55,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+
+
+
     this.globals.bp_isSmScreen = this.breakpointObserver.isMatched(Breakpoints.Handset);
     this.globals.bp_isSmScrPrt = this.breakpointObserver.isMatched(Breakpoints.HandsetPortrait);
     this.globals.bp_isMidScreen = this.breakpointObserver.isMatched(Breakpoints.Tablet);

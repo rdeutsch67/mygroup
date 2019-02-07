@@ -2,10 +2,11 @@
 <div>
   Gruppenplaner mit ASP.NET Core 2.2 und Angular 7.
 </div>
-<br/><br/>
-<h5>Benutzername: {{currentUser.firstName}}!</h5>
+<h5>Version {{version}}</h5>
 <br/>
-<h5>Alle registerierten AppUser:</h5>
+<h5>Angemeldeter Benutzer: {{currentUser.firstName}}</h5>
+<br/>
+<h5>AppUser:</h5>
 <ul>
   <li *ngFor="let user of users">
     {{user.username}} ({{user.firstName}} {{user.lastName}})

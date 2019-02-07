@@ -18,7 +18,9 @@ namespace Template_Angular7
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost
+                .CreateDefaultBuilder(args)
+                //.UseSetting("https_port", "8080")
                 .UseStartup<Startup>();
         
         /*public static void Main(string[] args)

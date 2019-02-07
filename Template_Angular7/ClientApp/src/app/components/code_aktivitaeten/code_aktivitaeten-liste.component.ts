@@ -25,7 +25,7 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient,
               private router: Router,
-              private globals: GlobalVariables,
+              public globals: GlobalVariables,
               @Inject('BASE_URL') private baseUrl: string) {
 
     this.title = "Aktivitäten";
@@ -89,8 +89,8 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
     this.router.navigate(["codesaktivitaeten/create", this.myGruppe.Id]);
   }
 
-  onEdit(code_aktivitaet : Code_aktivitaet) {
-    this.router.navigate(["/codesaktivitaeten/edit", code_aktivitaet.Id]);
+  onEdit(code_aktivitaet : Code_aktivitaet, readonly: boolean) {
+    this.router.navigate(["/codesaktivitaeten/edit", code_aktivitaet.Id, readonly]);
   }
 
   onDelete(code_aktivitaet: Code_aktivitaet) {

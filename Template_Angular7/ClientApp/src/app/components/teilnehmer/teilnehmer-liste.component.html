@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <h4>{{title}}</h4>
-    <button *ngIf="!showAllData"
+    <button *ngIf="!showAllData && (this.globals.logged_in_User.id == this.myGruppe.IdUser)"
             class="btn btn-sm btn-primary ml-auto"
             (click)="onCreate()">
       <i class="fa fa-plus-circle"></i>
@@ -32,7 +32,8 @@
         <td *ngIf="globals.bp_isMidOrWideScreen">{{gruppenteilnehmer.GruppeCode}}</td>
         <td *ngIf="globals.bp_isMidOrWideScreen">{{gruppenteilnehmer.Berechtigungen}}</td>
         <td>
-          <button type="submit"
+          <button *ngIf="(globals.logged_in_User.id == myGruppe.IdUser) || (globals.logged_in_User.id == gruppenteilnehmer.Id)"
+                  type="submit"
                   (click)="onEdit(gruppenteilnehmer)"
                   class="btn btn-sm btn-success">
             <i class="fas fa-edit"></i>
@@ -40,7 +41,8 @@
           </button>
         </td>
         <td>
-          <button type="submit"
+          <button *ngIf="(globals.logged_in_User.id == myGruppe.IdUser) || (globals.logged_in_User.id == gruppenteilnehmer.Id)"
+                  type="submit"
                   (click)="onDelete(gruppenteilnehmer)"
                   class="btn btn-sm btn-danger">
             <i class="fas fa-trash-alt"></i>

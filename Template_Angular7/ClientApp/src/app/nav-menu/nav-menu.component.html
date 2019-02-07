@@ -3,16 +3,18 @@
     <a class="navbar-image" [routerLink]="['/home']">
       <img src="/dist/logo.png" alt="Gruppenplaner"/>
     </a>
-    <a class="navbar-brand" [routerLink]='["/"]' href="#" (click)='collapse()'>Planer</a>
-    <!--<button *ngIf="currentUser" class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse"-->
-    <button *ngIf="globals.logged_in_User" class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse"
+    <a class="navbar-brand" [routerLink]='["/"]' href="#" (click)='collapse()'>{{globals.logged_in_User.firstName}}'s Planer</a>
+
+    <!--<button *ngIf="globals.logged_in_User" class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse"-->
+    <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse"
             data-target="#navbarToggler" aria-expanded="false"
             aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="isCollapsed"
             aria-controls="navbarTogglerDemo02">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div *ngIf="globals.logged_in_User" class="collapse navbar-collapse" id="navbarToggler" [ngbCollapse]="isCollapsed">
+    <!--<div *ngIf="globals.logged_in_User" class="collapse navbar-collapse" id="navbarToggler" [ngbCollapse]="isCollapsed">-->
+    <div class="collapse navbar-collapse" id="navbarToggler" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav mr-auto">
         <li [routerLinkActive]="['link-active']" (click)='collapse()'>
           <a data-toggle="collapse" class="nav-link" [routerLink]="['/home']">
@@ -48,21 +50,21 @@
         <li [routerLinkActive]="['link-active']" (click)='collapse()'>
           <a class="nav-link" [routerLink]="['/about']">
             <i class="fa fa-info-circle"></i>
-            Info
+            Info Version {{version}}
           </a>
         </li>
         <li [routerLinkActive]="['link-active']" (click)='collapse()'>
           <a class="nav-link" (click)="logout()">
             <i class="fa fa-info-circle"></i>
-            Logout
+            Abmelden
           </a>
         </li>
-        <li [routerLinkActive]="['link-active']" (click)='collapse()'>
+        <!--<li [routerLinkActive]="['link-active']" (click)='collapse()'>
           <a class="nav-link" [routerLink]="['/einladung/:id']">
             <i class="fa fa-calendar-alt"></i>
             Gruppenbestätigung
           </a>
-        </li>
+        </li>-->
       </ul>
     </div>
   </nav>

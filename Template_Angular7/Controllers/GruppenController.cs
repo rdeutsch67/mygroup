@@ -201,7 +201,7 @@ namespace Template_Angular7.Controllers
                 var query = (from ua in DbContext.AppUsers
                              from ut in DbContext.Teilnehmer.Where(x => x.Email == ua.Email)
                              from ug in DbContext.Gruppen.Where(x => x.Id == ut.IdGruppe)
-                             where ua.Id == idUser && ut.EinladungAngenommen != null
+                             where ua.Id == idUser && ut.EinladungAngenommen > DateTime.Parse("2019-01-01 00:00:00.000000")
                     select new
                     {
                         ug.Id,

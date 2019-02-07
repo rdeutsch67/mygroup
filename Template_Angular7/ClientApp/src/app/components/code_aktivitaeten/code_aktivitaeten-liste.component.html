@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <h4>{{title}}</h4>
-    <button *ngIf="!showAllData"
+    <button *ngIf="!showAllData && (this.globals.logged_in_User.id == this.myGruppe.IdUser)"
             class="btn btn-sm btn-primary ml-auto"
             (click)="onCreate()">
       <i class="fa fa-plus-circle"></i>
@@ -34,7 +34,7 @@
       <tbody>
       <tr *ngFor="let aktivitaet of code_aktivitaeten"
           [class.selected]="aktivitaet === selectedAktivitaet"
-          (click)="onEdit(aktivitaet)">
+          (click)="onEdit(aktivitaet, (this.globals.logged_in_User.id != this.myGruppe.IdUser))">
         <td>{{aktivitaet.Code}}</td>
         <td>{{aktivitaet.Bezeichnung}}</td>
         <td *ngIf="globals.bp_isMidOrWideScreen">{{aktivitaet.GruppeCode}}</td>
@@ -59,7 +59,7 @@
           <input type="checkbox" [checked]="aktivitaet.Summieren" onclick="return false;"/>
         </td>
         <td>
-          <button type="submit"
+          <button *ngIf="globals.logged_in_User.id == myGruppe.IdUser" type="submit"
                   (click)="onEdit(aktivitaet)"
                   class="btn btn-sm btn-success">
             <i class="fas fa-edit"></i>
@@ -67,7 +67,7 @@
           </button>
         </td>
         <td>
-          <button type="submit"
+          <button *ngIf="globals.logged_in_User.id == myGruppe.IdUser" type="submit"
                   (click)="onDelete(aktivitaet)"
                   class="btn btn-sm btn-danger">
             <i class="fas fa-trash-alt"></i>

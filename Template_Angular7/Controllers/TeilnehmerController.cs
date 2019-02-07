@@ -68,6 +68,11 @@ namespace Template_Angular7.Controllers
             teilnehmer.Nachname = model.Nachname;
             teilnehmer.Email = model.Email;
             teilnehmer.Berechtigungen = model.Berechtigungen;
+
+            teilnehmer.EinladungGesendet = model.EinladungGesendet;
+            teilnehmer.EinladungAngenommen = model.EinladungAngenommen;
+            teilnehmer.Sperrung = model.Sperrung;
+            
             // properties set from server-side
             teilnehmer.CreatedDate = DateTime.Now;
             teilnehmer.LastModifiedDate = teilnehmer.CreatedDate;
