@@ -37,6 +37,9 @@ namespace Template_Angular7.Data
         public DateTime ZeitBeginn { get; set; }
         public DateTime ZeitEnde { get; set; }
         
+        public bool Header { get; set; }
+        public int Sort { get; set; }
+        
         [Required]
         public DateTime CreatedDate { get; set; }
         [Required]

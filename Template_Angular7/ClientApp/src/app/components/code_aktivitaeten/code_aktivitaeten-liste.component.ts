@@ -35,6 +35,7 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
     if (this.activatedRoute.snapshot.url[1].path === "aktivitaeten_user") {
       this.showAllData = true;
+      this.myGruppe = <Gruppe>{};
       this.loadAlleAktivitaetenVonUser(id);
     };
     /*else {

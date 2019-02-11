@@ -15,6 +15,7 @@ import {TerminEditComponent} from "./components/termin/termin-edit.component";
 import {KalenderComponent} from "./components/kalender/kalender.component";
 import {AboutComponent} from "./components/about/about.component";
 import {EinladungComponent} from "@app/components/einladung/einladung.component";
+import {GruppeDetailComponent} from "@app/components/gruppe/gruppe-detail/gruppe-detail.component";
 
 
 const appRoutes: Routes = [
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
   { path: 'gruppen/alle/:count', component: GruppenListeComponent},
   { path: 'gruppen/create', component: GruppeEditComponent},
   { path: 'gruppen/edit/:id', component: GruppeEditComponent, canActivate: [AuthGuard]},
+  { path: 'gruppen/show/:id', component: GruppeDetailComponent, canActivate: [AuthGuard]},
   //{ path: 'gruppen/edit/:id', component: GruppeEditComponent},
   { path: 'codesaktivitaeten/vaktivitaeten/:id', component: Code_aktivitaetenListeComponent}, // alle Aktivitäten der Gruppe x
   { path: 'codesaktivitaeten/create/:id', component: Code_aktivitaetenEditComponent},

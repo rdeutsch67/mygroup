@@ -32,7 +32,10 @@ export class TeilnehmerListeComponent implements OnChanges {
     let id = +this.activatedRoute.snapshot.params["id"];  // Id der Gruppe
     if (this.activatedRoute.snapshot.url[1].path === "teilnehmer_user") {
       this.showAllData = true;
+      this.myGruppe = <Gruppe>{};
       this.loadAlleTeilnehmerVonUser(id);
+
+
     }
   }
 

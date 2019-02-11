@@ -4,11 +4,15 @@ using Newtonsoft.Json;
 using Template_Angular7.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Template_Angular7.Data;
 using Template_Angular7.Controllers;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Remotion.Linq.Clauses;
 
 namespace Template_Angular7.Controllers
 {
@@ -215,12 +219,14 @@ namespace Template_Angular7.Controllers
                                  ut.Hinweis,
                                  ut.CreatedDate,
                                  ut.LastModifiedDate,
+                                 TerminDatum = ut.DatumBeginn.Date,
                                  AktFarbe = ua.Farbe,
                                  AktCode = ua.Code,
                                  AktBezeichnung = ua.Bezeichnung,
                                  AktSummieren = ua.Summieren,
                                  TnVorname = uu.Vorname,
                                  TnNachname = uu.Nachname,
+                                 TnEmail = uu.Email,
                                  GrpCode = ug.Code,
                                  GrpBezeichnung = ug.Bezeichnung
                              }).OrderBy(x => x.DatumBeginn)
@@ -248,12 +254,15 @@ namespace Template_Angular7.Controllers
                         ut.Hinweis,
                         ut.CreatedDate,
                         ut.LastModifiedDate,
+                        
+                        TerminDatum = ut.DatumBeginn.Date,
                         AktFarbe = ua.Farbe,
                         AktCode = ua.Code,
                         AktBezeichnung = ua.Bezeichnung,
                         AktSummieren = ua.Summieren,
                         TnVorname = uu.Vorname,
                         TnNachname = uu.Nachname,
+                        TnEmail = uu.Email,
                         GrpCode = ug.Code,
                         GrpBezeichnung = ug.Bezeichnung
                     }).OrderBy(x => x.DatumBeginn)
@@ -289,12 +298,14 @@ namespace Template_Angular7.Controllers
                         ut.Hinweis,
                         ut.CreatedDate,
                         ut.LastModifiedDate,
+                        TerminDatum = ut.DatumBeginn.Date,
                         AktFarbe = ua.Farbe,
                         AktCode = ua.Code,
                         AktBezeichnung = ua.Bezeichnung,
                         AktSummieren = ua.Summieren,
                         TnVorname = uu.Vorname,
                         TnNachname = uu.Nachname,
+                        TnEmail = uu.Email,
                         GrpCode = ug.Code,
                         GrpBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser 
@@ -304,6 +315,66 @@ namespace Template_Angular7.Controllers
                 query.Adapt<TerminViewModel[]>(),
                 JsonSettings);
         }
+        
+        // GET api/termine_user/{idUser}
+        [HttpGet("termine_group_date/{idGruppe}")]
+        public IActionResult termine_group_date(int idGruppe)
+        {
+            if (idGruppe <= 0) return new StatusCodeResult(500);
+
+            var query =
+                (from mytermine in DbContext.Termine
+                where mytermine.Teilnehmer.Id == mytermine.IdTeilnehmer
+                  && mytermine.CodesAktivitaeten.Id == mytermine.IdAktivitaet
+                  && mytermine.CodesAktivitaeten.Header == true
+                group mytermine by mytermine.DatumBeginn.Date
+                into g
+                select new  
+                  {
+                      TerminDatum = g.Key,
+                      AnzTermine = g.Count(),
+                      AktHeaderBez = g.Min(x => x.CodesAktivitaeten.Bezeichnung),
+                      TeilnehmerHeaderName = g.Min(x => x.Teilnehmer.Vorname)
+                  }).OrderBy(x => x.TerminDatum)
+                    .ToList();
+            return new JsonResult(
+                query.Adapt<TerminGroupbyDateViewModel[]>(),
+                JsonSettings);
+        }
+        
+                /*{
+                //ID = i++,
+                Nom = g.Key.Nom,
+                Prénom = g.Key.Prenom,
+                Structure = g.Key.Structure,
+                Début = g.Min(m => m.Start),
+                Fin = g.Max(m => m.Start),
+                Dispositif = g.Key.Dispositifs,
+                };*/
+        
+        /*// GET api/termine_user/{idUser}
+        [HttpGet("termine_group_date/{idGruppe}")]
+        public IActionResult termine_group_date(int idGruppe)
+        {
+            if (idGruppe <= 0) return new StatusCodeResult(500);
+            
+            var query = 
+                (from ut in DbContext.Termine
+                    group ut by ut.DatumBeginn.Date
+                    into g
+                    select new
+                    {
+                        TerminDatum = g.Key,
+                        AnzTermine = g.Count()
+                    }).OrderBy(x => x.TerminDatum)
+                .ToList();
+                   
+            return new JsonResult(
+                query.Adapt<TerminGroupbyDateViewModel[]>(),
+                JsonSettings);
+        }
+        */
+
     }
 }
 

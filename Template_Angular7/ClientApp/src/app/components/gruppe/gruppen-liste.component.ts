@@ -57,7 +57,10 @@ export class GruppenListeComponent implements OnInit {
   }
 
   onEdit(gruppe : Gruppe) {
-    this.onSelect(gruppe);
+    //this.onSelect(gruppe);
+    this.selectedGruppe = gruppe;
+    console.log("Gruppe mit Id " + this.selectedGruppe.Id + " ist ausgewählt.");
+    this.router.navigate(["gruppen/edit", this.selectedGruppe.Id]);
   }
 
   onDelete(gruppe : Gruppe) {
@@ -76,7 +79,8 @@ export class GruppenListeComponent implements OnInit {
   onSelect(gruppe: Gruppe) {
     this.selectedGruppe = gruppe;
     console.log("Gruppe mit Id " + this.selectedGruppe.Id + " ist ausgewählt.");
-    this.router.navigate(["gruppen/edit", this.selectedGruppe.Id]);
+    //this.router.navigate(["gruppen/edit", this.selectedGruppe.Id]);
+    this.router.navigate(["gruppen/show", this.selectedGruppe.Id]);
   }
 }
 

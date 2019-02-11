@@ -69,6 +69,8 @@ namespace Template_Angular7.Controllers
             codeAktivitaet.ZeitUnbestimmt = model.ZeitUnbestimmt;
             codeAktivitaet.ZeitBeginn = model.ZeitBeginn;
             codeAktivitaet.ZeitEnde = model.ZeitEnde;
+            codeAktivitaet.Header = model.Header;
+            codeAktivitaet.Sort = model.Sort;
             // properties set from server-side
             codeAktivitaet.CreatedDate = DateTime.Now;
             codeAktivitaet.LastModifiedDate = codeAktivitaet.CreatedDate;
@@ -119,6 +121,8 @@ namespace Template_Angular7.Controllers
             codeAktivitaet.ZeitUnbestimmt = model.ZeitUnbestimmt;
             codeAktivitaet.ZeitBeginn = model.ZeitBeginn;
             codeAktivitaet.ZeitEnde = model.ZeitEnde;
+            codeAktivitaet.Header = model.Header;
+            codeAktivitaet.Sort = model.Sort;
             // properties set from server-side
             codeAktivitaet.LastModifiedDate = codeAktivitaet.CreatedDate;
             
@@ -194,22 +198,24 @@ namespace Template_Angular7.Controllers
         {
             if (idGruppe > 0)
             {
-                var query = (from ut in DbContext.CodesAktivitaeten
-                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
-                    where ut.IdGruppe == idGruppe
+                var query = (from ua in DbContext.CodesAktivitaeten
+                    join ug in DbContext.Gruppen on ua.IdGruppe equals ug.Id
+                    where ua.IdGruppe == idGruppe
                     select new
                     {
-                        ut.Id,
-                        ut.IdGruppe,
-                        ut.Code,
-                        ut.Bezeichnung,
-                        ut.Summieren,
-                        ut.Farbe,
-                        ut.GanzerTag,
-                        ut.ZeitUnbestimmt,
-                        ut.ZeitBeginn,
-                        ut.ZeitEnde,
-                        ShowZeiten = !(ut.GanzerTag || ut.ZeitUnbestimmt), 
+                        ua.Id,
+                        ua.IdGruppe,
+                        ua.Code,
+                        ua.Bezeichnung,
+                        ua.Summieren,
+                        ua.Farbe,
+                        ua.GanzerTag,
+                        ua.ZeitUnbestimmt,
+                        ua.ZeitBeginn,
+                        ua.ZeitEnde,
+                        ua.Header,
+                        ua.Sort,
+                        ShowZeiten = !(ua.GanzerTag || ua.ZeitUnbestimmt), 
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,
@@ -221,21 +227,23 @@ namespace Template_Angular7.Controllers
             }
             else
             {
-                var query = (from ut in DbContext.CodesAktivitaeten
-                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
+                var query = (from ua in DbContext.CodesAktivitaeten
+                    join ug in DbContext.Gruppen on ua.IdGruppe equals ug.Id
                     select new
                     {
-                        ut.Id,
-                        ut.IdGruppe,
-                        ut.Code,
-                        ut.Bezeichnung,
-                        ut.Summieren,
-                        ut.Farbe,
-                        ut.GanzerTag,
-                        ut.ZeitUnbestimmt,
-                        ut.ZeitBeginn,
-                        ut.ZeitEnde,
-                        ShowZeiten = !(ut.GanzerTag || ut.ZeitUnbestimmt),
+                        ua.Id,
+                        ua.IdGruppe,
+                        ua.Code,
+                        ua.Bezeichnung,
+                        ua.Summieren,
+                        ua.Farbe,
+                        ua.GanzerTag,
+                        ua.ZeitUnbestimmt,
+                        ua.ZeitBeginn,
+                        ua.ZeitEnde,
+                        ua.Header,
+                        ua.Sort,
+                        ShowZeiten = !(ua.GanzerTag || ua.ZeitUnbestimmt),
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,
@@ -253,22 +261,24 @@ namespace Template_Angular7.Controllers
         {
             if (idUser <= 0) return new StatusCodeResult(500);
             
-            var query = (from ut in DbContext.CodesAktivitaeten
-                    join ug in DbContext.Gruppen on ut.IdGruppe equals ug.Id
+            var query = (from ua in DbContext.CodesAktivitaeten
+                    join ug in DbContext.Gruppen on ua.IdGruppe equals ug.Id
                     where ug.IdUser == idUser
                     select new
                     {
-                        ut.Id,
-                        ut.IdGruppe,
-                        ut.Code,
-                        ut.Bezeichnung,
-                        ut.Summieren,
-                        ut.Farbe,
-                        ut.GanzerTag,
-                        ut.ZeitUnbestimmt,
-                        ut.ZeitBeginn,
-                        ut.ZeitEnde,
-                        ShowZeiten = !(ut.GanzerTag || ut.ZeitUnbestimmt),
+                        ua.Id,
+                        ua.IdGruppe,
+                        ua.Code,
+                        ua.Bezeichnung,
+                        ua.Summieren,
+                        ua.Farbe,
+                        ua.GanzerTag,
+                        ua.ZeitUnbestimmt,
+                        ua.ZeitBeginn,
+                        ua.ZeitEnde,
+                        ua.Header,
+                        ua.Sort,
+                        ShowZeiten = !(ua.GanzerTag || ua.ZeitUnbestimmt),
                         GruppeCode = ug.Code,
                         GruppeBezeichnung = ug.Bezeichnung,
                         GruppeUserId = ug.IdUser,

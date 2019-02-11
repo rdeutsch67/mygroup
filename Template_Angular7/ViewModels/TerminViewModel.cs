@@ -23,6 +23,7 @@ namespace Template_Angular7.ViewModels
         public DateTime DatumBeginn { get; set; }
         public DateTime DatumEnde { get; set; }
         public string Hinweis { get; set; }             
+        public DateTime TerminDatum { get; set; }
         
         public string AktFarbe { get; set; }
         public string AktCode { get; set; }
@@ -31,6 +32,8 @@ namespace Template_Angular7.ViewModels
         
         public string TnVorname { get; set; }
         public string TnNachname { get; set; }
+        
+        public string TnEmail { get; set; }
         
         public string GrpCode { get; set; }
         public string GrpBezeichnung { get; set; } 

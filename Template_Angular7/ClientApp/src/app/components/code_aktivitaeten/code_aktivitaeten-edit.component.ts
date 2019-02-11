@@ -90,7 +90,9 @@ export class Code_aktivitaetenEditComponent implements OnInit{
       GanzerTag: this.form.value.GanzerTag,
       ZeitUnbestimmt: false,
       ZeitBeginn: myZeitBeginn$,
-      ZeitEnde: myZeitEnde$
+      ZeitEnde: myZeitEnde$,
+      Header: this.form.value.Header,
+      Sort: this.form.value.Sort
     });
   }
 
@@ -116,7 +118,9 @@ export class Code_aktivitaetenEditComponent implements OnInit{
       GanzerTag: false,
       ZeitUnbestimmt: this.form.value.ZeitUnbestimmt,
       ZeitBeginn: myZeitBeginn$,
-      ZeitEnde: myZeitEnde$
+      ZeitEnde: myZeitEnde$,
+      Header: this.form.value.Header,
+      Sort: this.form.value.Sort
     });
   }
 
@@ -136,7 +140,8 @@ export class Code_aktivitaetenEditComponent implements OnInit{
     if (this.form.value.ZeitEnde != "") {
       tempAkt.ZeitEnde = this.form.value.ZeitEnde;
     }
-
+    tempAkt.Header = this.form.value.Header;
+    tempAkt.Sort = this.form.value.Sort;
 
     let url = this.baseUrl + "api/codesaktivitaeten";
     if (this.editMode) {
@@ -177,7 +182,9 @@ export class Code_aktivitaetenEditComponent implements OnInit{
       GanzerTag: false,
       ZeitUnbestimmt: false,
       ZeitBeginn: [new Date().getHours() + ':00'],
-      ZeitEnde: [aDate.getHours().toString(10) + ':00']
+      ZeitEnde: [aDate.getHours().toString(10) + ':00'],
+      Header: false,
+      Sort: 0
     });
   }
 
@@ -200,7 +207,9 @@ export class Code_aktivitaetenEditComponent implements OnInit{
       GanzerTag: this.code_aktivitaet.GanzerTag,
       ZeitUnbestimmt: this.code_aktivitaet.ZeitUnbestimmt,
       ZeitBeginn: myZeitBeginn$,
-      ZeitEnde: myZeitEnde$
+      ZeitEnde: myZeitEnde$,
+      Header: this.code_aktivitaet.Header,
+      Sort: this.code_aktivitaet.Sort
     });
   }
 }

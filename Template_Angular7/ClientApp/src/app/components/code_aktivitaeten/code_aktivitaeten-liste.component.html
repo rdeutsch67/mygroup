@@ -59,7 +59,7 @@
           <input type="checkbox" [checked]="aktivitaet.Summieren" onclick="return false;"/>
         </td>
         <td>
-          <button *ngIf="globals.logged_in_User.id == myGruppe.IdUser" type="submit"
+          <button *ngIf="showAllData || globals.logged_in_User.id == myGruppe.IdUser" type="submit"
                   (click)="onEdit(aktivitaet)"
                   class="btn btn-sm btn-success">
             <i class="fas fa-edit"></i>
@@ -67,7 +67,7 @@
           </button>
         </td>
         <td>
-          <button *ngIf="globals.logged_in_User.id == myGruppe.IdUser" type="submit"
+          <button *ngIf="showAllData || globals.logged_in_User.id == myGruppe.IdUser" type="submit"
                   (click)="onDelete(aktivitaet)"
                   class="btn btn-sm btn-danger">
             <i class="fas fa-trash-alt"></i>

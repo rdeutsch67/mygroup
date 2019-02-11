@@ -25,6 +25,7 @@ import {TeilnehmerEditComponent} from "./components/teilnehmer/teilnehmer-edit.c
 import {TeilnehmerEinladungComponent} from "@app/components/teilnehmer/teilnehmer-einladung.component";
 import {TerminEditComponent} from "./components/termin/termin-edit.component";
 import {TerminListeComponent} from "./components/termin/termin-liste.component";
+
 import {PlanerdataService} from "./services/planerdata.service";
 import {KalenderComponent} from "./components/kalender/kalender.component";
 import {FlatpickrModule} from 'angularx-flatpickr';
@@ -43,6 +44,8 @@ import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
 import {AlertComponent} from "./_components";
 import {routing} from "./app.routing";
 import {EinladungComponent} from "@app/components/einladung/einladung.component";
+import { TerminKalenderlisteComponent } from './components/termin/termin-kalenderliste/termin-kalenderliste.component';
+import { GruppeDetailComponent } from './components/gruppe/gruppe-detail/gruppe-detail.component';
 
 registerLocaleData(localeDECH);
 
@@ -57,6 +60,7 @@ registerLocaleData(localeDECH);
     HomeComponent,
     GruppenListeComponent,
     GruppeEditComponent,
+    GruppeDetailComponent,
     Code_aktivitaetenEditComponent,
     Code_aktivitaetenListeComponent,
     TeilnehmerListeComponent,
@@ -66,7 +70,9 @@ registerLocaleData(localeDECH);
     TerminListeComponent,
     KalenderComponent,
     AboutComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TerminKalenderlisteComponent,
+    GruppeDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

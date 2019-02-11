@@ -9,6 +9,8 @@ interface Code_aktivitaet {
   ZeitUnbestimmt: boolean;
   ZeitBeginn: Date;
   ZeitEnde: Date;
+  Header: boolean;
+  Sort: number;
 }
 
 interface VCode_aktivitaet {
@@ -22,6 +24,8 @@ interface VCode_aktivitaet {
   ZeitUnbestimmt: boolean;
   ZeitBeginn: Date;
   ZeitEnde: Date;
+  Header: boolean;
+  Sort: number;
 
   GruppeCode: string;
   GruppeBezeichnung: string;

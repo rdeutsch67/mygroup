@@ -1,4 +1,4 @@
-<div class="gruppe-edit container-fluid">
+<div class="gruppe-edit container-fluid" xmlns="http://www.w3.org/1999/html">
 
   <h3>{{title}}</h3>
   <h3>{{code}}</h3>
@@ -54,14 +54,14 @@
           Zurück
         </button>
 
-        <button *ngIf="editMode"
+        <button *ngIf="editMode && (globals.logged_in_User.id == gruppe.IdUser)"
                 type="submit"
                 [disabled]="form.invalid"
                 class="btn btn-sm btn-success ml-auto">
           <i class="fas fa-save"></i>
           Speichern
         </button>
-        <button *ngIf="!editMode" type="submit"
+        <button *ngIf="!editMode  && (globals.logged_in_User.id == gruppe.IdUser)" type="submit"
                 [disabled]="form.invalid"
                 class="btn btn-sm btn-success ml-auto">
           <i class="fas fa-plus-circle"></i>
@@ -74,11 +74,7 @@
 
   </form>
 
-  <div class="row">
-    <div class="col-md-10">
-      <hr class="line"/>
-    </div>
-  </div>
+  <br><br>
 
   <div>
     <termin-liste *ngIf="editMode" [myGruppe]="gruppe"></termin-liste>

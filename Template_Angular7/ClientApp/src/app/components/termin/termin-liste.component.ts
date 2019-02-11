@@ -19,14 +19,9 @@ export class TerminListeComponent implements OnInit, OnChanges {
   selectedTermin: Termin;
   showAllData: boolean;
 
-
-
   isSmScrPrt: boolean;
   isMidScreen: boolean;
   isWideScreen: boolean;
-
-
-
 
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient,
@@ -44,12 +39,6 @@ export class TerminListeComponent implements OnInit, OnChanges {
       this.showAllData = true;
       this.loadAlleTermineVonUser(id);
     };
-    /*else {
-      this.showAllData = id <= 0;
-      /!*if (id > 0) {
-        this.loadData(id);
-      }*!/
-    }*/
   }
 
   ngOnInit() {

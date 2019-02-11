@@ -110,13 +110,15 @@ namespace Template_Angular7.Data
             EntityEntry<CodeAktivitaeten> e1 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
                 IdGruppe = idGruppe,
-                Code = "Ja",
-                Bezeichnung = "Jasser, Teilnehmer",
+                Code = "JT",
+                Bezeichnung = "Jasser + Treffpunkt",
                 Summieren = false,
-                Farbe = "#f44141",
+                Farbe = "#41f46a",
                 GanzerTag = false,
-                ZeitBeginn = new DateTime(createdDate.Year,createdDate.Month,createdDate.Day,19,00,00),
-                ZeitEnde = new DateTime(createdDate.Year,createdDate.Month,createdDate.Day,21,00,00),
+                ZeitBeginn = new DateTime(2018,01,01,19,00,00),
+                ZeitEnde = new DateTime(2018,01,01,21,00,00),
+                Header = true,
+                Sort = 1,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -124,13 +126,15 @@ namespace Template_Angular7.Data
             EntityEntry<CodeAktivitaeten> e2 = dbContext.CodesAktivitaeten.Add(new CodeAktivitaeten()
             {
                 IdGruppe = idGruppe,
-                Code = "JT",
-                Bezeichnung = "Jasser + Teilnehmer",
+                Code = "Ja",
+                Bezeichnung = "Jasser, Teilnehmer",
                 Summieren = false,
-                Farbe = "#41f46a",
+                Farbe = "#f44141",
                 GanzerTag = false,
-                ZeitBeginn = new DateTime(2018,01,01,19,00,00),
-                ZeitEnde = new DateTime(2018,01,01,21,00,00),
+                ZeitBeginn = new DateTime(createdDate.Year,createdDate.Month,createdDate.Day,19,00,00),
+                ZeitEnde = new DateTime(createdDate.Year,createdDate.Month,createdDate.Day,21,00,00),
+                Header = false,
+                Sort = 2,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -145,6 +149,8 @@ namespace Template_Angular7.Data
                 GanzerTag = false,
                 ZeitBeginn = new DateTime(2018,01,01,19,00,00),
                 ZeitEnde = new DateTime(2018,01,01,21,00,00),
+                Header = false,
+                Sort = 3,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -159,6 +165,8 @@ namespace Template_Angular7.Data
                 GanzerTag = false,
                 ZeitBeginn = new DateTime(2018,01,01,19,00,00),
                 ZeitEnde = new DateTime(2018,01,01,21,00,00),
+                Header = false,
+                Sort = 4,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });
@@ -173,6 +181,8 @@ namespace Template_Angular7.Data
                 GanzerTag = true,
                 ZeitBeginn = new DateTime(2018,01,01,00,00,00),
                 ZeitEnde = new DateTime(2018,01,01,23,59,59),
+                Header = false,
+                Sort = 5,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
             });

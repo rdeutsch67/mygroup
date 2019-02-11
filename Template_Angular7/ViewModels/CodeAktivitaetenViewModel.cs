@@ -22,12 +22,16 @@ namespace Template_Angular7.ViewModels
         public string Code { get; set; }               
         public string Bezeichnung { get; set; }
         public bool Summieren { get; set; }
+        
         public string Farbe { get; set; }
         
         public bool GanzerTag { get; set; }
         public bool ZeitUnbestimmt { get; set; }
         public DateTime ZeitBeginn { get; set; }
         public DateTime ZeitEnde { get; set; }
+        
+        public bool Header { get; set; }
+        public int Sort { get; set; }
         
         public string GruppeCode { get; set; }
         public string GruppeBezeichnung { get; set; }
