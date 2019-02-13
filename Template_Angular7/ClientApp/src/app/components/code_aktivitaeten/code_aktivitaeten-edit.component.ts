@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as moment from "moment";
+import {environment} from "@environments/environment";
 
 @Component({
   selector: "code_aktivitaeten-edit.component",
@@ -22,8 +23,9 @@ export class Code_aktivitaetenEditComponent implements OnInit{
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private http: HttpClient,
-              private fb: FormBuilder,
-              @Inject('BASE_URL') private baseUrl: string) {
+              private fb: FormBuilder
+              //@Inject('BASE_URL') private baseUrl: string
+    ) {
 
     // leeres Aktivität-Objekt erstellen
     this.code_aktivitaet = <Code_aktivitaet>{};
@@ -43,7 +45,7 @@ export class Code_aktivitaetenEditComponent implements OnInit{
 
     if (this.editMode) {
       // fetch the quiz from the server
-      let url = this.baseUrl + "api/codesaktivitaeten/" + id;
+      let url = `${environment.apiUrl}/api/codesaktivitaeten/` + id;
       this.http.get<Code_aktivitaet>(url).subscribe(res => {
         this.code_aktivitaet = res;
         this.title = "Edit - " + this.code_aktivitaet.Code;
@@ -143,7 +145,7 @@ export class Code_aktivitaetenEditComponent implements OnInit{
     tempAkt.Header = this.form.value.Header;
     tempAkt.Sort = this.form.value.Sort;
 
-    let url = this.baseUrl + "api/codesaktivitaeten";
+    let url = `${environment.apiUrl}/api/codesaktivitaeten`;
     if (this.editMode) {
       tempAkt.Id = this.code_aktivitaet.Id;
       this.http

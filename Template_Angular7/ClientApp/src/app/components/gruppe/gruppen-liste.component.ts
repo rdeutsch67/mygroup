@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import {NavbarService} from "../../services/navbar.service";
 import {GlobalVariables} from "../../global.variables";
+import {environment} from '@environments/environment';
 
 @Component({
   selector: "gruppen-liste",
@@ -23,8 +24,9 @@ export class GruppenListeComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private router: Router,
               public nav: NavbarService,
-              private globals: GlobalVariables,
-              @Inject('BASE_URL') private baseUrl: string) {
+              private globals: GlobalVariables
+              //@Inject('BASE_URL') private baseUrl: string
+) {
 
     this.title = "Gruppen";
     this.gruppen = [];
@@ -42,7 +44,7 @@ export class GruppenListeComponent implements OnInit {
 
   loadData(idUser: number) {
     console.log(idUser);
-    let url = this.baseUrl + "api/gruppen/proUser/" + idUser;
+    let url = `${environment.apiUrl}/api/gruppen/proUser/` + idUser;
     this.http.get<Gruppe[]>(url).subscribe(result => {
       this.gruppen = result;
     }, error => console.error(error));
@@ -65,7 +67,7 @@ export class GruppenListeComponent implements OnInit {
 
   onDelete(gruppe : Gruppe) {
     if (confirm("Soll diese Gruppe gelöscht werden?")) {
-      let url = this.baseUrl + "api/gruppen/" + gruppe.Id;
+      let url = `${environment.apiUrl}/api/gruppen/` + gruppe.Id;
       this.http
         .delete(url)
         .subscribe(res => {

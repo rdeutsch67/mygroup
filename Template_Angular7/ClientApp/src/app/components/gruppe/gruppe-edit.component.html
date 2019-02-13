@@ -54,18 +54,21 @@
           Zurück
         </button>
 
-        <button *ngIf="editMode && (globals.logged_in_User.id == gruppe.IdUser)"
+        <!--<button *ngIf="editMode && (globals.logged_in_User.id == gruppe.IdUser)"-->
+        <button *ngIf="editMode"
                 type="submit"
                 [disabled]="form.invalid"
                 class="btn btn-sm btn-success ml-auto">
           <i class="fas fa-save"></i>
           Speichern
         </button>
-        <button *ngIf="!editMode  && (globals.logged_in_User.id == gruppe.IdUser)" type="submit"
+        <!--<button *ngIf="!editMode  && (globals.logged_in_User.id == gruppe.IdUser)" -->
+        <button *ngIf="!editMode"
+                type="submit"
                 [disabled]="form.invalid"
                 class="btn btn-sm btn-success ml-auto">
           <i class="fas fa-plus-circle"></i>
-          Gruppe erstellen
+          Speichern
         </button>
 
       </div>

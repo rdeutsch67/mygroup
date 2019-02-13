@@ -1,5 +1,6 @@
 import {Component, DoCheck, Inject, Input, OnInit} from "@angular/core";
 import {GlobalVariables} from "@app/global.variables";
+import {environment} from '@environments/environment';
 
 @Component({
   selector: "teilnehmer-einladung",
@@ -17,8 +18,8 @@ export class TeilnehmerEinladungComponent implements OnInit, DoCheck {
   showEmailref: boolean = false;
 
   constructor(
-    private globals: GlobalVariables,
-    @Inject('BASE_URL') private baseUrl: string
+    private globals: GlobalVariables
+    //@Inject('BASE_URL') private baseUrl: string
   ) { }
 
   ngOnInit() {
@@ -30,10 +31,8 @@ export class TeilnehmerEinladungComponent implements OnInit, DoCheck {
     this.strNameTeilnehmer = this.myTeilnehmer.Vorname+" "+this.myTeilnehmer.Nachname;
 
     let strCode = btoa(encodeURIComponent(this.myTeilnehmer.Email + ";grp=" + this.idGruppe));
-    //let url = this.baseUrl + "gruppe_einladung/"+ "?gruppe="+this.idGruppe+"&teilnehmer="+this.myTeilnehmer.Id;
-    let url = this.baseUrl + "confirm/:idp;idp="+strCode;
-
-
+    //let url = this.baseUrl + "confirm/:idp;idp="+strCode;
+    let url = `${environment.apiUrl}/confirm/:idp;idp=`+strCode;
 
     let emailBody =  "Hallo "+this.myTeilnehmer.Vorname
                     +"\r\n\nWir möchten dich in unsere Gruppe einladen."

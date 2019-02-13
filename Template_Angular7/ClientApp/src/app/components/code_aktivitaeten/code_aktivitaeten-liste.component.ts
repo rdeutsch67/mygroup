@@ -2,6 +2,7 @@ import { Component, Inject, Input, OnChanges, SimpleChanges } from "@angular/cor
 import {ActivatedRoute, Router} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import {GlobalVariables} from "../../global.variables";
+import {environment} from "@environments/environment";
 
 @Component({
   selector: "code_aktivitaeten-liste",
@@ -25,8 +26,7 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient,
               private router: Router,
-              public globals: GlobalVariables,
-              @Inject('BASE_URL') private baseUrl: string) {
+              public globals: GlobalVariables) {
 
     this.title = "Aktivitäten";
     this.showAllData = false;
@@ -63,7 +63,7 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
 
   loadAlleAktivitaetenVonUser(myID: number) {
     let myUrl: string;
-    myUrl = this.baseUrl + "api/codesaktivitaeten/aktivitaeten_user/" + myID;
+    myUrl = `${environment.apiUrl}/api/codesaktivitaeten/aktivitaeten_user/` + myID;
 
     this.http.get<VCode_aktivitaet[]>(myUrl).subscribe(res => {
       this.code_aktivitaeten = res;
@@ -73,10 +73,10 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
   loadData(myID: number) {
     let myUrl: string;
     if (myID > 0 ) {
-      myUrl = this.baseUrl + "api/codesaktivitaeten/vaktivitaeten/" + myID;
+      myUrl = `${environment.apiUrl}/api/codesaktivitaeten/vaktivitaeten/` + myID;
     }
     else {
-      myUrl = this.baseUrl + "api/codesaktivitaeten/vaktivitaeten/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/codesaktivitaeten/vaktivitaeten/0`;  // alle holen
     }
 
     this.http.get<VCode_aktivitaet[]>(myUrl).subscribe(res => {
@@ -96,7 +96,7 @@ export class Code_aktivitaetenListeComponent implements OnChanges {
 
   onDelete(code_aktivitaet: Code_aktivitaet) {
     if (confirm("Soll diese Aktivität gelöscht werden?")) {
-      let url = this.baseUrl + "api/codesaktivitaeten/" + code_aktivitaet.Id;
+      let url = `${environment.apiUrl}/api/codesaktivitaeten/` + code_aktivitaet.Id;
       this.http
         .delete(url)
         .subscribe(res => {

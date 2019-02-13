@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import {PlanerdataService} from "../../services/planerdata.service";
 import {Observable} from "rxjs";
 import {GlobalVariables} from "../../global.variables";
+import {environment} from "@environments/environment";
 
 @Component({
   selector: "teilnehmer-liste",
@@ -22,8 +23,7 @@ export class TeilnehmerListeComponent implements OnChanges {
               private http: HttpClient,
               private router: Router,
               private dataService: PlanerdataService,
-              public globals: GlobalVariables,
-              @Inject('BASE_URL') private baseUrl: string) {
+              public globals: GlobalVariables) {
 
     this.title = "Teilnehmer";
     this.myTeilnehmer = [];
@@ -61,7 +61,7 @@ export class TeilnehmerListeComponent implements OnChanges {
   }
 
   loadAlleTeilnehmerVonUser(id: number){
-    let url = this.baseUrl + "api/teilnehmer/teilnehmer_user/" + id;
+    let url = `${environment.apiUrl}/api/teilnehmer/teilnehmer_user/` + id;
     this.dataService.loadTeilnehmerVonUser(id).subscribe(res => {
       this.myTeilnehmer = res;
     },
@@ -78,7 +78,7 @@ export class TeilnehmerListeComponent implements OnChanges {
 
   onDelete(myTeilnehmer: Teilnehmer) {
     if (confirm("Soll diesr Teilnehmer gelöscht werden?")) {
-      let url = this.baseUrl + "api/teilnehmer/" + myTeilnehmer.Id;
+      let url = `${environment.apiUrl}/api/teilnehmer/` + myTeilnehmer.Id;
       this.http
         .delete(url)
         .subscribe(res => {

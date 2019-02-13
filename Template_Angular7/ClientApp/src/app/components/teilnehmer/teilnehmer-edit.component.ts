@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NavbarService} from "../../services/navbar.service";
 import {getTime} from "date-fns";
+import {environment} from "@environments/environment";
 
 @Component({
   selector: "teilnehmer-edit.component",
@@ -23,8 +24,9 @@ export class TeilnehmerEditComponent implements OnInit{
               private router: Router,
               private http: HttpClient,
               private fb: FormBuilder,
-              public nav: NavbarService,
-              @Inject('BASE_URL') private baseUrl: string) {
+              public nav: NavbarService
+              //@Inject('BASE_URL') private baseUrl: string
+) {
 
     this.gruppeAngenommen = false;
 
@@ -40,7 +42,7 @@ export class TeilnehmerEditComponent implements OnInit{
 
     if (this.editMode) {
       // fetch the quiz from the server
-      let url = this.baseUrl + "api/teilnehmer/" + id;
+      let url = `${environment.apiUrl}/api/teilnehmer/` + id;
       this.http.get<Teilnehmer>(url).subscribe(res => {
         this.myTeilnehmer = res;
         this.setGruppeAngenommen();
@@ -71,7 +73,7 @@ export class TeilnehmerEditComponent implements OnInit{
 
     tempTeilnehmer.IdGruppe = this.myTeilnehmer.IdGruppe;
 
-    let url = this.baseUrl + "api/teilnehmer";
+    let url = `${environment.apiUrl}/api/teilnehmer`;
     if (this.editMode) {
       tempTeilnehmer.Id = this.myTeilnehmer.Id;
       this.http

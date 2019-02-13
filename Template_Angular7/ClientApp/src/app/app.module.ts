@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {RouterModule} from '@angular/router';
+import {RouterModule, ROUTES} from '@angular/router';
 import {AppComponent} from './app.component';
 import {NavMenuComponent} from './nav-menu/nav-menu.component';
 import {HomeComponent} from './home/home.component';
@@ -42,10 +42,11 @@ import {LoginComponent} from "./login";
 import {AuthGuard} from "./_guards";
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
 import {AlertComponent} from "./_components";
-import {routing} from "./app.routing";
+import {APP_ROUTES} from "./app.routing";
 import {EinladungComponent} from "@app/components/einladung/einladung.component";
 import { TerminKalenderlisteComponent } from './components/termin/termin-kalenderliste/termin-kalenderliste.component';
 import { GruppeDetailComponent } from './components/gruppe/gruppe-detail/gruppe-detail.component';
+import {SmoothScrollDirective} from '@app/smoothscroll.directive';
 
 registerLocaleData(localeDECH);
 
@@ -72,9 +73,14 @@ registerLocaleData(localeDECH);
     AboutComponent,
     PageNotFoundComponent,
     TerminKalenderlisteComponent,
-    GruppeDetailComponent
+    GruppeDetailComponent,
+    SmoothScrollDirective
   ],
   imports: [
+    RouterModule.forRoot(APP_ROUTES , {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled'
+    }),
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
     LayoutModule,
     HttpClientModule,
@@ -89,14 +95,14 @@ registerLocaleData(localeDECH);
         provide: DateAdapter,
         useFactory: adapterFactory
       },
-    ),
-    routing
+    )
   ],
-
+  exports: [
+    RouterModule
+  ],
 providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
     PlanerdataService,
     NavbarService,
     ResizeService,

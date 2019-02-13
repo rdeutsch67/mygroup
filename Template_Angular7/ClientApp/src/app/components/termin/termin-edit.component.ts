@@ -10,6 +10,8 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/lay
 import {Observable, Subscription} from "rxjs";
 import {GlobalVariables} from "../../global.variables";
 import {ResizeService} from "../../services/resize.service";
+import {environment} from "@environments/environment";
+import {encodeUriFragment} from '@angular/router/src/url_tree';
 
 @Component({
   selector: "termin-edit.component",
@@ -22,6 +24,8 @@ export class TerminEditComponent implements OnInit, OnDestroy {
   master: string;
   editMode: boolean;
   newPlanerEvent: boolean;
+  backroute: string;
+  backrouteId: number;
   showDataJson: boolean = true;
   showDataJsonTitle: string;
   showDebugInfoBtnClass: string;
@@ -54,10 +58,8 @@ export class TerminEditComponent implements OnInit, OnDestroy {
               private fb: FormBuilder,
               private loadDataService: PlanerdataService,
               public nav: NavbarService,
-              /*private breakpointObserver: BreakpointObserver,*/
               private globals: GlobalVariables,
-              private resizeService: ResizeService,
-              @Inject('BASE_URL') private baseUrl: string) {
+              private resizeService: ResizeService) {
 
     this.datePickerConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
@@ -65,6 +67,14 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       dateInputFormat: 'DD.MM.YYYY',
       showWeekNumbers: false
     });
+
+    /*let paramIdp: string = this.activatedRoute.snapshot.params["idp"];
+    let entStr = decodeURIComponent(paramIdp);
+
+    let aPos = entStr.indexOf(";routesource");
+    let strId = entStr.substr(0, aPos);
+    let id = strId;
+    let strBackRoute = entStr.substr(aPos+5, 99);*/
 
     // create an empty object from the Gruppe interface
     this.myTermin = <Termin>{};
@@ -84,20 +94,30 @@ export class TerminEditComponent implements OnInit, OnDestroy {
     this.createForm();
 
     var id = +this.activatedRoute.snapshot.params["id"];
+
     // check if we're in edit mode or not
     this.editMode = (this.activatedRoute.snapshot.url[1].path === "edit");
     this.newPlanerEvent = (this.activatedRoute.snapshot.url[1].path === "new_event");
 
+    // eine evtl. mitgeschickte Backroute lesen
+    this.backroute = this.activatedRoute.snapshot.params['routesource'];
+    //let aParam = this.activatedRoute.snapshot.params[0];
+    if (this.backroute) {
+      let aPos = this.backroute.indexOf(":id");
+      this.backroute = this.backroute.substr(0, aPos);
+      this.backrouteId = this.activatedRoute.snapshot.params['routesourceId'];
+    }
+
     if (this.editMode) {
       // Termin holen
-      let url = this.baseUrl + "api/termine/" + id;
+      let url = `${environment.apiUrl}/api/termine/` + id;
       this.http.get<Termin>(url).subscribe(res => {
         this.myTermin = res;
         this.title = "Edit - " + id;
         this.master = "(" + this.myTermin.IdTermin + ")";
         this.aktTerminDatBeginn = new Date(this.myTermin.DatumBeginn);
         this.aktTerminDatEnde = new Date(this.myTermin.DatumEnde);
-        var url = this.baseUrl + "api/gruppen/" + this.myTermin.IdGruppe;
+        var url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
         this.http.get<Gruppe>(url).subscribe(res => {
           this.selGruppen = Array.of(res);
           loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe(data => {
@@ -128,7 +148,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       this.myTermin.IdGruppe = id;
       this.myTermin.GanzerTag = false;
 
-      let url = this.baseUrl + "api/gruppen/" + this.myTermin.IdGruppe;
+      let url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
       this.http.get<Gruppe>(url).subscribe(res => {
         this.selGruppen = Array.of(res);
         loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe((data) => {
@@ -166,6 +186,14 @@ export class TerminEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resizeSubscription.unsubscribe();
+  }
+
+  onBack() {
+    if (this.backroute) {
+      this.router.navigate([this.backroute,  this.backrouteId], { fragment : this.myTermin.Id.toString() });
+    } else {
+      this.router.navigate(["gruppen/edit", this.myTermin.IdGruppe]);
+    }
   }
 
   InitFormFields() {
@@ -397,7 +425,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
     tempTermin.IdAktivitaet = this.form.value.IdAktivitaet;
     tempTermin.Hinweis = this.form.value.Hinweis;
 
-    var url = this.baseUrl + "api/termine";
+    var url = `${environment.apiUrl}/api/termine`;
     if (this.editMode) {
       // don't forget to set the Id,
       // otherwise the EDIT would fail!
@@ -415,10 +443,8 @@ export class TerminEditComponent implements OnInit, OnDestroy {
           if (WiederholungenVorhanden) {
             let WKok = HandleWiederholungen(this.http);
             console.log("Wiederholungstermine mit IdMaster = " + this.myTermin.Id + " erstellt.");
-          }
-          ;
-
-          this.router.navigate(["gruppen/edit/" + this.myTermin.IdGruppe]);
+          };
+          //this.router.navigate(["gruppen/edit/" + this.myTermin.IdGruppe]);
         }, error => console.log(error));
     }
     else {  // neuen Termin erstellen
@@ -443,15 +469,11 @@ export class TerminEditComponent implements OnInit, OnDestroy {
           }
           ;
           if (!WiederholungenVorhanden) {
-            this.router.navigate(["gruppen/edit/" + q.IdGruppe]);
+            //this.router.navigate(["gruppen/edit/" + q.IdGruppe]);
           }
         }, error => console.log(error));
 
     }
-  }
-
-  onBack() {
-    this.router.navigate(["gruppen/edit", this.myTermin.IdGruppe]);
   }
 
   createForm() {

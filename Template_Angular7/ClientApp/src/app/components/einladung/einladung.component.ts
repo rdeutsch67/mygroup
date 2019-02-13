@@ -26,8 +26,10 @@ export class EinladungComponent {
               private router: Router,
               private http: HttpClient,
               private dataService: PlanerdataService,
-              private globals: GlobalVariables,
-              @Inject('BASE_URL') private baseUrl: string) {
+              private globals: GlobalVariables
+              //@Inject('BASE_URL') private baseUrl: string
+    ) {
+
 
     globals.mode_ConfirmInvitation = false;
     this.einladungbestaetigung = <Einladungbestaetigung>{};

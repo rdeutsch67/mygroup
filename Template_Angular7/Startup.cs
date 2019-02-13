@@ -35,15 +35,16 @@ namespace Template_Angular7
 
         //public IConfiguration Configuration { get; }
         
-        public CorsPolicy GenerateCorsPolicy(){
+        /*public CorsPolicy GenerateCorsPolicy(){
             var corsBuilder = new CorsPolicyBuilder();
             corsBuilder.AllowAnyHeader();
             corsBuilder.AllowAnyMethod();
             //corsBuilder.AllowAnyOrigin(); // For anyone access.
             corsBuilder.WithOrigins("http://www.razorflights.com"); // for a specific url. Don't add a forward slash on the end!
+            corsBuilder.WithOrigins("http://localhost:5000"); // for a specific url. Don't add a forward slash on the end!
             corsBuilder.AllowCredentials();
             return corsBuilder.Build();
-        }
+        }*/
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -53,31 +54,34 @@ namespace Template_Angular7
             // ********************
             // Setup CORS
             // ********************
-            /*var corsBuilder = new CorsPolicyBuilder();
-            corsBuilder.AllowAnyHeader();
-            corsBuilder.AllowAnyMethod();
-            corsBuilder.AllowAnyOrigin(); 
-            corsBuilder.AllowCredentials();
+            var corsBuilderDevelopment = new CorsPolicyBuilder();
+            corsBuilderDevelopment.AllowAnyHeader();
+            corsBuilderDevelopment.AllowAnyMethod();
+            corsBuilderDevelopment.AllowAnyOrigin(); 
+            corsBuilderDevelopment.AllowCredentials();
 
             services.AddCors(options =>
             {
-                options.AddPolicy("SiteCorsPolicy", corsBuilder.Build());
-            });*/
+                options.AddPolicy("SiteCorsPolicyDevelopment", corsBuilderDevelopment.Build());
+            });
+            
+            var corsBuilderProduction = new CorsPolicyBuilder();
+            corsBuilderProduction.AllowAnyHeader();
+            corsBuilderProduction.AllowAnyMethod();
+            corsBuilderProduction.WithOrigins("http://www.razorflights.com");
+            corsBuilderProduction.AllowCredentials();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("SiteCorsPolicyProduction", corsBuilderProduction.Build());
+            });
+
+            
+            
             /*services.AddCors(options =>
             {
-                options.AddPolicy("SiteCorsPolicy",
-                    builder =>
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader());
-            });*/
-            
-            services.AddCors(options =>
-            {
                 options.AddPolicy("AllowAllOrigins", GenerateCorsPolicy());
-            });
+            });*/
             
             
 
@@ -187,8 +191,20 @@ namespace Template_Angular7
             app.UseSpaStaticFiles();
             app.UseAuthentication();
             
-            //app.UseCors("SiteCorsPolicy");
-            app.UseCors("AllowAllOrigins");  
+            
+            //app.UseCors("AllowAllOrigins");
+            
+            
+            if (env.IsDevelopment())
+            {
+                app.UseCors("SiteCorsPolicyDevelopment");
+            }
+            else
+            {
+                app.UseCors("SiteCorsPolicyProduction");
+            }
+            
+            
 
             app.UseMvc(routes =>
             {
@@ -206,10 +222,10 @@ namespace Template_Angular7
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                /*if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
-                }
+                }*/
             });
 
             // Create a service scope to get an ApplicationDbContext instance using DI

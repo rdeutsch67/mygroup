@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import {filter} from "rxjs/operators";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {GlobalVariables} from "../../global.variables";
+import {environment} from "@environments/environment";
 
 @Component({
   selector: "termin-liste",
@@ -26,9 +27,7 @@ export class TerminListeComponent implements OnInit, OnChanges {
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient,
               private router: Router,
-              public myGlobals: GlobalVariables,
-              //private breakpointObserver: BreakpointObserver,
-              @Inject('BASE_URL') private baseUrl: string) {
+              public myGlobals: GlobalVariables) {
 
     this.title = "Termine";
     this.termine = [];
@@ -66,10 +65,10 @@ export class TerminListeComponent implements OnInit, OnChanges {
   loadData(myID: number) {
     let myUrl: string;
     if (myID > 0 ) {
-      myUrl = this.baseUrl + "api/termine/vtermine/" + myID;
+      myUrl = `${environment.apiUrl}/api/termine/vtermine/` + myID;
     }
     else {
-      myUrl = this.baseUrl + "api/termine/vtermine/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/termine/vtermine/0`;  // alle holen
     }
 
     this.http.get<Termin[]>(myUrl).subscribe(res => {
@@ -80,10 +79,10 @@ export class TerminListeComponent implements OnInit, OnChanges {
   loadAlleTermineVonUser(myID: number) {
     let myUrl: string;
     if (myID > 0 ) {
-      myUrl = this.baseUrl + "api/termine/termine_user/" + myID;
+      myUrl = `${environment.apiUrl}/api/termine/termine_user/` + myID;
     }
     else {
-      myUrl = this.baseUrl + "api/termine/termine_user/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/termine/termine_user/0`;  // alle holen
     }
 
     this.http.get<Termin[]>(myUrl).subscribe(res => {
@@ -96,7 +95,7 @@ export class TerminListeComponent implements OnInit, OnChanges {
   }
 
   onEdit(termin : Termin) {
-    this.router.navigate(["/termine/edit", termin.Id]);
+    this.router.navigate(["/termine/edit", { id: termin.Id }]);
   }
 
   onDelete(termin: Termin) {
@@ -116,7 +115,7 @@ export class TerminListeComponent implements OnInit, OnChanges {
       if (confirm("Sollen dieser und alle nachfolgenden Termine von diesem Typ (IdTermin = "+termin.IdTermin+") gelöscht werden?")) {
         for (let i: number = 0; i <= myTermine.length; i++) {
           //if ((myTermine[i].Id >= termin.Id) || (myTermine[i].DatumBeginn >= termin.DatumBeginn)) {
-            let url = this.baseUrl + "api/termine/" + myTermine[i].Id;
+            let url = `${environment.apiUrl}/api/termine/` + myTermine[i].Id;
             this.http
               .delete(url)
               .subscribe(res => {
@@ -131,7 +130,7 @@ export class TerminListeComponent implements OnInit, OnChanges {
     else {
       if (confirm("Soll dieser Termin ("+termin.AktCode+" vom "+ moment(termin.DatumBeginn, "DD.MM.YYYY")+") gelöscht werden?")) {
       //if (confirm("Soll dieser Termin ("+termin.AktCode+") gelöscht werden?")) {
-        let url = this.baseUrl + "api/termine/" + termin.Id;
+        let url = `${environment.apiUrl}/api/termine/` + termin.Id;
         this.http
           .delete(url)
           .subscribe(res => {

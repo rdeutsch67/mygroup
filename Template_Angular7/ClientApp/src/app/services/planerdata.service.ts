@@ -12,21 +12,25 @@ import {NgIf} from "@angular/common";
 import {addDays, addHours, endOfMonth, startOfDay, subDays} from "date-fns";
 import {Einladungbestaetigung} from "@app/interface/special/einladungbestaetigung";
 import {map} from "rxjs/operators";
+import {environment} from '@environments/environment';
 
 @Injectable()
 export class PlanerdataService {
+  //baseUrl: string;
 
-  constructor(private http: HttpClient,
-              @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private http: HttpClient
+              //@Inject('BASE_URL') private baseUrl: string
+) {
+    //this.baseUrl = `${environment.apiUrl}`;
   }
 
   loadTeilnehmer(id: number): Observable<Teilnehmer[]> {
 
     let myUrl: string;
     if (id > 0) {
-      myUrl = this.baseUrl + "api/teilnehmer/alle/" + id;
+      myUrl = `${environment.apiUrl}/api/teilnehmer/alle/` + id;
     } else {
-      myUrl = this.baseUrl + "api/teilnehmer/alle/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/teilnehmer/alle/0`;  // alle holen
     }
 
     return this.http.get<Teilnehmer[]>(myUrl);
@@ -36,9 +40,9 @@ export class PlanerdataService {
 
     let myUrl: string;
     if (id > 0) {
-      myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/" + id;
+      myUrl = `${environment.apiUrl}/api/teilnehmer/vteilnehmer/` + id;
     } else {
-      myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/teilnehmer/vteilnehmer/0`;  // alle holen
     }
 
     return this.http.get<VTeilnehmer[]>(myUrl);
@@ -48,9 +52,9 @@ export class PlanerdataService {
 
     let myUrl: string;
     if (id > 0) {
-      myUrl = this.baseUrl + "api/teilnehmer/teilnehmer_user/" + id;
+      myUrl = `${environment.apiUrl}/api/teilnehmer/teilnehmer_user/` + id;
     } else {
-      myUrl = this.baseUrl + "api/teilnehmer/vteilnehmer/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/teilnehmer/vteilnehmer/0`;  // alle holen
     }
 
     return this.http.get<VTeilnehmer[]>(myUrl);
@@ -60,7 +64,7 @@ export class PlanerdataService {
 
     let myUrl: string;
     if (id > 0) {
-      myUrl = this.baseUrl + "api/teilnehmer/gruppenadmin/" + id;
+      myUrl = `${environment.apiUrl}/api/teilnehmer/gruppenadmin/` + id;
     }
 
     return this.http.get<VTeilnehmer[]>(myUrl);
@@ -69,9 +73,9 @@ export class PlanerdataService {
   loadAktiviaeten(id: number): Observable<Code_aktivitaet[]> {
     let myUrl: string;
     if (id > 0) {
-      myUrl = this.baseUrl + "api/codesaktivitaeten/alle/" + id;
+      myUrl = `${environment.apiUrl}/api/codesaktivitaeten/alle/` + id;
     } else {
-      myUrl = this.baseUrl + "api/codesaktivitaeten/alle/0";  // alle holen
+      myUrl = `${environment.apiUrl}/api/codesaktivitaeten/alle/0`;  // alle holen
     }
 
     return this.http.get<Code_aktivitaet[]>(myUrl);
@@ -81,12 +85,12 @@ export class PlanerdataService {
     let myUrl: string;
     if (fetchAllCalenderEventsOfUser <= 0) {
       if (myID > 0) {
-        myUrl = this.baseUrl + "api/termine/vtermine/" + myID;
+        myUrl = `${environment.apiUrl}/api/termine/vtermine/` + myID;
       } else {
-        myUrl = this.baseUrl + "api/termine/vtermine/0";  // alle holen
+        myUrl = `${environment.apiUrl}/api/termine/vtermine/0`;  // alle holen
       }
     } else {
-      myUrl = this.baseUrl + "api/termine/termine_user/" + fetchAllCalenderEventsOfUser;
+      myUrl = `${environment.apiUrl}/api/termine/termine_user/` + fetchAllCalenderEventsOfUser;
     }
 
     return this.http.get<Termin[]>(myUrl);
@@ -142,23 +146,23 @@ export class PlanerdataService {
 
   loadZzTerminAnzWiederholungen(num: number): Observable<ZzTerminAnzWiederholung[]> {
     let myUrl: string;
-    myUrl = this.baseUrl + "api/zzterminanzwiederholungen/all/" + num;
+    myUrl = `${environment.apiUrl}/api/zzterminanzwiederholungen/all/` + num;
 
     return this.http.get<ZzTerminAnzWiederholung[]>(myUrl);
   }
 
   commitEinladung(params: Einladungbestaetigung): Observable<Einladungbestaetigung> {
 
-    const httpOptions = {
+    /*const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
         //'Authorization': 'my-auth-token'
       })
-    };
+    };*/
 
 
     let myUrl: string;
-    myUrl = this.baseUrl + "api/teilnehmer/confirm_groupmember";
+    myUrl = `${environment.apiUrl}/api/teilnehmer/confirm_groupmember`;
 
     return this.http.post<Einladungbestaetigung>(myUrl, params);
 

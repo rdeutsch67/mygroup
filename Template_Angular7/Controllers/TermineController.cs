@@ -327,6 +327,7 @@ namespace Template_Angular7.Controllers
                 where mytermine.Teilnehmer.Id == mytermine.IdTeilnehmer
                   && mytermine.CodesAktivitaeten.Id == mytermine.IdAktivitaet
                   && mytermine.CodesAktivitaeten.Header == true
+                  && mytermine.IdGruppe == idGruppe
                 group mytermine by mytermine.DatumBeginn.Date
                 into g
                 select new  
@@ -341,40 +342,6 @@ namespace Template_Angular7.Controllers
                 query.Adapt<TerminGroupbyDateViewModel[]>(),
                 JsonSettings);
         }
-        
-                /*{
-                //ID = i++,
-                Nom = g.Key.Nom,
-                Prénom = g.Key.Prenom,
-                Structure = g.Key.Structure,
-                Début = g.Min(m => m.Start),
-                Fin = g.Max(m => m.Start),
-                Dispositif = g.Key.Dispositifs,
-                };*/
-        
-        /*// GET api/termine_user/{idUser}
-        [HttpGet("termine_group_date/{idGruppe}")]
-        public IActionResult termine_group_date(int idGruppe)
-        {
-            if (idGruppe <= 0) return new StatusCodeResult(500);
-            
-            var query = 
-                (from ut in DbContext.Termine
-                    group ut by ut.DatumBeginn.Date
-                    into g
-                    select new
-                    {
-                        TerminDatum = g.Key,
-                        AnzTermine = g.Count()
-                    }).OrderBy(x => x.TerminDatum)
-                .ToList();
-                   
-            return new JsonResult(
-                query.Adapt<TerminGroupbyDateViewModel[]>(),
-                JsonSettings);
-        }
-        */
-
     }
 }
 

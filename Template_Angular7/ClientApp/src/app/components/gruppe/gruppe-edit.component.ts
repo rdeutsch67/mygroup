@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {NavbarService} from "../../services/navbar.service";
 import {GlobalVariables} from "@app/global.variables";
 import {PlanerdataService} from "@app/services/planerdata.service";
+import {environment} from "@environments/environment";
 
 @Component({
   selector: "gruppe-edit",
@@ -25,9 +26,10 @@ export class GruppeEditComponent implements OnInit {
               private http: HttpClient,
               private fb: FormBuilder,
               public nav: NavbarService,
-              private globals: GlobalVariables,
-              private loadDataService: PlanerdataService,
-              @Inject('BASE_URL') private baseUrl: string) {
+              public globals: GlobalVariables,
+              private loadDataService: PlanerdataService
+              //@Inject('BASE_URL') private baseUrl: string
+) {
 
     // create an empty object from the Gruppe interface
     this.gruppe = <Gruppe>{};
@@ -40,10 +42,12 @@ export class GruppeEditComponent implements OnInit {
       this.editMode = true;
 
       // fetch the gruppe from the server
-      let url = this.baseUrl + "api/gruppen/" + id;
+      //let url = this.baseUrl + "api/gruppen/" + id;
+      let url = `${environment.apiUrl}/api/gruppen/` + id;
+
       this.http.get<Gruppe>(url).subscribe(res => {
         this.gruppe = res;
-        this.code = "Edit - " + this.gruppe.Code;
+        this.title = "Gruppe: " + this.gruppe.Code;
 
         this.loadDataService.loadGruppenAdmin(this.gruppe.Id).subscribe((data) => {
             this.globals.gruppenAdmin = data;
@@ -68,7 +72,7 @@ export class GruppeEditComponent implements OnInit {
     tempGruppe.Beschreibung = this.form.value.Beschreibung;
     tempGruppe.Aktiv = this.form.value.Aktiv;
 
-    var url = this.baseUrl + "api/gruppen";
+    var url = `${environment.apiUrl}/api/gruppen`;
     if (this.editMode) {
       // don't forget to set the tempGruppe Id,
       // otherwise the EDIT would fail!
@@ -98,7 +102,7 @@ export class GruppeEditComponent implements OnInit {
           tempTeilnehmer.IdGruppe = q.Id;
           tempTeilnehmer.EinladungAngenommen = new Date();
 
-          let url = this.baseUrl + "api/teilnehmer";
+          let url = `${environment.apiUrl}/api/teilnehmer`;
 
           this.http
             .put<Teilnehmer>(url, tempTeilnehmer)
