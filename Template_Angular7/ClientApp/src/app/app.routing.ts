@@ -45,7 +45,7 @@ export const APP_ROUTES: Routes = [
   //{ path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date(), backroute: ''}},
   { path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date()}},
   { path: 'termine/groupdetail', component: TerminEditComponent, data: {id: 0, backroute: ''}},
-  { path: 'termine/edit', component: TerminEditComponent, data: {id: 0, backroute: '', backrouteparam: 0}},
+  { path: 'termine/edit', component: TerminEditComponent, data: {id: 0, ro: true, backroute: '', backrouteparam: 0}},
   //{ path: 'termine/edit/:id', component: TerminEditComponent},
   { path: 'kalender/:id', component: KalenderComponent},
   { path: 'kalender_user/:id', component: KalenderComponent},

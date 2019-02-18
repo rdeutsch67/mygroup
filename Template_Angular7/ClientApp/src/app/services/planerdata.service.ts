@@ -153,14 +153,6 @@ export class PlanerdataService {
 
   commitEinladung(params: Einladungbestaetigung): Observable<Einladungbestaetigung> {
 
-    /*const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-        //'Authorization': 'my-auth-token'
-      })
-    };*/
-
-
     let myUrl: string;
     myUrl = `${environment.apiUrl}/api/teilnehmer/confirm_groupmember`;
 

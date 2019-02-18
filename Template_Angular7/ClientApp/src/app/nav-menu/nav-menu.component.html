@@ -3,7 +3,8 @@
     <a class="navbar-image" [routerLink]="['/home']">
       <img src="../../assets/logo.png" alt="Gruppenplaner"/>
     </a>
-    <a class="navbar-brand" [routerLink]='["/"]' href="#" (click)='collapse()'>{{globals.logged_in_User.firstName}}'s Planer</a>
+    <!--<a class="navbar-brand" [routerLink]='["/"]' href="#" (click)='collapse()'>{{globals.logged_in_User.firstName}}'s Planer</a>-->
+    <a class="navbar-brand" [routerLink]='["/"]' href="#" (click)='collapse()'>{{globals.appTitle}}</a>
 
     <!--<button *ngIf="globals.logged_in_User" class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse"-->
     <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse"

@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import {NavbarService} from "../../services/navbar.service";
 import {GlobalVariables} from "../../global.variables";
 import {environment} from '@environments/environment';
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 @Component({
   selector: "gruppen-liste",
@@ -24,7 +25,8 @@ export class GruppenListeComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private router: Router,
               public nav: NavbarService,
-              private globals: GlobalVariables
+              public globals: GlobalVariables,
+              private dataService: InmemorydataService
               //@Inject('BASE_URL') private baseUrl: string
 ) {
 
@@ -34,11 +36,15 @@ export class GruppenListeComponent implements OnInit {
     let count = +this.activatedRoute.snapshot.params["count"];
     if (isNaN(count)) {
       count = 0;
-    }
-    this.loadData(this.globals.logged_in_User.id);
+    };
+    //this.loadData(this.globals.logged_in_User.id);
+    this.gruppen = this.dataService.GruppenProUserData;
+    this.globals.appTitle = this.globals.logged_in_User.firstName+" s'Planer";
+
   }
 
   ngOnInit() {
+    //this.dataService.getData(this.globals.logged_in_User.id);
     this.nav.show();
   }
 

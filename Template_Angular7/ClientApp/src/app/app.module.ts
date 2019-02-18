@@ -47,6 +47,7 @@ import {EinladungComponent} from "@app/components/einladung/einladung.component"
 import { TerminKalenderlisteComponent } from './components/termin/termin-kalenderliste/termin-kalenderliste.component';
 import { GruppeDetailComponent } from './components/gruppe/gruppe-detail/gruppe-detail.component';
 import {SmoothScrollDirective} from '@app/smoothscroll.directive';
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 registerLocaleData(localeDECH);
 
@@ -106,6 +107,7 @@ providers: [
     PlanerdataService,
     NavbarService,
     ResizeService,
+    InmemorydataService,
     GlobalVariables, // als Singleton benutzen, dh. bei keiner anderen Komponente zusätzlich als Provider eintragen! (Grund: diese Variablen werden u.U. von anderen Komponenten verändert)
     {provide: LOCALE_ID, useValue: 'de-ch'}],
 

@@ -1,28 +1,41 @@
-import {Component, Inject, NgZone, OnChanges, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {BsDatepickerConfig} from "ngx-bootstrap";
-import {PlanerdataService} from "../../services/planerdata.service";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BsDatepickerConfig} from 'ngx-bootstrap';
+import {PlanerdataService} from '../../services/planerdata.service';
 import * as moment from 'moment';
-import {NavbarService} from "../../services/navbar.service";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable, Subscription} from "rxjs";
-import {GlobalVariables} from "../../global.variables";
-import {ResizeService} from "../../services/resize.service";
-import {environment} from "@environments/environment";
+import {NavbarService} from '../../services/navbar.service';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {Observable, Subscription} from 'rxjs';
+import {GlobalVariables} from '../../global.variables';
+import {ResizeService} from '../../services/resize.service';
+import {environment} from '@environments/environment';
 import {encodeUriFragment} from '@angular/router/src/url_tree';
 
 @Component({
-  selector: "termin-edit.component",
+  selector: 'termin-edit.component',
   templateUrl: './termin-edit.component.html',
-  styleUrls: ['./termin-edit.component.css']
+  styleUrls: ['./termin-edit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TerminEditComponent implements OnInit, OnDestroy {
+export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
   title: string;
   master: string;
+  dataIsLoading: boolean = true;
   editMode: boolean;
+  inputReadonly: boolean = false;
   newPlanerEvent: boolean;
   backroute: string;
   backrouteId: number;
@@ -57,92 +70,66 @@ export class TerminEditComponent implements OnInit, OnDestroy {
               private http: HttpClient,
               private fb: FormBuilder,
               private loadDataService: PlanerdataService,
-              public nav: NavbarService,
+              //public nav: NavbarService,
               private globals: GlobalVariables,
-              private resizeService: ResizeService) {
+              private resizeService: ResizeService,
+              private cdRef: ChangeDetectorRef) {
 
     this.datePickerConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
-      //value: new Date(2018,10,10),
       dateInputFormat: 'DD.MM.YYYY',
       showWeekNumbers: false
     });
 
-    /*let paramIdp: string = this.activatedRoute.snapshot.params["idp"];
-    let entStr = decodeURIComponent(paramIdp);
-
-    let aPos = entStr.indexOf(";routesource");
-    let strId = entStr.substr(0, aPos);
-    let id = strId;
-    let strBackRoute = entStr.substr(aPos+5, 99);*/
-
     // create an empty object from the Gruppe interface
     this.myTermin = <Termin>{};
-
     // init Comboboxinhalte
     this.selGruppen = <Gruppe[]>{};
     this.selTeilnehmer = <Teilnehmer[]>{};
     this.selAktivitaeten = <Code_aktivitaet[]>{};
     this.zzTerminAnzWiederholungen = <ZzTerminAnzWiederholung[]>{};
+  }
 
-    loadDataService.loadZzTerminAnzWiederholungen(15).subscribe((data) => {
-        this.zzTerminAnzWiederholungen = data;
-      }
-    );
-
-    // initialize the form
-    this.createForm();
-
-    var id = +this.activatedRoute.snapshot.params["id"];
-
-    // check if we're in edit mode or not
-    this.editMode = (this.activatedRoute.snapshot.url[1].path === "edit");
-    this.newPlanerEvent = (this.activatedRoute.snapshot.url[1].path === "new_event");
-
-    // eine evtl. mitgeschickte Backroute lesen
-    this.backroute = this.activatedRoute.snapshot.params['routesource'];
-    //let aParam = this.activatedRoute.snapshot.params[0];
-    if (this.backroute) {
-      let aPos = this.backroute.indexOf(":id");
-      this.backroute = this.backroute.substr(0, aPos);
-      this.backrouteId = this.activatedRoute.snapshot.params['routesourceId'];
-    }
-
+  loadData(id: number) {
     if (this.editMode) {
       // Termin holen
       let url = `${environment.apiUrl}/api/termine/` + id;
       this.http.get<Termin>(url).subscribe(res => {
         this.myTermin = res;
-        this.title = "Edit - " + id;
-        this.master = "(" + this.myTermin.IdTermin + ")";
+        //this.inputReadonly = (this.myTermin.TnEmail != this.globals.logged_in_User.email);
+        this.title = 'Edit - ' + id;
+        this.master = '(' + this.myTermin.IdTermin + ')';
         this.aktTerminDatBeginn = new Date(this.myTermin.DatumBeginn);
         this.aktTerminDatEnde = new Date(this.myTermin.DatumEnde);
-        var url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
+
+
+
+        let url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
         this.http.get<Gruppe>(url).subscribe(res => {
           this.selGruppen = Array.of(res);
-          loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe(data => {
-              this.selTeilnehmer = data;
-              loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
-                  this.selAktivitaeten = data;
-                }
-              )
-            }
-          );
+          this.loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe(data => {
+            this.selTeilnehmer = data;
+            this.loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
+              this.selAktivitaeten = data;
+
+              this.dataIsLoading = false;  // Ende Daten holen
+              this.updateForm();
+              this.cdRef.detectChanges(); // refresh
+            });
+          });
           // update the form with the quiz value
-          this.updateForm();
+          //this.updateForm();
         }, error => console.error(error));
       }, error => console.error(error));
-    }
-    else {
-      this.title = "neuer Termin";
-      this.master = "";
+    } else {
+      this.title = 'neuer Termin';
+      this.master = '';
 
-      let myday: Date = this.activatedRoute.snapshot.params["myday"];
+      let myday: Date = this.activatedRoute.snapshot.params['myday'];
 
       if (myday) {
         this.myTermin.DatumBeginn = new Date(myday);
-      }
-      else {
+      } else {
         this.myTermin.DatumBeginn = new Date();
       }
       this.myTermin.IdGruppe = id;
@@ -151,48 +138,66 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       let url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
       this.http.get<Gruppe>(url).subscribe(res => {
         this.selGruppen = Array.of(res);
-        loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe((data) => {
+        this.loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe((data) => {
             this.selTeilnehmer = data;
-            loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
+            this.loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
                 this.selAktivitaeten = data;
+                // update the form
+                this.dataIsLoading = false;  // Ende Daten holen
+                this.updateForm();
+                this.cdRef.detectChanges(); // refresh
               }
-            )
+            );
           }
         );
-        // update the form with the quiz value
-        this.updateForm();
       }, error => console.error(error));
-      // update the form with the quiz value
-      this.updateForm();
-    }
-  }
-
-  handleNavbar() {
-    if (this.globals.bp_isSmScrPrt) {
-      this.nav.hide()
-    } else {
-      this.nav.show()
+      // update the form
+      //this.updateForm();
     }
   }
 
   ngOnInit() {
     this.InitFormFields();
-    this.handleNavbar();
-    this.resizeSubscription = this.resizeService.onResize$ // Subscription auf Windows-Resize-Event z.B. Drehen des Bildschirms oder
-      .subscribe(result => {                          // veränderen Browserfenster-Size
-        this.handleNavbar();
-      });
+
+    this.loadDataService.loadZzTerminAnzWiederholungen(15).subscribe((data) => {
+        this.zzTerminAnzWiederholungen = data;
+      }
+    );
+
+    // initialize the form
+    this.createForm();
+
+    var id = +this.activatedRoute.snapshot.params['id'];
+
+    // check if we're in edit mode or not
+    this.editMode = (this.activatedRoute.snapshot.url[1].path === 'edit');
+    this.newPlanerEvent = (this.activatedRoute.snapshot.url[1].path === 'new_event');
+    this.inputReadonly = this.activatedRoute.snapshot.params['ro'].toUpperCase() === "TRUE";
+    // eine evtl. mitgeschickte Backroute lesen
+    this.backroute = this.activatedRoute.snapshot.params['routesource'];
+    //let aParam = this.activatedRoute.snapshot.params[0];
+    if (this.backroute) {
+      let aPos = this.backroute.indexOf(':id');
+      this.backroute = this.backroute.substr(0, aPos);
+      this.backrouteId = this.activatedRoute.snapshot.params['routesourceId'];
+    }
+
+    this.loadData(id);
   }
 
   ngOnDestroy() {
-    this.resizeSubscription.unsubscribe();
+    //this.resizeSubscription.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    this.cdRef.detectChanges();
   }
 
   onBack() {
     if (this.backroute) {
-      this.router.navigate([this.backroute,  this.backrouteId], { fragment : this.myTermin.Id.toString() });
+      this.router.navigate([this.backroute, this.backrouteId], {fragment: '_t' + this.myTermin.Id.toString()});
     } else {
-      this.router.navigate(["gruppen/edit", this.myTermin.IdGruppe]);
+      this.router.navigate(['gruppen/edit', this.myTermin.IdGruppe]);
     }
   }
 
@@ -201,8 +206,8 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       DatumBeginn: new Date(),
       DatumEnde: '',
       GanzerTag: false,
-      ZeitBeginn: "10:00",
-      ZeitEnde: "11:00",
+      ZeitBeginn: '10:00',
+      ZeitEnde: '11:00',
       AnzWiederholungen: '',
       MoWH: false, DiWH: false, MiWH: false, DoWH: false, FrWH: false, SaWH: false, SoWH: false,
       IdGruppe: '',
@@ -215,7 +220,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
   onChangeDatumBeginn(value: Date): void {
     let dtBeginn: Date = new Date(value);
     let dtEnde: Date = new Date(this.form.value.DatumEnde);
-    if (moment(dtEnde, "DD.MM.YYYY") < moment(dtBeginn, "DD.MM.YYYY")) {
+    if (moment(dtEnde, 'DD.MM.YYYY') < moment(dtBeginn, 'DD.MM.YYYY')) {
       this.form.patchValue(
         {
           DatumEnde: dtBeginn
@@ -232,7 +237,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
         this.loadDataService.loadAktiviaeten(newValue).subscribe((data) => {
             this.selAktivitaeten = data;
           }
-        )
+        );
       }
     );
   }
@@ -246,10 +251,9 @@ export class TerminEditComponent implements OnInit, OnDestroy {
     selAktivitaet = this.selAktivitaeten.filter(x => x.Id == this.selectedAktivitaet);
 
     if ((selAktivitaet[0].GanzerTag == true) || (newGanzerTag == true)) {
-      myZeitBeginn$ = "00:00";
-      myZeitEnde$ = "23:59";
-    }
-    else {
+      myZeitBeginn$ = '00:00';
+      myZeitEnde$ = '23:59';
+    } else {
       // Zeiten gemäss Codedefinition anzeigen
       if (!selAktivitaet[0].ZeitUnbestimmt) {
         var myZeitBeginn: Date = new Date(selAktivitaet[0].ZeitBeginn);
@@ -258,8 +262,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
         var myZeitEnde: Date = new Date(selAktivitaet[0].ZeitEnde);
         var myZeitEnde$ = ((myZeitEnde.getHours() < 10 ? '0' : '') + myZeitEnde.getHours()) + ':'
           + ((myZeitEnde.getMinutes() < 10 ? '0' : '') + myZeitEnde.getMinutes());
-      }
-      else {
+      } else {
         let aDate = new Date();
         aDate = moment(aDate).add(1, 'hours').toDate();  // zur aktuellen Uhrzeit ein Stunde dazu rechnen
         myZeitBeginn$ = new Date().getHours().toString(10) + ':00';
@@ -276,8 +279,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
           ZeitEnde: myZeitEnde$,
         }
       );
-    }
-    else {
+    } else {
       this.form.patchValue(
         {
           GanzerTag: selAktivitaet[0].GanzerTag,
@@ -319,37 +321,37 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       let arrNxtWochentag: Date[] = [];
       // die nächsten Tagesdaten der gewählten Wochentage ermitteln (z.B. welches Datum hat der nächste Montag vom gewählten Startdatum aus gesehen)
       if (FlagWHMo == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 1))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 1));
       }
       ;
       if (FlagWHDi == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 2))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 2));
       }
       ;
       if (FlagWHMi == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 3))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 3));
       }
       ;
       if (FlagWHDo == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 4))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 4));
       }
       ;
       if (FlagWHFr == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 5))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 5));
       }
       ;
       if (FlagWHSa == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 6))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 6));
       }
       ;
       if (FlagWHSo == true) {
-        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 7))
+        arrNxtWochentag.push(GetNextDay(tempTermin.DatumBeginn, 7));
       }
       ;
 
       // Differenz vom Ende- zum Startdatum ermitteln
-      let startdate = moment(tempTermin.DatumBeginn, "DD.MM.YYYY");
-      let enddate = moment(tempTermin.DatumEnde, "DD.MM.YYYY");
+      let startdate = moment(tempTermin.DatumBeginn, 'DD.MM.YYYY');
+      let enddate = moment(tempTermin.DatumEnde, 'DD.MM.YYYY');
       let daydiff: number = enddate.diff(startdate, 'days');
 
       // gemäss Anzahl Wiederholungen die Start- und Endedaten berechnen und in die Termine einfügen
@@ -374,7 +376,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
               .put<Termin>(url, tempTermin)
               .subscribe(res => {
                 let q = res;
-                console.log("Termin " + q.Id + " erstellt.");
+                console.log('Termin ' + q.Id + ' erstellt.');
               }, error => console.log(error));
           }
         }
@@ -404,8 +406,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       myBeginnDate.setHours(0, 0, 0, 0);
       // Ende
       myEndeDate.setHours(23, 59, 59, 999);
-    }
-    else {
+    } else {
       // Beginn
       var myZeit: string = this.form.value.ZeitBeginn;           // hier ein Zeitstring z.B. "21:15" zurückgegeben
       var myHour = parseInt(myZeit.substring(0, 2), 10);
@@ -431,32 +432,32 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       // otherwise the EDIT would fail!
       tempTermin.Id = this.myTermin.Id;
       if (WiederholungenVorhanden) {
-        tempTermin.IdTermin = tempTermin.Id
+        tempTermin.IdTermin = tempTermin.Id;
       }
       ;
       this.http
         .post<Termin>(url, tempTermin)
         .subscribe(res => {
           this.myTermin = res;
-          console.log("Termin " + this.myTermin.Id + " wurde mutiert.");
+          console.log('Termin ' + this.myTermin.Id + ' wurde mutiert.');
           myIdMaster = this.myTermin.Id;
           if (WiederholungenVorhanden) {
             let WKok = HandleWiederholungen(this.http);
-            console.log("Wiederholungstermine mit IdMaster = " + this.myTermin.Id + " erstellt.");
-          };
+            console.log('Wiederholungstermine mit IdMaster = ' + this.myTermin.Id + ' erstellt.');
+          }
+          ;
           //this.router.navigate(["gruppen/edit/" + this.myTermin.IdGruppe]);
         }, error => console.log(error));
-    }
-    else {  // neuen Termin erstellen
+    } else {  // neuen Termin erstellen
       this.http
         .put<Termin>(url, tempTermin)
         .subscribe(res => {
           var q = res;
-          console.log("Termin " + q.Id + " erstellt.");
+          console.log('Termin ' + q.Id + ' erstellt.');
           myIdMaster = q.Id;
           if (WiederholungenVorhanden) {
             let WKok = HandleWiederholungen(this.http);
-            console.log("Wiederholungstermine mit IdMaster = " + q.Id + " erstellt.");
+            console.log('Wiederholungstermine mit IdMaster = ' + q.Id + ' erstellt.');
 
             // zum Schluss die IdTermin vom "Master"-Termin aktualisieren
             q.IdTermin = q.Id;
@@ -464,7 +465,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
               .post<Termin>(url, q)
               .subscribe(res => {
                 q = res;
-                console.log("Termin " + q.Id + " wurde mit IdTermin " + q.Id + " aktualisiert.");
+                console.log('Termin ' + q.Id + ' wurde mit IdTermin ' + q.Id + ' aktualisiert.');
               }, error => console.log(error));
           }
           ;
@@ -498,8 +499,7 @@ export class TerminEditComponent implements OnInit, OnDestroy {
         IdAktivitaet: this.myTermin.IdAktivitaet,
         Hinweis: this.myTermin.Hinweis || ''
       });
-    }
-    else {
+    } else {
       let aDate = new Date();
       aDate = moment(aDate).add(1, 'hours').toDate();  // zur aktuellen Uhrzeit ein Stunde dazu rechnen
       this.form.setValue({
@@ -523,15 +523,15 @@ export class TerminEditComponent implements OnInit, OnDestroy {
     function gotoAnchor() {
       setTimeout(function () {
         let element = document.getElementById($element);
-        element.scrollIntoView({behavior: "smooth", block: "nearest"})
-      }, 0)
+        element.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+      }, 0);
     }
 
     function gobackToTop() {
       setTimeout(function () {
         let element = document.getElementById($element);
-        element.scrollIntoView({behavior: "smooth", block: "start"})
-      }, 0)
+        element.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }, 0);
     }
 
     this.showDataJson = !this.showDataJson;
@@ -539,15 +539,14 @@ export class TerminEditComponent implements OnInit, OnDestroy {
       this.showDataJsonTitle = 'Debug-Info';
       this.showDebugInfoBtnClass = 'btn btn-sm btn-warning';
       this.showDataJsonBtnIcon = 'fas fa-arrow-circle-up';
-      if ($element != "") {
+      if ($element != '') {
         gotoAnchor();
       }
-    }
-    else {
+    } else {
       this.showDataJsonTitle = 'Debug-Info';
       this.showDebugInfoBtnClass = 'btn btn-sm btn-primary';
       this.showDataJsonBtnIcon = 'fas fa-arrow-circle-down';
-      if ($element != "") {
+      if ($element != '') {
         gobackToTop();
       }
     }

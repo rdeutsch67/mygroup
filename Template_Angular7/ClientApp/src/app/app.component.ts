@@ -8,6 +8,7 @@ import { Router} from "@angular/router";
 import { AppUser} from "@app/interface/appuser";
 import {error} from "selenium-webdriver";
 import ElementNotSelectableError = error.ElementNotSelectableError;
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
               private router: Router,
               private meta: Meta,
               private breakpointObserver: BreakpointObserver,
-              private globals: GlobalVariables) {
+              private globals: GlobalVariables,
+              private dataService: InmemorydataService) {
 
     //this.authenticationService.currentUser.subscribe(x => globals.logged_in_User = x);
 
@@ -37,6 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.currentUser = user;
       if (user) {
         this.globals.logged_in_User = user;
+        this.dataService.getData(this.globals.logged_in_User.id);
       }
       else {
         this.globals.logged_in_User.id = 999999;

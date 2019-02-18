@@ -1,8 +1,10 @@
-<app-nav-menu></app-nav-menu>
-<div class="container-fluid">
-  <div class="starter-template">
-    <alert></alert>
-    <router-outlet></router-outlet>
+<div *ngIf="!globals.isloadingData">
+  <app-nav-menu></app-nav-menu>
+  <div class="container-fluid">
+    <div class="starter-template">
+      <alert></alert>
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
 

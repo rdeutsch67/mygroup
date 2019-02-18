@@ -9,8 +9,10 @@ export class GlobalVariables {
   bp_isWideScreen: boolean;
   bp_isMidOrWideScreen: boolean;
 
+  isloadingData: boolean;
   mode_ConfirmInvitation: boolean;
   logged_in_User: AppUser;
   gruppenAdmin: VTeilnehmer[];
+  appTitle: string;
 
 }

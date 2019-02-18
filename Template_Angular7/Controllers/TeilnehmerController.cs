@@ -286,7 +286,8 @@ namespace Template_Angular7.Controllers
             
         }
         
-        // GET api/teilnehmer/vteilnehmer
+        // GET api/gruppenadmin/idGruppe?
+        // den Gruppenadmin dieser Gruppe ausgeben
         [HttpGet("gruppenadmin/{idGruppe}")]
         public IActionResult gruppenadmin(int idGruppe)
         {

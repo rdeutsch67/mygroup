@@ -18,15 +18,12 @@ select,
 textarea {
   font-size: 1rem; }
 
-/*
-.input-group-prepend {
-  width : 35%; !*adjust as needed*!
-}
+input:read-only {
+  background-color: yellow; }
 
-.input-group-prepend label {
-  width: 100%;
-  overflow: hidden;
-}*/
+input[id=hinweis] {
+  background-color: whitesmoke; }
+
 .input-group-text {
   min-width: 12ch; }
 
