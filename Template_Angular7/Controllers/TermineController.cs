@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Template_Angular7.ViewModels;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using Template_Angular7.Data;
@@ -224,12 +225,13 @@ namespace Template_Angular7.Controllers
                                  AktCode = ua.Code,
                                  AktBezeichnung = ua.Bezeichnung,
                                  AktSummieren = ua.Summieren,
+                                 AktSort = ua.Sort,
                                  TnVorname = uu.Vorname,
                                  TnNachname = uu.Nachname,
                                  TnEmail = uu.Email,
                                  GrpCode = ug.Code,
                                  GrpBezeichnung = ug.Bezeichnung
-                             }).OrderBy(x => x.DatumBeginn)
+                             }).OrderBy(x => x.DatumBeginn.Date).ThenBy(x => x.AktSort).ThenBy(x => x.TnVorname)
                                .ToList();
                 return new JsonResult(
                     query.Adapt<TerminViewModel[]>(),
@@ -254,18 +256,18 @@ namespace Template_Angular7.Controllers
                         ut.Hinweis,
                         ut.CreatedDate,
                         ut.LastModifiedDate,
-                        
                         TerminDatum = ut.DatumBeginn.Date,
                         AktFarbe = ua.Farbe,
                         AktCode = ua.Code,
                         AktBezeichnung = ua.Bezeichnung,
                         AktSummieren = ua.Summieren,
+                        AktSort = ua.Sort,
                         TnVorname = uu.Vorname,
                         TnNachname = uu.Nachname,
                         TnEmail = uu.Email,
                         GrpCode = ug.Code,
                         GrpBezeichnung = ug.Bezeichnung
-                    }).OrderBy(x => x.DatumBeginn)
+                    }).OrderBy(x => x.DatumBeginn.Date).ThenBy(x => x.AktSort).ThenBy(x => x.TnVorname)
                       .ToList();
                 return new JsonResult(
                     query.Adapt<TerminViewModel[]>(),
@@ -316,13 +318,82 @@ namespace Template_Angular7.Controllers
                 JsonSettings);
         }
         
-        // GET api/termine_user/{idUser}
+        // GET api/termine_group_date/{idGruppe}
         [HttpGet("termine_group_date/{idGruppe}")]
         public IActionResult termine_group_date(int idGruppe)
         {
             if (idGruppe <= 0) return new StatusCodeResult(500);
 
-            var query =
+            /*
+                from p in context.Periods
+                join f in context.Facts on p.id equals f.periodid into fg
+                from fgi in fg.Where(f => f.otherid == 17).DefaultIfEmpty()
+                where p.companyid == 100
+                select f.value
+                */
+            
+            //join myTeiln in DbContext.Teilnehmer on myTermine.IdTeilnehmer equals myTeiln.Id
+            
+            DataTable dt1 = new DataTable();
+            dt1.Columns.Add("TerminDatum", typeof(DateTime));
+            dt1.Columns.Add("AnzTermine", typeof(int));
+            dt1.Columns.Add("AktHeaderBez", typeof(string));
+            dt1.Columns.Add("TeilnehmerHeaderName", typeof(string));
+
+            var query = (
+                from myTermine in DbContext.Termine
+                group myTermine by myTermine.DatumBeginn.Date
+                into g
+                select new
+                {
+                    TerminDatum = g.Key
+                }).ToList();
+
+            foreach (var item in query)
+            {
+                
+                var query2 = (
+                    from myAkt in DbContext.CodesAktivitaeten
+                    from myTermine2 in DbContext.Termine
+                    where myTermine2.IdAktivitaet == myAkt.Id
+                          && myTermine2.DatumBeginn.Date == item.TerminDatum
+                          && myAkt.Header == true
+                    select new
+                    {
+                        TerminDatum2 = item.TerminDatum,
+                        AktCode = myAkt.Code
+                    }
+                ).ToList();
+                foreach (var item2 in query2)
+                {
+                    DataRow row = dt1.NewRow();
+                    row["TerminDatum"] = item2.TerminDatum2;
+                    row["AnzTermine"] = 1;
+                    row["AktHeaderBez"] = item2.AktCode;
+                    row["TeilnehmerHeaderName"] = "karl";
+                    dt1.Rows.Add(row);
+                }
+                
+            }
+                
+            
+                 //join myTeiln in DbContext.Teilnehmer on myTermine.IdTeilnehmer equals myTeiln.Id
+                 /*join myAkt in DbContext.CodesAktivitaeten on new {DID = (int?)myTermine.IdAktivitaet } equals new { DID = (int?)myAkt.Id } into dis   
+                 from myAkt in dis.DefaultIfEmpty() 
+                 where myAkt.IdGruppe == idGruppe
+                       //&& myAkt.Header == true
+                 group myTermine by myTermine.DatumBeginn.Date
+                 into g      
+                 select new  
+                    {
+                        TerminDatum = myTermine.DatumBeginn.Date,
+                        AnzTermine = 1,
+                        //AktHeaderBez = "adf",
+                        AktHeaderBez = myAkt.Code == null ? "??" : myAkt.Code, 
+                        TeilnehmerHeaderName = "karl" //myTeiln.Vorname == null ? "??" : myTeiln.Vorname
+                    }).ToList();*/
+            
+            /*var query =
                 (from mytermine in DbContext.Termine
                 where mytermine.Teilnehmer.Id == mytermine.IdTeilnehmer
                   && mytermine.CodesAktivitaeten.Id == mytermine.IdAktivitaet
@@ -336,10 +407,11 @@ namespace Template_Angular7.Controllers
                       AnzTermine = g.Count(),
                       AktHeaderBez = g.Min(x => x.CodesAktivitaeten.Bezeichnung),
                       TeilnehmerHeaderName = g.Min(x => x.Teilnehmer.Vorname)
-                  }).OrderBy(x => x.TerminDatum)
-                    .ToList();
+                      }).OrderBy(x => x.TerminDatum)
+                    .ToList();*/
             return new JsonResult(
-                query.Adapt<TerminGroupbyDateViewModel[]>(),
+                //dt1.Adapt<TerminGroupbyDateViewModel[]>(),
+                dt1,
                 JsonSettings);
         }
     }

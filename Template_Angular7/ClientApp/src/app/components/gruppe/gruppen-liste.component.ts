@@ -88,7 +88,8 @@ export class GruppenListeComponent implements OnInit {
     this.selectedGruppe = gruppe;
     console.log("Gruppe mit Id " + this.selectedGruppe.Id + " ist ausgewählt.");
     //this.router.navigate(["gruppen/edit", this.selectedGruppe.Id]);
-    this.router.navigate(["gruppen/show", this.selectedGruppe.Id]);
+    this.router.navigate(["gruppen/show", {id: this.selectedGruppe.Id, reload: false}]);
+    //this.router.navigate(['termine/create', {id: this.myGruppe.Id, myday: value.TerminDatum,  routesource: this.routesource, routesourceId: this.routesourceId}]);
   }
 }
 

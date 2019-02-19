@@ -28,7 +28,7 @@ export const APP_ROUTES: Routes = [
   { path: 'gruppen/alle/:count', component: GruppenListeComponent},
   { path: 'gruppen/create', component: GruppeEditComponent},
   { path: 'gruppen/edit/:id', component: GruppeEditComponent, canActivate: [AuthGuard]},
-  { path: 'gruppen/show/:id', component: GruppeDetailComponent, canActivate: [AuthGuard]},
+  { path: 'gruppen/show', component: GruppeDetailComponent, data: {id: 0, reload: false}, canActivate: [AuthGuard]},
   { path: 'codesaktivitaeten/vaktivitaeten/:id', component: Code_aktivitaetenListeComponent}, // alle Aktivitäten der Gruppe x
   { path: 'codesaktivitaeten/create/:id', component: Code_aktivitaetenEditComponent},
   { path: 'codesaktivitaeten/edit/:id/:readonly', component: Code_aktivitaetenEditComponent},
@@ -41,10 +41,10 @@ export const APP_ROUTES: Routes = [
   { path: 'teilnehmer/edit/:id', component: TeilnehmerEditComponent},
   { path: 'termine/vtermine/:id', component: TerminListeComponent},
   { path: 'termine/termine_user/:id', component: TerminListeComponent}, // alle Termine vom User
-  { path: 'termine/create/:id', component: TerminEditComponent},
+  { path: 'termine/create', component: TerminEditComponent, data: {id: 0, myday: new Date(), backroute: '', backrouteparam: 0}},
   //{ path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date(), backroute: ''}},
-  { path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date()}},
-  { path: 'termine/groupdetail', component: TerminEditComponent, data: {id: 0, backroute: ''}},
+  //{ path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date()}},
+  //{ path: 'termine/groupdetail', component: TerminEditComponent, data: {id: 0, backroute: ''}},
   { path: 'termine/edit', component: TerminEditComponent, data: {id: 0, ro: true, backroute: '', backrouteparam: 0}},
   //{ path: 'termine/edit/:id', component: TerminEditComponent},
   { path: 'kalender/:id', component: KalenderComponent},

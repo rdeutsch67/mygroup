@@ -36,7 +36,8 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
   dataIsLoading: boolean = true;
   editMode: boolean;
   inputReadonly: boolean = false;
-  newPlanerEvent: boolean;
+  flagDatenGespeichert: boolean = false;
+  neuerTermin: boolean;
   backroute: string;
   backrouteId: number;
   showDataJson: boolean = true;
@@ -44,7 +45,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
   showDebugInfoBtnClass: string;
   showDataJsonBtnIcon: string;
   myTermin: Termin;
-
+  myDayBackroute: string;
   aktTerminDatBeginn = new Date();
   aktTerminDatEnde = new Date();
   selGanzerTag: boolean;
@@ -126,6 +127,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.master = '';
 
       let myday: Date = this.activatedRoute.snapshot.params['myday'];
+      this.myDayBackroute = this.activatedRoute.snapshot.params['myday'];
 
       if (myday) {
         this.myTermin.DatumBeginn = new Date(myday);
@@ -167,18 +169,20 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     // initialize the form
     this.createForm();
 
-    var id = +this.activatedRoute.snapshot.params['id'];
+    let id = +this.activatedRoute.snapshot.params['id'];
 
     // check if we're in edit mode or not
     this.editMode = (this.activatedRoute.snapshot.url[1].path === 'edit');
-    this.newPlanerEvent = (this.activatedRoute.snapshot.url[1].path === 'new_event');
-    this.inputReadonly = this.activatedRoute.snapshot.params['ro'].toUpperCase() === "TRUE";
+    this.neuerTermin = (this.activatedRoute.snapshot.url[1].path === 'create');
+    if (!this.neuerTermin) {
+      this.inputReadonly = this.activatedRoute.snapshot.params['ro'].toUpperCase() === "TRUE";
+    }
     // eine evtl. mitgeschickte Backroute lesen
     this.backroute = this.activatedRoute.snapshot.params['routesource'];
     //let aParam = this.activatedRoute.snapshot.params[0];
     if (this.backroute) {
-      let aPos = this.backroute.indexOf(':id');
-      this.backroute = this.backroute.substr(0, aPos);
+      //let aPos = this.backroute.indexOf(':id');
+      //this.backroute = this.backroute.substr(0, aPos);
       this.backrouteId = this.activatedRoute.snapshot.params['routesourceId'];
     }
 
@@ -195,7 +199,13 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onBack() {
     if (this.backroute) {
-      this.router.navigate([this.backroute, this.backrouteId], {fragment: '_t' + this.myTermin.Id.toString()});
+      if (this.neuerTermin) {
+        //this.router.navigate([this.backroute, this.backrouteId], {fragment: '_th' + this.myDayBackroute});
+        this.router.navigate([this.backroute, {id: this.backrouteId, reload: this.flagDatenGespeichert}], {fragment: '_th' + this.myDayBackroute});
+      } else {
+        //this.router.navigate([this.backroute, this.backrouteId], {fragment: '_t' + this.myTermin.Id.toString()});
+        this.router.navigate([this.backroute, {id: this.backrouteId, reload: this.flagDatenGespeichert}], {fragment: '_t' + this.myTermin.Id.toString()});
+      }
     } else {
       this.router.navigate(['gruppen/edit', this.myTermin.IdGruppe]);
     }
@@ -444,8 +454,8 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
           if (WiederholungenVorhanden) {
             let WKok = HandleWiederholungen(this.http);
             console.log('Wiederholungstermine mit IdMaster = ' + this.myTermin.Id + ' erstellt.');
-          }
-          ;
+          };
+          this.flagDatenGespeichert = true;
           //this.router.navigate(["gruppen/edit/" + this.myTermin.IdGruppe]);
         }, error => console.log(error));
     } else {  // neuen Termin erstellen
@@ -467,13 +477,9 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
                 q = res;
                 console.log('Termin ' + q.Id + ' wurde mit IdTermin ' + q.Id + ' aktualisiert.');
               }, error => console.log(error));
-          }
-          ;
-          if (!WiederholungenVorhanden) {
-            //this.router.navigate(["gruppen/edit/" + q.IdGruppe]);
-          }
+          };
+          this.flagDatenGespeichert = true;
         }, error => console.log(error));
-
     }
   }
 
