@@ -1,6 +1,5 @@
 @charset "UTF-8";
 .main-nav {
-  height: 50px;
   display: block;
   position: fixed;
   /* Set the navbar to fixed position */
@@ -38,7 +37,8 @@
   bottom: 0;
   width: 100%;
   z-index: 9;
-  background-color: #3387fd; }
+  background-color: #3387fd;
+  box-shadow: 0 0.35rem 0.75rem rgba(51, 135, 253, 0.5); }
 
 /* Auflösung > 576px */
 @media (min-width: 576px) {
