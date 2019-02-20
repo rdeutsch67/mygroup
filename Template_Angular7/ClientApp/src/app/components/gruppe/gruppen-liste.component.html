@@ -1,9 +1,9 @@
-<div *ngIf="globals.isloadingData">
+<div class="main" *ngIf="globals.isloadingData">
   <p>Daten sind am laden...</p>
 </div>
 
-<div *ngIf="!globals.isloadingData">
-  <h3>{{title}}</h3>
+<div class="main" *ngIf="!globals.isloadingData">
+  <!--<h3>{{title}}</h3>-->
   <div class="table-responsive table-striped">
     <table class="table table-hover gruppen">
       <!--<thead>

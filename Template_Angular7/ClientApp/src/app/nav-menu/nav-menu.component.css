@@ -2,7 +2,13 @@
 .main-nav {
   height: 50px;
   display: block;
-  margin-bottom: 20px; }
+  position: fixed;
+  /* Set the navbar to fixed position */
+  top: 0;
+  /* Position the navbar at the top of the page */
+  width: 100%;
+  /* Full width */
+  z-index: 9; }
 
 .navbar-image {
   position: relative;
@@ -32,8 +38,7 @@
   bottom: 0;
   width: 100%;
   z-index: 9;
-  background-color: rgba(51, 135, 253, 0.95);
-  box-shadow: 0 0.35rem 0.75rem rgba(51, 135, 253, 0.35); }
+  background-color: #3387fd; }
 
 /* Auflösung > 576px */
 @media (min-width: 576px) {

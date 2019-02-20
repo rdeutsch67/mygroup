@@ -1,86 +1,85 @@
-<div *ngIf="!dataIsLoading">
-<div class="termine-edit container-fluid" id="page-top">
+<div class="main" *ngIf="!dataIsLoading">
+  <div class="termine-edit container-fluid" id="page-top">
 
 
-  <div aria-label="Termin-Edit Toolbar" class="mytoptoolbar btn-toolbar justify-content-between" role="toolbar">
+    <div aria-label="Termin-Edit Toolbar" class="mytoptoolbar btn-toolbar justify-content-between" role="toolbar">
 
 
-    <div class="btn-group btn-group-sm mr-2" role="group">
-      <button *ngIf="editMode"
+      <div class="btn-group btn-group-sm mr-2" role="group">
+        <button *ngIf="editMode"
+                [disabled]="form.invalid"
+                class="btn btn-sm btn-success"
+                (click)="onSubmit()"
+                type="button">
+          <i class="fas fa-save"></i>
+          Speichern
+        </button>
+        <button *ngIf="!editMode" [disabled]="form.invalid"
+                class="btn btn-sm btn-success"
+                (click)="onSubmit()"
+                type="button">
+          <i class="fas fa-plus-circle"></i>
+          Speichern
+        </button>
+        <div class="btn-group btn-group-sm" role="group">
+          <button (click)="onBack()"
+                  class="btn btn-sm btn-secondary col-sm-12"
+                  type="button">
+            <i class="fas fa-arrow-alt-circle-left"></i>
+            Zurück
+          </button>
+        </div>
+      </div>
+      <div class="btn-group btn-group-sm float-right" role="group">
+        <button (click)="onShowDataJson('debug-info-page')" class={{showDebugInfoBtnClass}} id="btnShowDataJson"
+                type="button">
+          <i class={{showDataJsonBtnIcon}}></i>
+          {{showDataJsonTitle}}
+        </button>
+      </div>
+    </div>
+
+
+    <!--<div class="btn-group btn-group-sm mr-2" role="group">
+      <button (click)="onSubmit()" *ngIf="editMode"
               [disabled]="form.invalid"
               class="btn btn-sm btn-success"
-              (click)="onSubmit()"
-              type="button">
+              type="submit">
         <i class="fas fa-save"></i>
         Speichern
       </button>
       <button *ngIf="!editMode" [disabled]="form.invalid"
               class="btn btn-sm btn-success"
-              (click)="onSubmit()"
-              type="button">
+              type="submit">
         <i class="fas fa-plus-circle"></i>
-        Speichern
+        Termin erstellen
       </button>
       <div class="btn-group btn-group-sm" role="group">
         <button (click)="onBack()"
                 class="btn btn-sm btn-secondary col-sm-12"
-                type="button">
+                type="submit">
           <i class="fas fa-arrow-alt-circle-left"></i>
           Zurück
         </button>
       </div>
     </div>
     <div class="btn-group btn-group-sm float-right" role="group">
-      <button (click)="onShowDataJson('debug-info-page')" class={{showDebugInfoBtnClass}} id="btnShowDataJson"
+      <button (click)="onShowDataJson('debug-info-page')" class={{showDebugInfoBtnClass}} id="btnShowDataJson "
               type="button">
         <i class={{showDataJsonBtnIcon}}></i>
         {{showDataJsonTitle}}
       </button>
     </div>
   </div>
+  -->
 
+    <!--<div class="title" *ngIf="editMode">Termin: {{title}}</div>-->
 
-  <!--<div class="btn-group btn-group-sm mr-2" role="group">
-    <button (click)="onSubmit()" *ngIf="editMode"
-            [disabled]="form.invalid"
-            class="btn btn-sm btn-success"
-            type="submit">
-      <i class="fas fa-save"></i>
-      Speichern
-    </button>
-    <button *ngIf="!editMode" [disabled]="form.invalid"
-            class="btn btn-sm btn-success"
-            type="submit">
-      <i class="fas fa-plus-circle"></i>
-      Termin erstellen
-    </button>
-    <div class="btn-group btn-group-sm" role="group">
-      <button (click)="onBack()"
-              class="btn btn-sm btn-secondary col-sm-12"
-              type="submit">
-        <i class="fas fa-arrow-alt-circle-left"></i>
-        Zurück
-      </button>
-    </div>
-  </div>
-  <div class="btn-group btn-group-sm float-right" role="group">
-    <button (click)="onShowDataJson('debug-info-page')" class={{showDebugInfoBtnClass}} id="btnShowDataJson "
-            type="button">
-      <i class={{showDataJsonBtnIcon}}></i>
-      {{showDataJsonTitle}}
-    </button>
-  </div>
-</div>
--->
+    <!--<div *ngIf="master" >
+      <h5>Termin: {{master}}</h5>
+    </div>-->
 
-  <!--<div class="title" *ngIf="editMode">Termin: {{title}}</div>-->
-
-  <!--<div *ngIf="master" >
-    <h5>Termin: {{master}}</h5>
-  </div>-->
-
-  <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 
 
       <div class="spinner-border" role="status">
@@ -330,47 +329,47 @@
           </button>
         </div>
       </div>
-  </form>
-</div>
+    </form>
+  </div>
 
-<div id="debug-info-page">
-  <div *ngIf="showDataJson">
-    <div class="form-debug-info">
-      <div class="row">
-        <button type="button" (click)="onShowDataJson('page-top')"
-                class="btn btn-sm btn-warning btn-block">
-          <i class={{showDataJsonBtnIcon}}></i>
-          Debug-Info schliessen
-        </button>
-      </div>
-      <div class="innerbody">
-        <p><strong>Form value:</strong></p>
-        <div class="help-block">
-          {{ form.value | json }}
+  <div id="debug-info-page">
+    <div *ngIf="showDataJson">
+      <div class="form-debug-info">
+        <div class="row">
+          <button type="button" (click)="onShowDataJson('page-top')"
+                  class="btn btn-sm btn-warning btn-block">
+            <i class={{showDataJsonBtnIcon}}></i>
+            Debug-Info schliessen
+          </button>
         </div>
-        <p><strong>Form status:</strong></p>
-        <div class="help-block">
-          {{ form.status | json }}
-        </div>
-        <div *ngIf="activityLog">
-          <p><strong>Form activity log:</strong></p>
+        <div class="innerbody">
+          <p><strong>Form value:</strong></p>
           <div class="help-block">
+            {{ form.value | json }}
+          </div>
+          <p><strong>Form status:</strong></p>
+          <div class="help-block">
+            {{ form.status | json }}
+          </div>
+          <div *ngIf="activityLog">
+            <p><strong>Form activity log:</strong></p>
+            <div class="help-block">
                 <span *ngIf="activityLog"
                       [innerHTML]="activityLog"></span>
+            </div>
           </div>
-        </div>
 
-        <a><strong>Auswahl: Gruppen</strong></a>
-        <ngx-json-viewer [json]=selGruppen [expanded]="false"></ngx-json-viewer>
-        <br>
-        <a><strong>Auswahl: Teilnehmer</strong></a>
-        <ngx-json-viewer [json]=selTeilnehmer [expanded]="false"></ngx-json-viewer>
-        <br>
-        <a><strong>Auswahl: Aktivitäten</strong></a>
-        <ngx-json-viewer [json]=selAktivitaeten [expanded]="false"></ngx-json-viewer>
+          <a><strong>Auswahl: Gruppen</strong></a>
+          <ngx-json-viewer [json]=selGruppen [expanded]="false"></ngx-json-viewer>
+          <br>
+          <a><strong>Auswahl: Teilnehmer</strong></a>
+          <ngx-json-viewer [json]=selTeilnehmer [expanded]="false"></ngx-json-viewer>
+          <br>
+          <a><strong>Auswahl: Aktivitäten</strong></a>
+          <ngx-json-viewer [json]=selAktivitaeten [expanded]="false"></ngx-json-viewer>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 </div>

@@ -1,4 +1,8 @@
 @charset "UTF-8";
+.main {
+  margin-top: 60px;
+  /* Add a top margin to avoid content overlay */ }
+
 input[type="color"],
 input[type="select"],
 input[type="date"],

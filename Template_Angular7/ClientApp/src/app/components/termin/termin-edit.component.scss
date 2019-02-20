@@ -1,3 +1,9 @@
+.main {
+  margin-top: 60px; /* Add a top margin to avoid content overlay */
+  //background-color: #9fcdff;
+  //padding-bottom: 10px;
+}
+
 $color-label: rgba(70, 89, 240, 0.99);
 
 input[type="color"],
@@ -15,7 +21,7 @@ input[type="text"],
 input[type="time"],
 input[type="url"],
 input[type="week"],
-//select:focus,
+
 select,
 textarea {
   font-size: 1rem;
