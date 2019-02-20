@@ -21,10 +21,15 @@ namespace Template_Angular7.Controllers
     public class TermineController : BaseApiController
     {
         #region Constructor
-        public TermineController(ApplicationDbContext context): base(context) { }
+
+        public TermineController(ApplicationDbContext context) : base(context)
+        {
+        }
+
         #endregion Constructor
-        
+
         #region RESTful conventions methods
+
         /// <summary>
         /// GET: api/termine/{id}
         /// Retrieves the Termin with the given {id}
@@ -35,7 +40,7 @@ namespace Template_Angular7.Controllers
         public IActionResult Get(int id)
         {
             var termin = DbContext.Termine.FirstOrDefault(i => i.Id == id);
-            
+
             // handle requests asking for non-existing quizzes
             if (termin == null)
             {
@@ -44,7 +49,7 @@ namespace Template_Angular7.Controllers
                     Error = String.Format("Termin ID {0} nicht gefunden", id)
                 });
             }
-            
+
             return new JsonResult(
                 termin.Adapt<TerminViewModel>(),
                 new JsonSerializerSettings()
@@ -52,21 +57,21 @@ namespace Template_Angular7.Controllers
                     Formatting = Formatting.Indented
                 });
         }
-        
+
         /// <summary>
         /// neuen Termin in die DB eintragen
         /// </summary>
         /// <param name="model">The TerminViewModel containing the data to insert</param>
         [HttpPut]
-        public IActionResult Put([FromBody]TerminViewModel model)
+        public IActionResult Put([FromBody] TerminViewModel model)
         {
             // return a generic HTTP Status 500 (Server Error)
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
-            
+
             // handle the insert (without object-mapping)
             var termin = new Termin();
-            
+
             // properties taken from the request
             termin.IdTermin = model.IdTermin;
             termin.IdGruppe = model.IdGruppe;
@@ -76,7 +81,7 @@ namespace Template_Angular7.Controllers
             termin.DatumBeginn = model.DatumBeginn.ToLocalTime();
             termin.DatumEnde = model.DatumEnde.ToLocalTime();
             termin.Hinweis = model.Hinweis;
-            
+
             // properties set from server-side
             termin.CreatedDate = DateTime.Now;
             termin.LastModifiedDate = termin.CreatedDate;
@@ -91,21 +96,21 @@ namespace Template_Angular7.Controllers
                     Formatting = Formatting.Indented
                 });
         }
-        
+
         /// <summary>
         /// Termin anhand der {id} editieren
         /// </summary>
         /// <param name="model">The TerminViewModel containing the data to update</param>
         [HttpPost]
-        public IActionResult Post([FromBody]TerminViewModel model)
+        public IActionResult Post([FromBody] TerminViewModel model)
         {
             // return a generic HTTP Status 500 (Server Error)
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
-            
+
             // Termin holen 
             var termin = DbContext.Termine.Where(q => q.Id == model.Id).FirstOrDefault();
-            
+
             // handle requests asking for non-existing quizzes
             if (termin == null)
             {
@@ -114,7 +119,7 @@ namespace Template_Angular7.Controllers
                     Error = String.Format("Termin ID {0} nicht gefunden.", model.Id)
                 });
             }
-            
+
             // handle the update (without object-mapping)
             // by manually assigning the properties
             // we want to accept from the request
@@ -126,13 +131,13 @@ namespace Template_Angular7.Controllers
             termin.DatumBeginn = model.DatumBeginn.ToLocalTime();
             termin.DatumEnde = model.DatumEnde.ToLocalTime();
             termin.Hinweis = model.Hinweis;
-            
+
             // properties set from server-side
             termin.LastModifiedDate = termin.CreatedDate;
-            
+
             // persist the changes into the Database.
             DbContext.SaveChanges();
-            
+
             // return the updated Quiz to the client.
             return new JsonResult(termin.Adapt<TerminViewModel>(),
                 new JsonSerializerSettings()
@@ -140,7 +145,7 @@ namespace Template_Angular7.Controllers
                     Formatting = Formatting.Indented
                 });
         }
-        
+
         /// <summary>
         /// Löscht einen Termin über die {id} auf der DB
         /// </summary>
@@ -150,7 +155,7 @@ namespace Template_Angular7.Controllers
         {
             // retrieve the quiz from the Database
             var termin = DbContext.Termine.FirstOrDefault(i => i.Id == id);
-            
+
             // handle requests asking for non-existing quizzes
             if (termin == null)
             {
@@ -159,7 +164,7 @@ namespace Template_Angular7.Controllers
                     Error = String.Format("Termin ID {0} nicht gefunden.", id)
                 });
             }
-            
+
             // Termin vom DBContext löschen
             DbContext.Termine.Remove(termin);
             // persist the changes into the Database.
@@ -167,8 +172,9 @@ namespace Template_Angular7.Controllers
             // return an HTTP Status 200 (OK).
             return new OkResult();
         }
+
         #endregion
-        
+
         // GET api/gruppen/alle
         [HttpGet("alle/{idGruppe}")]
         public IActionResult alle(int idGruppe)
@@ -184,18 +190,17 @@ namespace Template_Angular7.Controllers
                     JsonSettings);
             }
             else
-            {   // alle Aktiviäten
+            {
+                // alle Aktiviäten
                 var termine = DbContext.Termine
-                    .OrderBy(q => q.IdGruppe).ThenBy(q => q.DatumBeginn)    
+                    .OrderBy(q => q.IdGruppe).ThenBy(q => q.DatumBeginn)
                     .ToArray();
                 return new JsonResult(
                     termine.Adapt<TerminViewModel[]>(),
                     JsonSettings);
             }
-            
-            
         }
-        
+
         // GET 
         [HttpGet("vtermine/{idGruppe}")]
         public IActionResult vtermine(int idGruppe)
@@ -203,85 +208,84 @@ namespace Template_Angular7.Controllers
             if (idGruppe > 0)
             {
                 var query = (from ut in DbContext.Termine
-                             from ua in DbContext.CodesAktivitaeten.Where(x => x.Id == ut.IdAktivitaet).DefaultIfEmpty()
-                             from uu in DbContext.Teilnehmer.Where(x => x.Id == ut.IdTeilnehmer).DefaultIfEmpty()
-                             from ug in DbContext.Gruppen.Where(x => x.Id == ut.IdGruppe).DefaultIfEmpty()
-                             where ut.IdGruppe == idGruppe
-                             select new
-                             {
-                                 ut.Id,
-                                 ut.IdTermin,
-                                 ut.IdGruppe,
-                                 ut.IdTeilnehmer,
-                                 ut.IdAktivitaet,
-                                 ut.GanzerTag,
-                                 ut.DatumBeginn,
-                                 ut.DatumEnde,
-                                 ut.Hinweis,
-                                 ut.CreatedDate,
-                                 ut.LastModifiedDate,
-                                 TerminDatum = ut.DatumBeginn.Date,
-                                 AktFarbe = ua.Farbe,
-                                 AktCode = ua.Code,
-                                 AktBezeichnung = ua.Bezeichnung,
-                                 AktSummieren = ua.Summieren,
-                                 AktSort = ua.Sort,
-                                 TnVorname = uu.Vorname,
-                                 TnNachname = uu.Nachname,
-                                 TnEmail = uu.Email,
-                                 GrpCode = ug.Code,
-                                 GrpBezeichnung = ug.Bezeichnung
-                             }).OrderBy(x => x.DatumBeginn.Date).ThenBy(x => x.AktSort).ThenBy(x => x.TnVorname)
-                               .ToList();
-                return new JsonResult(
-                    query.Adapt<TerminViewModel[]>(),
-                    JsonSettings);    
-            }
-            else
-            {
-                var query = (from ut in DbContext.Termine
-                             from ua in DbContext.CodesAktivitaeten.Where(x => x.Id == ut.IdAktivitaet).DefaultIfEmpty()
-                             from uu in DbContext.Teilnehmer.Where(x => x.Id == ut.IdTeilnehmer).DefaultIfEmpty()
-                             from ug in DbContext.Gruppen.Where(x => x.Id == ut.IdGruppe).DefaultIfEmpty()
-                    select new
-                    {
-                        ut.Id,
-                        ut.IdTermin,
-                        ut.IdGruppe,
-                        ut.IdTeilnehmer,
-                        ut.IdAktivitaet,
-                        ut.GanzerTag,
-                        ut.DatumBeginn,
-                        ut.DatumEnde,
-                        ut.Hinweis,
-                        ut.CreatedDate,
-                        ut.LastModifiedDate,
-                        TerminDatum = ut.DatumBeginn.Date,
-                        AktFarbe = ua.Farbe,
-                        AktCode = ua.Code,
-                        AktBezeichnung = ua.Bezeichnung,
-                        AktSummieren = ua.Summieren,
-                        AktSort = ua.Sort,
-                        TnVorname = uu.Vorname,
-                        TnNachname = uu.Nachname,
-                        TnEmail = uu.Email,
-                        GrpCode = ug.Code,
-                        GrpBezeichnung = ug.Bezeichnung
-                    }).OrderBy(x => x.DatumBeginn.Date).ThenBy(x => x.AktSort).ThenBy(x => x.TnVorname)
-                      .ToList();
+                        from ua in DbContext.CodesAktivitaeten.Where(x => x.Id == ut.IdAktivitaet).DefaultIfEmpty()
+                        from uu in DbContext.Teilnehmer.Where(x => x.Id == ut.IdTeilnehmer).DefaultIfEmpty()
+                        from ug in DbContext.Gruppen.Where(x => x.Id == ut.IdGruppe).DefaultIfEmpty()
+                        where ut.IdGruppe == idGruppe
+                        select new
+                        {
+                            ut.Id,
+                            ut.IdTermin,
+                            ut.IdGruppe,
+                            ut.IdTeilnehmer,
+                            ut.IdAktivitaet,
+                            ut.GanzerTag,
+                            ut.DatumBeginn,
+                            ut.DatumEnde,
+                            ut.Hinweis,
+                            ut.CreatedDate,
+                            ut.LastModifiedDate,
+                            TerminDatum = ut.DatumBeginn.Date,
+                            AktFarbe = ua.Farbe,
+                            AktCode = ua.Code,
+                            AktBezeichnung = ua.Bezeichnung,
+                            AktSummieren = ua.Summieren,
+                            AktSort = ua.Sort,
+                            TnVorname = uu.Vorname,
+                            TnNachname = uu.Nachname,
+                            TnEmail = uu.Email,
+                            GrpCode = ug.Code,
+                            GrpBezeichnung = ug.Bezeichnung
+                        }).OrderBy(x => x.DatumBeginn.Date).ThenBy(x => x.AktSort).ThenBy(x => x.TnVorname)
+                    .ToList();
                 return new JsonResult(
                     query.Adapt<TerminViewModel[]>(),
                     JsonSettings);
             }
-            
+            else
+            {
+                var query = (from ut in DbContext.Termine
+                        from ua in DbContext.CodesAktivitaeten.Where(x => x.Id == ut.IdAktivitaet).DefaultIfEmpty()
+                        from uu in DbContext.Teilnehmer.Where(x => x.Id == ut.IdTeilnehmer).DefaultIfEmpty()
+                        from ug in DbContext.Gruppen.Where(x => x.Id == ut.IdGruppe).DefaultIfEmpty()
+                        select new
+                        {
+                            ut.Id,
+                            ut.IdTermin,
+                            ut.IdGruppe,
+                            ut.IdTeilnehmer,
+                            ut.IdAktivitaet,
+                            ut.GanzerTag,
+                            ut.DatumBeginn,
+                            ut.DatumEnde,
+                            ut.Hinweis,
+                            ut.CreatedDate,
+                            ut.LastModifiedDate,
+                            TerminDatum = ut.DatumBeginn.Date,
+                            AktFarbe = ua.Farbe,
+                            AktCode = ua.Code,
+                            AktBezeichnung = ua.Bezeichnung,
+                            AktSummieren = ua.Summieren,
+                            AktSort = ua.Sort,
+                            TnVorname = uu.Vorname,
+                            TnNachname = uu.Nachname,
+                            TnEmail = uu.Email,
+                            GrpCode = ug.Code,
+                            GrpBezeichnung = ug.Bezeichnung
+                        }).OrderBy(x => x.DatumBeginn.Date).ThenBy(x => x.AktSort).ThenBy(x => x.TnVorname)
+                    .ToList();
+                return new JsonResult(
+                    query.Adapt<TerminViewModel[]>(),
+                    JsonSettings);
+            }
         }
-        
+
         // GET api/termine_user/{idUser}
         [HttpGet("termine_user/{idUser}")]
         public IActionResult termine_user(int idUser)
         {
             if (idUser <= 0) return new StatusCodeResult(500);
-            
+
             var query = (from ut in DbContext.Termine
                     from ua in DbContext.CodesAktivitaeten.Where(x => x.Id == ut.IdAktivitaet).DefaultIfEmpty()
                     from uu in DbContext.Teilnehmer.Where(x => x.Id == ut.IdTeilnehmer).DefaultIfEmpty()
@@ -310,110 +314,172 @@ namespace Template_Angular7.Controllers
                         TnEmail = uu.Email,
                         GrpCode = ug.Code,
                         GrpBezeichnung = ug.Bezeichnung,
-                        GruppeUserId = ug.IdUser 
+                        GruppeUserId = ug.IdUser
                     }).OrderBy(x => x.GruppeUserId).ThenBy(x => x.DatumBeginn).ThenBy(x => x.DatumEnde)
-                      .ToList();
+                .ToList();
             return new JsonResult(
                 query.Adapt<TerminViewModel[]>(),
                 JsonSettings);
         }
-        
+
         // GET api/termine_group_date/{idGruppe}
         [HttpGet("termine_group_date/{idGruppe}")]
         public IActionResult termine_group_date(int idGruppe)
         {
             if (idGruppe <= 0) return new StatusCodeResult(500);
 
-            /*
-                from p in context.Periods
-                join f in context.Facts on p.id equals f.periodid into fg
-                from fgi in fg.Where(f => f.otherid == 17).DefaultIfEmpty()
-                where p.companyid == 100
-                select f.value
-                */
-            
-            //join myTeiln in DbContext.Teilnehmer on myTermine.IdTeilnehmer equals myTeiln.Id
-            
+            var HeaderBezDefault = ""; var HeaderAktCode = "";
+
             DataTable dt1 = new DataTable();
+            dt1.Columns.Add("TerminId", typeof(int));
             dt1.Columns.Add("TerminDatum", typeof(DateTime));
             dt1.Columns.Add("AnzTermine", typeof(int));
             dt1.Columns.Add("AktHeaderBez", typeof(string));
-            dt1.Columns.Add("TeilnehmerHeaderName", typeof(string));
+            dt1.Columns.Add("AktHeaderCode", typeof(string));
+            dt1.Columns.Add("TeilnHeaderId", typeof(int));
+            dt1.Columns.Add("TeilnHeaderName", typeof(string));
+            dt1.Columns.Add("TeilnHeaderEmail", typeof(string));
 
-            var query = (
-                from myTermine in DbContext.Termine
-                group myTermine by myTermine.DatumBeginn.Date
-                into g
+            // Headerbezeichnung holen, wird für Termine verwendet, welche noch keinen "Header/Treffpunkt"-Teilnehmer in der Liste haben
+            var qryHeader = (
+                from myAkt in DbContext.CodesAktivitaeten
+                where myAkt.IdGruppe == idGruppe
+                      && myAkt.Header == true
                 select new
                 {
-                    TerminDatum = g.Key
-                }).ToList();
+                    HeaderBez = myAkt.HeaderBezeichnung,
+                    HeaderAktCode = myAkt.Code,
+                    AktSort = myAkt.Sort
+                }
+            ).OrderBy(x => x.AktSort).ToList();
+            if (qryHeader.Count > 0)
+            {
+                foreach (var item in qryHeader)
+                {
+                    HeaderBezDefault = item.HeaderBez;
+                    HeaderAktCode = item.HeaderAktCode;
+                }
+            }
+            else
+            {
+                HeaderBezDefault = "kein Headerbez definiert";
+                HeaderAktCode = "unbekannt";
+            }
 
+            // alle Termindaten (gruppiert nach Datum) holen
+            var query = (
+                    from myTermine in DbContext.Termine
+                    where myTermine.IdGruppe == idGruppe
+                    group myTermine by myTermine.DatumBeginn.Date
+                    into g
+                    select new
+                    {
+                        TerminDatum = g.Key,
+                        AnzTermine = g.Count()
+                    }).OrderBy(x => x.TerminDatum)
+                .ToList();
+
+            // und nun zu den einzelnen Termindaten die AktHeaderdaten (z.B. Treffpunkt und dazugehörigen Teilnehmer) ermitteln
             foreach (var item in query)
             {
-                
                 var query2 = (
                     from myAkt in DbContext.CodesAktivitaeten
                     from myTermine2 in DbContext.Termine
+                    from myTeilnehmer in DbContext.Teilnehmer
                     where myTermine2.IdAktivitaet == myAkt.Id
+                          && myTermine2.IdTeilnehmer == myTeilnehmer.Id
+                          && myTermine2.IdGruppe == myTeilnehmer.IdGruppe
                           && myTermine2.DatumBeginn.Date == item.TerminDatum
                           && myAkt.Header == true
                     select new
                     {
+                        TerminId = myTermine2.Id,
                         TerminDatum2 = item.TerminDatum,
-                        AktCode = myAkt.Code
-                    }
+                        AktCode = myAkt.Code,
+                        AktHeaderBez = myAkt.HeaderBezeichnung,
+                        TeilnId = myTeilnehmer.Id,
+                        TeilnVorname = myTeilnehmer.Vorname,
+                        TeilnEmail = myTeilnehmer.Email
+                        }
                 ).ToList();
-                foreach (var item2 in query2)
+
+                if (query2.Count > 0)
+                {
+                    foreach (var item2 in query2)
+                    {
+                        DataRow row = dt1.NewRow();
+                        row["TerminId"] = item2.TerminId;
+                        row["TerminDatum"] = item2.TerminDatum2;
+                        row["AnzTermine"] = item.AnzTermine;
+                        row["AktHeaderCode"] = item2.AktCode;
+                        row["AktHeaderBez"] = item2.AktHeaderBez;
+                        row["TeilnHeaderId"] = item2.TeilnId;
+                        row["TeilnHeaderName"] = item2.TeilnVorname;
+                        row["TeilnHeaderEmail"] = item2.TeilnEmail;
+                        dt1.Rows.Add(row);
+                    }
+                }
+                else
                 {
                     DataRow row = dt1.NewRow();
-                    row["TerminDatum"] = item2.TerminDatum2;
-                    row["AnzTermine"] = 1;
-                    row["AktHeaderBez"] = item2.AktCode;
-                    row["TeilnehmerHeaderName"] = "karl";
+                    row["TerminId"] = -1;
+                    row["TerminDatum"] = item.TerminDatum;
+                    row["AnzTermine"] = item.AnzTermine;
+                    row["AktHeaderCode"] = HeaderAktCode;
+                    row["AktHeaderBez"] = HeaderBezDefault;
+                    row["TeilnHeaderId"] = -1;
+                    row["TeilnHeaderName"] = "";
+                    row["TeilnHeaderEmail"] = "";
                     dt1.Rows.Add(row);
                 }
-                
             }
-                
-            
-                 //join myTeiln in DbContext.Teilnehmer on myTermine.IdTeilnehmer equals myTeiln.Id
-                 /*join myAkt in DbContext.CodesAktivitaeten on new {DID = (int?)myTermine.IdAktivitaet } equals new { DID = (int?)myAkt.Id } into dis   
-                 from myAkt in dis.DefaultIfEmpty() 
-                 where myAkt.IdGruppe == idGruppe
-                       //&& myAkt.Header == true
-                 group myTermine by myTermine.DatumBeginn.Date
-                 into g      
-                 select new  
-                    {
-                        TerminDatum = myTermine.DatumBeginn.Date,
-                        AnzTermine = 1,
-                        //AktHeaderBez = "adf",
-                        AktHeaderBez = myAkt.Code == null ? "??" : myAkt.Code, 
-                        TeilnehmerHeaderName = "karl" //myTeiln.Vorname == null ? "??" : myTeiln.Vorname
-                    }).ToList();*/
-            
-            /*var query =
-                (from mytermine in DbContext.Termine
-                where mytermine.Teilnehmer.Id == mytermine.IdTeilnehmer
-                  && mytermine.CodesAktivitaeten.Id == mytermine.IdAktivitaet
-                  && mytermine.CodesAktivitaeten.Header == true
-                  && mytermine.IdGruppe == idGruppe
-                group mytermine by mytermine.DatumBeginn.Date
-                into g
-                select new  
-                  {
-                      TerminDatum = g.Key,
-                      AnzTermine = g.Count(),
-                      AktHeaderBez = g.Min(x => x.CodesAktivitaeten.Bezeichnung),
-                      TeilnehmerHeaderName = g.Min(x => x.Teilnehmer.Vorname)
-                      }).OrderBy(x => x.TerminDatum)
-                    .ToList();*/
-            return new JsonResult(
-                //dt1.Adapt<TerminGroupbyDateViewModel[]>(),
-                dt1,
-                JsonSettings);
+
+            return
+                new JsonResult(
+                    dt1, JsonSettings);
         }
     }
 }
 
+
+/*public string ConvertDataTabletoString()
+{
+DataTable dt = new DataTable();
+DataTable dt1 = new DataTable();
+    using (SqlConnection con = new SqlConnection("Data Source=SureshDasari;Initial Catalog=master;Integrated Security=true"))
+{
+    using (SqlCommand cmd = new SqlCommand("select title=City,lat=latitude,lng=longitude,description from LocationDetails", con))
+    {
+        con.Open();
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        da.Fill(dt);
+        System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+        List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
+        Dictionary<string, object> row;
+        foreach (DataRow dr in dt.Rows)
+        {
+            row = new Dictionary<string, object>();
+            foreach (DataColumn col in dt.Columns)
+            {
+                row.Add(col.ColumnName, dr[col]);
+            }
+            rows.Add(row);
+        }
+        SqlCommand cmd1 = new SqlCommand("_another_query_", con);
+        SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
+        da1.Fill(dt1);
+        System.Web.Script.Serialization.JavaScriptSerializer serializer1 = new System.Web.Script.Serialization.JavaScriptSerializer();
+        Dictionary<string, object> row1;
+        foreach (DataRow dr in dt1.Rows) //use the old variable rows only
+        {
+            row1 = new Dictionary<string, object>();
+            foreach (DataColumn col in dt1.Columns)
+            {
+                row1.Add(col.ColumnName, dr[col]);
+            }
+            rows.Add(row1); // Finally You can add into old json array in this way
+        }
+        return serializer.Serialize(rows);
+    }
+}
+}*/

@@ -10,7 +10,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BsDatepickerModule} from "ngx-bootstrap";
 
 import {LOCALE_ID} from '@angular/core';
-import {registerLocaleData} from '@angular/common';
+import {CommonModule, registerLocaleData} from '@angular/common';
 import localeDECH from '@angular/common/locales/de-CH';
 
 

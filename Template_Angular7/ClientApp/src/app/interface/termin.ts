@@ -27,9 +27,13 @@ interface Termin {
   LastModifiedDate: Date;
 }
 
-interface TerminTeilnehmer {
+interface TerminHeaderTeilnehmer {
+  TerminId: number;
   TerminDatum: Date;
   AnzTermine: number;
+  AktHeaderCode: string;
   AktHeaderBez: string;
-  TeilnehmerHeaderName: string;
+  TeilnHeaderId: number;
+  TeilnHeaderName: string;
+  TeilnHeaderEmail: string;
 }

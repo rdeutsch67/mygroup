@@ -9,7 +9,7 @@ import {GlobalVariables} from '@app/global.variables';
 export class InmemorydataService {
   private userdata;
   private gruppenProUser: Gruppe[];
-  private terminDatenProUser: TerminTeilnehmer[];
+  private terminDatenProUser: TerminHeaderTeilnehmer[];
   private termineProUser: Termin[];
   private idGruppe: number;
 
@@ -22,7 +22,7 @@ export class InmemorydataService {
 
     if(!this.termineProUser) {
       let url = `${environment.apiUrl}/api/termine/termine_group_date/` + idGruppe;
-      this.http.get<TerminTeilnehmer[]>(url).subscribe(res => {
+      this.http.get<TerminHeaderTeilnehmer[]>(url).subscribe(res => {
         this.terminDatenProUser = res;
         url = `${environment.apiUrl}/api/termine/vtermine/` + idGruppe;
         this.http.get<Termin[]>(url).subscribe(res => {

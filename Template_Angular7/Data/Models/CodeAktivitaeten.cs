@@ -38,6 +38,7 @@ namespace Template_Angular7.Data
         public DateTime ZeitEnde { get; set; }
         
         public bool Header { get; set; }
+        public string HeaderBezeichnung { get; set; } 
         public int Sort { get; set; }
         
         [Required]

@@ -70,6 +70,7 @@ namespace Template_Angular7.Controllers
             codeAktivitaet.ZeitBeginn = model.ZeitBeginn;
             codeAktivitaet.ZeitEnde = model.ZeitEnde;
             codeAktivitaet.Header = model.Header;
+            codeAktivitaet.HeaderBezeichnung = model.HeaderBezeichnung;
             codeAktivitaet.Sort = model.Sort;
             // properties set from server-side
             codeAktivitaet.CreatedDate = DateTime.Now;
@@ -122,6 +123,7 @@ namespace Template_Angular7.Controllers
             codeAktivitaet.ZeitBeginn = model.ZeitBeginn;
             codeAktivitaet.ZeitEnde = model.ZeitEnde;
             codeAktivitaet.Header = model.Header;
+            codeAktivitaet.HeaderBezeichnung = model.HeaderBezeichnung;
             codeAktivitaet.Sort = model.Sort;
             // properties set from server-side
             codeAktivitaet.LastModifiedDate = codeAktivitaet.CreatedDate;
@@ -214,6 +216,7 @@ namespace Template_Angular7.Controllers
                         ua.ZeitBeginn,
                         ua.ZeitEnde,
                         ua.Header,
+                        ua.HeaderBezeichnung,
                         ua.Sort,
                         ShowZeiten = !(ua.GanzerTag || ua.ZeitUnbestimmt), 
                         GruppeCode = ug.Code,
@@ -242,6 +245,7 @@ namespace Template_Angular7.Controllers
                         ua.ZeitBeginn,
                         ua.ZeitEnde,
                         ua.Header,
+                        ua.HeaderBezeichnung,
                         ua.Sort,
                         ShowZeiten = !(ua.GanzerTag || ua.ZeitUnbestimmt),
                         GruppeCode = ug.Code,
@@ -277,6 +281,7 @@ namespace Template_Angular7.Controllers
                         ua.ZeitBeginn,
                         ua.ZeitEnde,
                         ua.Header,
+                        ua.HeaderBezeichnung,
                         ua.Sort,
                         ShowZeiten = !(ua.GanzerTag || ua.ZeitUnbestimmt),
                         GruppeCode = ug.Code,

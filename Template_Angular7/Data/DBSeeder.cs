@@ -118,6 +118,7 @@ namespace Template_Angular7.Data
                 ZeitBeginn = new DateTime(2018,01,01,19,00,00),
                 ZeitEnde = new DateTime(2018,01,01,21,00,00),
                 Header = true,
+                HeaderBezeichnung = "Treffpunkt",
                 Sort = 1,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
@@ -134,6 +135,7 @@ namespace Template_Angular7.Data
                 ZeitBeginn = new DateTime(createdDate.Year,createdDate.Month,createdDate.Day,19,00,00),
                 ZeitEnde = new DateTime(createdDate.Year,createdDate.Month,createdDate.Day,21,00,00),
                 Header = false,
+                HeaderBezeichnung = "",
                 Sort = 2,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
@@ -150,6 +152,7 @@ namespace Template_Angular7.Data
                 ZeitBeginn = new DateTime(2018,01,01,19,00,00),
                 ZeitEnde = new DateTime(2018,01,01,21,00,00),
                 Header = false,
+                HeaderBezeichnung = "",
                 Sort = 3,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
@@ -166,6 +169,7 @@ namespace Template_Angular7.Data
                 ZeitBeginn = new DateTime(2018,01,01,19,00,00),
                 ZeitEnde = new DateTime(2018,01,01,21,00,00),
                 Header = false,
+                HeaderBezeichnung = "",
                 Sort = 4,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
@@ -182,6 +186,7 @@ namespace Template_Angular7.Data
                 ZeitBeginn = new DateTime(2018,01,01,00,00,00),
                 ZeitEnde = new DateTime(2018,01,01,23,59,59),
                 Header = false,
+                HeaderBezeichnung = "",
                 Sort = 5,
                 CreatedDate = createdDate,
                 LastModifiedDate = lastModifiedDate
