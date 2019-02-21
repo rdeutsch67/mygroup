@@ -40,52 +40,10 @@
     </div>
 
 
-    <!--<div class="btn-group btn-group-sm mr-2" role="group">
-      <button (click)="onSubmit()" *ngIf="editMode"
-              [disabled]="form.invalid"
-              class="btn btn-sm btn-success"
-              type="submit">
-        <i class="fas fa-save"></i>
-        Speichern
-      </button>
-      <button *ngIf="!editMode" [disabled]="form.invalid"
-              class="btn btn-sm btn-success"
-              type="submit">
-        <i class="fas fa-plus-circle"></i>
-        Termin erstellen
-      </button>
-      <div class="btn-group btn-group-sm" role="group">
-        <button (click)="onBack()"
-                class="btn btn-sm btn-secondary col-sm-12"
-                type="submit">
-          <i class="fas fa-arrow-alt-circle-left"></i>
-          Zurück
-        </button>
-      </div>
-    </div>
-    <div class="btn-group btn-group-sm float-right" role="group">
-      <button (click)="onShowDataJson('debug-info-page')" class={{showDebugInfoBtnClass}} id="btnShowDataJson "
-              type="button">
-        <i class={{showDataJsonBtnIcon}}></i>
-        {{showDataJsonTitle}}
-      </button>
-    </div>
-  </div>
-  -->
-
-    <!--<div class="title" *ngIf="editMode">Termin: {{title}}</div>-->
-
-    <!--<div *ngIf="master" >
-      <h5>Termin: {{master}}</h5>
-    </div>-->
-
     <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-
-
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
       </div>
-
 
       <div class="form-group row">
         <!-- Date Picker -->

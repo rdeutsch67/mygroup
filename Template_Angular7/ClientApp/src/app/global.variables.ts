@@ -13,6 +13,7 @@ export class GlobalVariables {
   mode_ConfirmInvitation: boolean;
   logged_in_User: AppUser;
   gruppenAdmin: VTeilnehmer[];
+  loginUserIstGruppenAdmin: boolean;
   appTitle: string;
 
 }

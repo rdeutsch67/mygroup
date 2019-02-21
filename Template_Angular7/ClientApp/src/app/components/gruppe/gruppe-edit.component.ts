@@ -51,6 +51,7 @@ export class GruppeEditComponent implements OnInit {
 
         this.loadDataService.loadGruppenAdmin(this.gruppe.Id).subscribe((data) => {
             this.globals.gruppenAdmin = data;
+            this.globals.loginUserIstGruppenAdmin = this.globals.logged_in_User.email === this.globals.gruppenAdmin[0].Email;
           }
         );
 

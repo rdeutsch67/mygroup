@@ -61,9 +61,6 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
   selAktivitaeten: Code_aktivitaet[];
 
   zzTerminAnzWiederholungen: ZzTerminAnzWiederholung[];
-
-  /*deviceObserver: Observable<BreakpointState> = this.breakpointObserver.observe([Breakpoints.HandsetPortrait]);
-  breakpointObserverSubscription: Subscription;*/
   resizeSubscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute,
