@@ -42,16 +42,10 @@ export const APP_ROUTES: Routes = [
   { path: 'termine/vtermine/:id', component: TerminListeComponent},
   { path: 'termine/termine_user/:id', component: TerminListeComponent}, // alle Termine vom User
   { path: 'termine/create', component: TerminEditComponent, data: {id: 0, myday: new Date(), backroute: '', backrouteparam: 0}},
-  //{ path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date(), backroute: ''}},
-  //{ path: 'termine/new_event', component: TerminEditComponent, data: {id: 0, myday: new Date()}},
-  //{ path: 'termine/groupdetail', component: TerminEditComponent, data: {id: 0, backroute: ''}},
   { path: 'termine/edit', component: TerminEditComponent, data: {id: 0, ro: true, backroute: '', backrouteparam: 0}},
-  //{ path: 'termine/edit/:id', component: TerminEditComponent},
-  { path: 'kalender/:id', component: KalenderComponent},
+  //{ path: 'kalender/:id', component: KalenderComponent},
+  { path: 'kalender', component: KalenderComponent, data: {id: 0, backroute: '', backrouteparam: 0}},
   { path: 'kalender_user/:id', component: KalenderComponent},
   { path: 'about', component: AboutComponent},
   { path: '**', redirectTo: '' }
 ];
-
-//export const routing = RouterModule.forRoot(appRoutes);
-

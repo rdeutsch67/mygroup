@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ViewEncapsulation, OnInit, Input} from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
-import { Subject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours} from 'date-fns';
+import {Subject} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {
   CalendarDateFormatter,
   CalendarEvent,
@@ -11,9 +11,9 @@ import {
   CalendarView, DateFormatterParams,
   DAYS_OF_WEEK
 } from 'angular-calendar';
-import {PlanerdataService} from "../../services/planerdata.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {formatDate} from "@angular/common";
+import {PlanerdataService} from '../../services/planerdata.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {formatDate} from '@angular/common';
 
 const colors: any = {
   red: {
@@ -34,10 +34,13 @@ export class CustomDateFormatter extends CalendarDateFormatter {
   selector: 'kalender.component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['kalender.component.css'],
+  styleUrls: ['kalender.component.scss'],
   templateUrl: 'kalender.component.html',
-  styles: [
+  /*styles: [
       `
+      .row {
+        margin-top: 150px !important;
+      }
       .odd-cell {
         background-color: #eeffee !important;
       }
@@ -45,16 +48,15 @@ export class CustomDateFormatter extends CalendarDateFormatter {
         background-color: #ecf7ff !important;
       }
     `
-  ],
+  ],*/
   providers: [{
     provide: CalendarDateFormatter,
     useClass: CustomDateFormatter
   }]
 })
 
-export class KalenderComponent {
+export class KalenderComponent implements OnInit {
   @ViewChild('modalContent')
-
   events: CalendarEvent[] = [];
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
@@ -65,6 +67,8 @@ export class KalenderComponent {
   viewDate: Date = new Date();
   clickedDate: Date;
   currentIdGruppe: number;
+  backroute: string;
+  backrouteId: number;
   allCalenderEventsOfUser: number;
   modalData: {
     action: string;
@@ -74,13 +78,13 @@ export class KalenderComponent {
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({event}: { event: CalendarEvent }): void => {
         this.handleEvent('Edited', event);
       }
     },
     {
       label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({event}: { event: CalendarEvent }): void => {
         this.events = this.events.filter(iEvent => iEvent !== event);
         this.handleEvent('Deleted', event);
       }
@@ -95,7 +99,8 @@ export class KalenderComponent {
               private modal: NgbModal,
               private loadDataService: PlanerdataService) {
 
-    let id = +this.activatedRoute.snapshot.params["id"];
+    /*//let id = +this.activatedRoute.snapshot.params["id"];
+    let id = this.idgruppe;
     this.allCalenderEventsOfUser = 0;
 
     if (this.activatedRoute.snapshot.url[0].path === "kalender_user") {
@@ -108,10 +113,44 @@ export class KalenderComponent {
         this.refresh.next();
       },
       error => console.error(error)
-    )
+    )*/
+
   }
 
-  beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
+  ngOnInit() {
+
+    let id = +this.activatedRoute.snapshot.params['id'];
+
+    // eine evtl. mitgeschickte Backroute lesen
+    this.backroute = this.activatedRoute.snapshot.params['routesource'];
+    if (this.backroute) {
+      this.backrouteId = this.activatedRoute.snapshot.params['routesourceId'];
+    }
+
+    //let id = +this.activatedRoute.snapshot.params["id"];
+    //let id = this.idgruppe;
+    this.allCalenderEventsOfUser = 0;
+
+    if (this.activatedRoute.snapshot.url[0].path === 'kalender_user') {
+      this.allCalenderEventsOfUser = id;
+    }
+
+    this.currentIdGruppe = id;
+    this.loadDataService.loadPlanerCalenderEvents(id, this.allCalenderEventsOfUser).subscribe(res => {
+        this.events = res;
+        this.refresh.next();
+      },
+      error => console.error(error)
+    );
+  }
+
+  onBack() {
+    if (this.backroute) {
+      this.router.navigate([this.backroute, {id: this.backrouteId, reload: true}]);
+    }
+  }
+
+  beforeMonthViewRender({body}: { body: CalendarMonthViewDay[] }): void {
     body.forEach(day => {
         day.badgeTotal = 0;
 
@@ -135,14 +174,14 @@ export class KalenderComponent {
                 }
               }
             }
-          )
+          );
         }
       }
-    )
+    );
   }
 
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       this.viewDate = date;
       this.clickedDate = date;
@@ -159,7 +198,7 @@ export class KalenderComponent {
   }
 
   onCreateTermin() {
-    this.router.navigate(['termine/create', { id: this.currentIdGruppe, myday: this.clickedDate }]);
+    this.router.navigate(['termine/create', {id: this.currentIdGruppe, myday: this.clickedDate}]);
   }
 
   eventTimesChanged({
@@ -174,8 +213,8 @@ export class KalenderComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    this.modalData = {event, action};
+    this.modal.open(this.modalContent, {size: 'lg'});
   }
 
   addEvent(): void {

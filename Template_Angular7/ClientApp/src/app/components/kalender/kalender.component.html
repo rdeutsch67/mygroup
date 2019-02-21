@@ -1,12 +1,27 @@
-<h1>Platzhalter!!!</h1>
-<div class="row text-center">
+<div class="container-fluid main">
+  <div class="panel panel-default">
+    <div class="panel-body mypanel_body">
+      <!--<button class="btn btn-sm mybtn mybtnNeuertermin"
+              (click)="onCreateTermin()">
+        <i class="fa fa-plus-circle"></i>
+        Termin
+      </button>-->
+      <h3 class="titelmonat">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale  }}</h3>
+      <button class="btn btn-sm mybtn mybtnKalender"
+              (click)="onBack()">
+        <i class="fa fa-calendar-alt"></i>
+        Zurück
+      </button>
+    </div>
+
+  </div>
 
 
-  <div class="col-md-6">
-    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):locale  }}</h3>
+  <div class="row text-center">
+  <div class="col-md-12">
     <div class="btn-group">
       <div
-        class="btn btn-primary"
+        class="btn btn-sm btn-primary"
         mwlCalendarPreviousView
         [view]="view"
         [(viewDate)]="viewDate"
@@ -14,23 +29,41 @@
         Zurück
       </div>
       <div
-        class="btn btn-outline-secondary"
+        class="btn btn-sm btn-outline-secondary"
         mwlCalendarToday
         [(viewDate)]="viewDate">
         Heute
       </div>
       <div
-        class="btn btn-primary"
+        class="btn btn-sm btn-primary"
         mwlCalendarNextView
         [view]="view"
         [(viewDate)]="viewDate"
         (viewDateChange)="activeDayIsOpen = false">
         Vor
       </div>
+      <div
+        class="btn btn-sm btn-primary"
+        (click)="view = CalendarView.Month"
+        [class.active]="view === CalendarView.Month">
+        Monat
+      </div>
+      <div
+        class="btn btn-sm btn-primary"
+        (click)="view = CalendarView.Week"
+        [class.active]="view === CalendarView.Week">
+        Woche
+      </div>
+      <div
+        class="btn btn-sm btn-primary"
+        (click)="view = CalendarView.Day"
+        [class.active]="view === CalendarView.Day">
+        Tag
+      </div>
     </div>
   </div>
 
-  <div class="col-md-4">
+  <!--<div class="col-md-4">
     <div class="btn-group">
       <div
         class="btn btn-sm btn-primary"
@@ -50,17 +83,9 @@
         [class.active]="view === CalendarView.Day">
         Tag
       </div>
-      <div>
-        <button (click)="onCreateTermin()" class="btn btn-sm btn-primary">
-          <i class="fa fa-plus-circle"></i>
-          Neuer Termin
-        </button>
-      </div>
     </div>
-  </div>
+  </div>-->
 </div>
-
-<br>
 <div [ngSwitch]="view">
   <!--<mwl-calendar-month-view
     *ngSwitchCase="'month'"
@@ -102,6 +127,7 @@
     (eventClicked)="handleEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)">
   </mwl-calendar-day-view>
+</div>
 </div>
 
 

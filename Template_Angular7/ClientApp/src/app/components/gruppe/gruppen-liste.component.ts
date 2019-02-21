@@ -30,6 +30,20 @@ export class GruppenListeComponent implements OnInit {
               //@Inject('BASE_URL') private baseUrl: string
 ) {
 
+    /*this.title = "Gruppen";
+    this.gruppen = [];
+
+    let count = +this.activatedRoute.snapshot.params["count"];
+    if (isNaN(count)) {
+      count = 0;
+    };
+    //this.loadData(this.globals.logged_in_User.id);
+    this.gruppen = this.dataService.GruppenProUserData;
+    this.globals.appTitle = this.globals.logged_in_User.firstName+" s'Planer";*/
+
+  }
+
+  ngOnInit() {
     this.title = "Gruppen";
     this.gruppen = [];
 
@@ -41,11 +55,12 @@ export class GruppenListeComponent implements OnInit {
     this.gruppen = this.dataService.GruppenProUserData;
     this.globals.appTitle = this.globals.logged_in_User.firstName+" s'Planer";
 
-  }
-
-  ngOnInit() {
-    //this.dataService.getData(this.globals.logged_in_User.id);
-    this.nav.show();
+    // falls nur eine Gruppe vorhanden, dann direkt auf die Terminansicht umschalten
+    if (this.dataService.GruppenProUserData.length = 1) {
+      this.onSelect(this.dataService.GruppenProUserData[0]);
+    } else {
+      this.nav.show();
+    }
   }
 
   loadData(idUser: number) {

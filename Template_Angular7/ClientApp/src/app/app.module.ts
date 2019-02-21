@@ -76,6 +76,7 @@ registerLocaleData(localeDECH);
     TerminKalenderlisteComponent,
     GruppeDetailComponent,
     SmoothScrollDirective
+
   ],
   imports: [
     RouterModule.forRoot(APP_ROUTES , {

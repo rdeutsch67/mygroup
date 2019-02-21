@@ -1,15 +1,51 @@
-/*.myPanel {
-  padding: 60px;
-  margin: 60px;
-}*/
+.main {
+  margin-top: 100px; }
+
+.odd-cell {
+  background-color: #eeffee !important; }
+
+.weekend-cell {
+  background-color: #ecf7ff !important; }
+
 /*
 h3 {
-  margin-top: 20px;
-  //margin: 0 0 10px;
+  margin: 0 0 10px;
 }
 */
 pre {
   background-color: #f5f5f5;
   padding: 15px; }
+
+.titelmonat {
+  text-align: center; }
+
+.mypanel_body {
+  background-color: #3387fd;
+  box-shadow: 0 -3px 3px 0px #3387fd, 0 0.45rem 0.75rem rgba(51, 135, 253, 0.5);
+  position: fixed;
+  /* Set the navbar to fixed position */
+  left: 0px;
+  top: 57px;
+  /* Position the navbar at the top of the page */
+  height: 37px;
+  padding-bottom: 9px;
+  width: 100%;
+  /* Full width */
+  z-index: 7; }
+
+.mybtn {
+  position: fixed;
+  color: whitesmoke;
+  top: 58px;
+  z-index: 1;
+  width: 23%;
+  padding: 5px;
+  margin: 0px;
+  background-color: rgba(184, 218, 255, 0.55);
+  box-shadow: 0 0 5px #5a6268; }
+  .mybtn.mybtnNeuertermin {
+    left: 3px; }
+  .mybtn.mybtnKalender {
+    right: 3px; }
 
 /*# sourceMappingURL=kalender.component.css.map */

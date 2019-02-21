@@ -58,10 +58,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-
-
-
     this.globals.bp_isSmScreen = this.breakpointObserver.isMatched(Breakpoints.Handset);
     this.globals.bp_isSmScrPrt = this.breakpointObserver.isMatched(Breakpoints.HandsetPortrait);
     this.globals.bp_isMidScreen = this.breakpointObserver.isMatched(Breakpoints.Tablet);
