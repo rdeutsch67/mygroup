@@ -42,10 +42,10 @@ pre {
   padding: 5px;
   margin: 0px;
   background-color: rgba(184, 218, 255, 0.55);
-  box-shadow: 0 0 5px #5a6268; }
-  .mybtn.mybtnNeuertermin {
-    left: 3px; }
-  .mybtn.mybtnKalender {
-    right: 3px; }
+  box-shadow: 0 0 5px #5a6268;
+  right: 0px;
+  border-radius: 0px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px; }
 
 /*# sourceMappingURL=kalender.component.css.map */

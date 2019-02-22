@@ -6,6 +6,7 @@ import {NavbarService} from "../../services/navbar.service";
 import {GlobalVariables} from "@app/global.variables";
 import {PlanerdataService} from "@app/services/planerdata.service";
 import {environment} from "@environments/environment";
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 @Component({
   selector: "gruppe-edit",
@@ -27,9 +28,7 @@ export class GruppeEditComponent implements OnInit {
               private fb: FormBuilder,
               public nav: NavbarService,
               public globals: GlobalVariables,
-              private loadDataService: PlanerdataService
-              //@Inject('BASE_URL') private baseUrl: string
-) {
+              private dataService: InmemorydataService) {
 
     // create an empty object from the Gruppe interface
     this.gruppe = <Gruppe>{};
@@ -49,11 +48,15 @@ export class GruppeEditComponent implements OnInit {
         this.gruppe = res;
         this.title = "Gruppe: " + this.gruppe.Code;
 
-        this.loadDataService.loadGruppenAdmin(this.gruppe.Id).subscribe((data) => {
-            this.globals.gruppenAdmin = data;
-            this.globals.loginUserIstGruppenAdmin = this.globals.logged_in_User.email === this.globals.gruppenAdmin[0].Email;
-          }
-        );
+        // Admindaten von der Gruppe holen
+        if (!this.dataService.gruppenAdmin) {
+          this.dataService.getGruppenAdmin(this.gruppe.Id).subscribe((data) => {
+              this.globals.gruppenAdmin = data;
+              this.dataService.gruppenAdmin = data;
+              this.globals.loginUserIstGruppenAdmin = this.globals.logged_in_User.email === this.globals.gruppenAdmin[0].Email;
+            }
+          )
+        };
 
         // update the form with the quiz value
         this.updateForm();

@@ -6,6 +6,7 @@ import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {GlobalVariables} from "@app/global.variables";
 import {environment} from "@environments/environment";
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 
 @Component({
@@ -15,10 +16,6 @@ import {environment} from "@environments/environment";
 })
 
 export class NavMenuComponent implements OnInit{
-  currentUser: AppUser;
-  AppUser;
-  currentUserID: number;
-  currentUserSubscription: Subscription;
   isCollapsed = true;
   version: string;
 
@@ -26,6 +23,7 @@ export class NavMenuComponent implements OnInit{
   constructor(
     public nav: NavbarService,
     private authenticationService: AuthenticationService,
+    private dataService: InmemorydataService,
     private router: Router,
     public globals: GlobalVariables)
   {
@@ -49,6 +47,7 @@ export class NavMenuComponent implements OnInit{
   logout() {
     this.collapse();
     this.globals.logged_in_User.id = 9999999;
+    this.dataService.Cleardata();
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }

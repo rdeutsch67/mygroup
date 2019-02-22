@@ -47,14 +47,10 @@ pre {
   margin: 0px;
   background-color: rgba(184,218,255,0.55);
   box-shadow: 0 0 5px #5a6268;
-
-  &.mybtnNeuertermin {
-    left: 3px;
-  }
-
-  &.mybtnKalender {
-    right: 3px;
-  }
+  right: 0px;
+  border-radius: 0px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 
 

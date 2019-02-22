@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { AppUser } from "@app/interface/appuser";
 import {GlobalVariables} from "@app/global.variables";
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {

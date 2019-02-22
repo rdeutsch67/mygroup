@@ -1,5 +1,5 @@
 .main {
-  margin-top: 60px; /* Add a top margin to avoid content overlay */
+  margin-top: 100px; /* Add a top margin to avoid content overlay */
   //background-color: #9fcdff;
   //padding-bottom: 10px;
 }
@@ -124,7 +124,7 @@ input[id=hinweis] {
   }
 }
 
-.mytoptoolbar {
+/*.mytoptoolbar {
   display: block;
   border-width: 5px;
   background-color: rgba(70, 89, 240, 0.74);
@@ -134,6 +134,54 @@ input[id=hinweis] {
 
 .mybottomtoolbar {
   display: none;
+}*/
+
+.mypanel_body {
+  background-color: rgba(51, 135, 253, 1);
+  box-shadow: 0 -3px 4px 0px rgba(51, 135, 253, 1), 0 .45rem 2rem rgba(51, 135, 253, 0.5);
+  position: fixed; /* Set the navbar to fixed position */
+  left: 0px;
+  top: 57px; /* Position the navbar at the top of the page */
+  height: 36px;
+  padding-bottom: 9px;
+  width: 100%; /* Full width */
+  z-index: 6;
+}
+
+.mybtn {
+  position: fixed;
+  color: whitesmoke;
+  top: 58px;
+  z-index: 1;
+  //width: 23%;
+  width: auto;
+  padding: 5px;
+  margin: 0px;
+  background-color: rgba(184,218,255,0.55);
+  box-shadow: 0 0 5px #5a6268;
+}
+
+.mybtnSave {
+  left: 0px;
+  border-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.mybtnBack {
+  right: 0px;
+  border-radius: 0px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.mybtnDebugInfo {
+  position: fixed;
+  left: 50%;
+  //width: auto;
+  transform: translateX(-50%);
+  border-radius: 15px;
+
 }
 
 /* Auflösung > 576px */

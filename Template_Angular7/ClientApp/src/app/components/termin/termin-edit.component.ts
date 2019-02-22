@@ -22,6 +22,7 @@ import {GlobalVariables} from '../../global.variables';
 import {ResizeService} from '../../services/resize.service';
 import {environment} from '@environments/environment';
 import {encodeUriFragment} from '@angular/router/src/url_tree';
+import {InmemorydataService} from '@app/services/inmemorydata.service';
 
 @Component({
   selector: 'termin-edit.component',
@@ -53,7 +54,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
   datePickerConfig: Partial<BsDatepickerConfig>;
   bsValue = new Date();
   // Auswahlboxen
-  selGruppen: Gruppe[];
+  //selGruppen: Gruppe[];
   selectedGruppe: number;
   selectedAktivitaet: number;
 
@@ -68,8 +69,8 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
               private http: HttpClient,
               private fb: FormBuilder,
               private loadDataService: PlanerdataService,
-              //public nav: NavbarService,
-              private globals: GlobalVariables,
+              private dataService: InmemorydataService,
+              public globals: GlobalVariables,
               private resizeService: ResizeService,
               private cdRef: ChangeDetectorRef) {
 
@@ -82,44 +83,55 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     // create an empty object from the Gruppe interface
     this.myTermin = <Termin>{};
     // init Comboboxinhalte
-    this.selGruppen = <Gruppe[]>{};
+    //this.selGruppen = <Gruppe[]>{};
     this.selTeilnehmer = <Teilnehmer[]>{};
     this.selAktivitaeten = <Code_aktivitaet[]>{};
     this.zzTerminAnzWiederholungen = <ZzTerminAnzWiederholung[]>{};
   }
 
-  loadData(id: number) {
+  loadData(idTermin: number) {
     if (this.editMode) {
       // Termin holen
-      let url = `${environment.apiUrl}/api/termine/` + id;
+      let url = `${environment.apiUrl}/api/termine/` + idTermin;
       this.http.get<Termin>(url).subscribe(res => {
         this.myTermin = res;
         //this.inputReadonly = (this.myTermin.TnEmail != this.globals.logged_in_User.email);
-        this.title = 'Edit - ' + id;
+        this.title = 'Edit - ' + idTermin;
         this.master = '(' + this.myTermin.IdTermin + ')';
         this.aktTerminDatBeginn = new Date(this.myTermin.DatumBeginn);
         this.aktTerminDatEnde = new Date(this.myTermin.DatumEnde);
 
-
-
-        let url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
-        this.http.get<Gruppe>(url).subscribe(res => {
-          this.selGruppen = Array.of(res);
-          this.loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe(data => {
-            this.selTeilnehmer = data;
-            this.loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
-              this.selAktivitaeten = data;
-
-              this.dataIsLoading = false;  // Ende Daten holen
-              this.updateForm();
-              this.cdRef.detectChanges(); // refresh
-            });
-          });
-          // update the form with the quiz value
-          //this.updateForm();
-        }, error => console.error(error));
+        if (!this.dataService.teilnehmerProGruppe) {
+          this.dataService.getTeilnehmerProGruppe(this.myTermin.IdGruppe).subscribe((data) => {
+              this.selTeilnehmer = data;
+              this.dataService.teilnehmerProGruppe = data;
+              if (!this.dataService.aktivitaetenProGruppe) {
+                this.dataService.getAktiviaetenProGruppe(this.myTermin.IdGruppe).subscribe((data) => {
+                    this.selAktivitaeten = data;
+                    this.dataService.aktivitaetenProGruppe = data;
+                    // update the form
+                    this.dataIsLoading = false;  // Ende Daten holen
+                    this.updateForm();
+                    this.cdRef.detectChanges(); // refresh
+                  }
+                );
+              } else {
+                // update the form
+                this.dataIsLoading = false;  // Ende Daten holen
+                this.updateForm();
+                this.cdRef.detectChanges(); // refresh
+              }
+            }
+          )
+        } else {
+          this.selTeilnehmer = this.dataService.TeilnehmerProGruppe;
+          this.selAktivitaeten = this.dataService.AktivitaetenProGruppe;
+          this.dataIsLoading = false;  // Ende Daten holen
+          this.updateForm();
+          this.cdRef.detectChanges(); // refresh
+        }
       }, error => console.error(error));
-    } else {
+    } else {  // neuer Termin erfassen
       this.title = 'neuer Termin';
       this.master = '';
 
@@ -131,10 +143,46 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.myTermin.DatumBeginn = new Date();
       }
-      this.myTermin.IdGruppe = id;
+      this.myTermin.IdGruppe = idTermin;
+      //this.myTermin.IdTeilnehmer = this.globals.
       this.myTermin.GanzerTag = false;
 
-      let url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
+
+      this.loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
+          this.selAktivitaeten = data;
+          if (this.globals.loginUserIstGruppenAdmin) { // dann noch alle Gruppenteilnehmer laden
+            this.loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe((data) => {
+              this.selTeilnehmer = data;
+              // update the form
+              this.dataIsLoading = false;  // Ende Daten holen
+              this.updateForm();
+              this.cdRef.detectChanges(); // refresh
+            });
+          } else {
+            // update the form
+            this.dataIsLoading = false;  // Ende Daten holen
+            this.updateForm();
+            this.cdRef.detectChanges(); // refresh
+          }
+          ;
+        }
+      );
+
+      /*this.loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe((data) => {
+          this.selTeilnehmer = data;
+          this.loadDataService.loadAktiviaeten(this.myTermin.IdGruppe).subscribe((data) => {
+              this.selAktivitaeten = data;
+              // update the form
+              this.dataIsLoading = false;  // Ende Daten holen
+              this.updateForm();
+              this.cdRef.detectChanges(); // refresh
+            }
+          );
+        }
+      );*/
+
+
+      /*let url = `${environment.apiUrl}/api/gruppen/` + this.myTermin.IdGruppe;
       this.http.get<Gruppe>(url).subscribe(res => {
         this.selGruppen = Array.of(res);
         this.loadDataService.loadTeilnehmer(this.myTermin.IdGruppe).subscribe((data) => {
@@ -149,19 +197,23 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
             );
           }
         );
-      }, error => console.error(error));
-      // update the form
-      //this.updateForm();
+      }, error => console.error(error));*/
     }
   }
 
   ngOnInit() {
     this.InitFormFields();
 
-    this.loadDataService.loadZzTerminAnzWiederholungen(15).subscribe((data) => {
-        this.zzTerminAnzWiederholungen = data;
-      }
-    );
+    if (!this.dataService.zzTerminAnzWiederholungen) {
+      this.dataService.getzzTerminAnzWiederholungen(15).subscribe((data) => {
+          this.zzTerminAnzWiederholungen = data;
+          this.dataService.zzTerminAnzWiederholungen = data;
+        }
+      )
+    } else {
+      this.zzTerminAnzWiederholungen = this.dataService.zzTerminAnzWiederholungen;
+    };
+
 
     // initialize the form
     this.createForm();
@@ -172,7 +224,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.editMode = (this.activatedRoute.snapshot.url[1].path === 'edit');
     this.neuerTermin = (this.activatedRoute.snapshot.url[1].path === 'create');
     if (!this.neuerTermin) {
-      this.inputReadonly = this.activatedRoute.snapshot.params['ro'].toUpperCase() === "TRUE";
+      this.inputReadonly = this.activatedRoute.snapshot.params['ro'].toUpperCase() === 'TRUE';
     }
     // eine evtl. mitgeschickte Backroute lesen
     this.backroute = this.activatedRoute.snapshot.params['routesource'];
@@ -198,10 +250,16 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.backroute) {
       if (this.neuerTermin) {
         //this.router.navigate([this.backroute, this.backrouteId], {fragment: '_th' + this.myDayBackroute});
-        this.router.navigate([this.backroute, {id: this.backrouteId, reload: this.flagDatenGespeichert}], {fragment: '_th' + this.myDayBackroute});
+        this.router.navigate([this.backroute, {
+          id: this.backrouteId,
+          reload: this.flagDatenGespeichert
+        }], {fragment: '_th' + this.myDayBackroute});
       } else {
         //this.router.navigate([this.backroute, this.backrouteId], {fragment: '_t' + this.myTermin.Id.toString()});
-        this.router.navigate([this.backroute, {id: this.backrouteId, reload: this.flagDatenGespeichert}], {fragment: '_t' + this.myTermin.Id.toString()});
+        this.router.navigate([this.backroute, {
+          id: this.backrouteId,
+          reload: this.flagDatenGespeichert
+        }], {fragment: '_t' + this.myTermin.Id.toString()});
       }
     } else {
       this.router.navigate(['gruppen/edit', this.myTermin.IdGruppe]);
@@ -236,7 +294,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onChangeGruppe(newValue) {
+  /*onChangeGruppe(newValue) {
     console.log(newValue);
     this.selectedGruppe = newValue;
     this.loadDataService.loadTeilnehmer(newValue).subscribe((data) => {
@@ -247,7 +305,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
         );
       }
     );
-  }
+  }*/
 
   onChangeAktivitaet(newValue, callOverride?: boolean, newGanzerTag?: boolean) {
     console.log(newValue);
@@ -451,7 +509,8 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
           if (WiederholungenVorhanden) {
             let WKok = HandleWiederholungen(this.http);
             console.log('Wiederholungstermine mit IdMaster = ' + this.myTermin.Id + ' erstellt.');
-          };
+          }
+          ;
           this.flagDatenGespeichert = true;
           //this.router.navigate(["gruppen/edit/" + this.myTermin.IdGruppe]);
         }, error => console.log(error));
@@ -474,7 +533,8 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
                 q = res;
                 console.log('Termin ' + q.Id + ' wurde mit IdTermin ' + q.Id + ' aktualisiert.');
               }, error => console.log(error));
-          };
+          }
+          ;
           this.flagDatenGespeichert = true;
         }, error => console.log(error));
     }
@@ -540,14 +600,14 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showDataJson = !this.showDataJson;
     if (this.showDataJson) {
       this.showDataJsonTitle = 'Debug-Info';
-      this.showDebugInfoBtnClass = 'btn btn-sm btn-warning';
+      this.showDebugInfoBtnClass = 'btn btn-sm btn-warning mybtn mybtnDebugInfo';
       this.showDataJsonBtnIcon = 'fas fa-arrow-circle-up';
       if ($element != '') {
         gotoAnchor();
       }
     } else {
       this.showDataJsonTitle = 'Debug-Info';
-      this.showDebugInfoBtnClass = 'btn btn-sm btn-primary';
+      this.showDebugInfoBtnClass = 'btn btn-sm btn-primary mybtn mybtnDebugInfo';
       this.showDataJsonBtnIcon = 'fas fa-arrow-circle-down';
       if ($element != '') {
         gobackToTop();
