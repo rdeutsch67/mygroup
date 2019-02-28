@@ -246,6 +246,55 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cdRef.detectChanges();
   }
 
+  onDelete(termin: Termin) {
+    /*const filterByIdAndDatumBeginn = (resTermine: Termin[]) =>
+      resTermine.filter(x => ((x.IdTermin == termin.IdTermin) && (termin.IdTermin > 0)
+        && (x.DatumBeginn >= termin.DatumBeginn)));
+    const sortByDatumBeginn = (resTermine: Termin[]) =>
+      resTermine.sort((terminA: Termin, terminB: Termin) => {
+        if (terminA.DatumBeginn > terminB.DatumBeginn) return 1;
+        return -1;
+      });
+
+    let myTermine =  filterByIdAndDatumBeginn(this.termine);
+    myTermine =  sortByDatumBeginn(myTermine);
+
+    if (myTermine.length > 1) {
+      if (confirm("Sollen dieser und alle nachfolgenden Termine von diesem Typ (IdTermin = "+termin.IdTermin+") gelöscht werden?")) {
+        for (let i: number = 0; i <= myTermine.length; i++) {
+          let url = `${environment.apiUrl}/api/termine/` + myTermine[i].Id;
+          this.http
+            .delete(url)
+            .subscribe(res => {
+              console.log("Termin " + termin.Id + " wurde gelöscht.");
+              // refresh the question list
+              this.loadData(0);
+            }, error => console.log(error));
+        }
+      }
+    }
+    else {*/
+      if (confirm("Soll dieser Termin ("+termin.AktCode+" vom "+ moment(termin.DatumBeginn, "DD.MM.YYYY")+") gelöscht werden?")) {
+        let url = `${environment.apiUrl}/api/termine/` + termin.Id;
+        this.http
+          .delete(url)
+          .subscribe(res => {
+            console.log("Termin " + termin.Id + " wurde gelöscht.");
+            // refresh the question list
+            //this.loadData(0);
+
+            // beim Ausstieg aus diesem Bildschirm folgende Daten neu holen
+            // this.dataService.TerminDatenProUser;
+            // this.termine = this.dataService.TermineProUserUndGruppe;
+
+
+            this.flagDatenGespeichert = true;
+            this.onBack()
+          }, error => console.log(error));
+      }
+    /*}*/
+  }
+
   onBack() {
     if (this.backroute) {
       if (this.neuerTermin) {

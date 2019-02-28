@@ -44,6 +44,11 @@ export class NavMenuComponent implements OnInit{
     this.isCollapsed = !this.isCollapsed;
   }
 
+  startHome() {
+    this.dataService.getData(this.globals.logged_in_User.id, true);
+    this.router.navigate(['/']);
+  }
+
   logout() {
     this.collapse();
     this.globals.logged_in_User.id = 9999999;

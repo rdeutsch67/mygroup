@@ -1,10 +1,13 @@
+
 <div *ngIf="!globals.isloadingData">
+  <p bgcolorDirective>
+    Start editing to see some magic happen :)
+  </p>
   <app-nav-menu></app-nav-menu>
-  <div class="container-fluid">
+  <div class="container-fluid maincontainer">
     <div class="starter-template">
       <alert></alert>
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
-

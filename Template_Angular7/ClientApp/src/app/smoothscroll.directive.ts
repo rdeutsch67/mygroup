@@ -4,7 +4,9 @@ import {AfterViewInit, Directive, ElementRef} from '@angular/core';
 @Directive({
   selector: '[smoothScroll]'
 })
+
 export class SmoothScrollDirective implements AfterViewInit {
+
   constructor(private el: ElementRef, private route: ActivatedRoute) { }
 
   ngAfterViewInit() {

@@ -1,6 +1,6 @@
 <div *ngIf="nav.visible" class="main-nav">
   <nav class="navbar navbar-default navbar-expand-md navbar-light box-shadow">
-    <a class="navbar-image" [routerLink]="['/home']">
+    <a class="navbar-image" (click)="startHome()">
       <img src="../../assets/logo.png" alt="Gruppenplaner"/>
     </a>
     <a class="navbar-brand" [routerLink]='["/"]' href="#" (click)='collapse()'>{{globals.appTitle}}</a>

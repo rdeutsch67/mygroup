@@ -48,6 +48,7 @@ import { TerminKalenderlisteComponent } from './components/termin/termin-kalende
 import { GruppeDetailComponent } from './components/gruppe/gruppe-detail/gruppe-detail.component';
 import {SmoothScrollDirective} from '@app/smoothscroll.directive';
 import {InmemorydataService} from '@app/services/inmemorydata.service';
+import {BackgroundcolorDirective} from '@app/backgroundcolor.directive';
 
 registerLocaleData(localeDECH);
 
@@ -75,8 +76,8 @@ registerLocaleData(localeDECH);
     PageNotFoundComponent,
     TerminKalenderlisteComponent,
     GruppeDetailComponent,
-    SmoothScrollDirective
-
+    SmoothScrollDirective,
+    BackgroundcolorDirective
   ],
   imports: [
     RouterModule.forRoot(APP_ROUTES , {

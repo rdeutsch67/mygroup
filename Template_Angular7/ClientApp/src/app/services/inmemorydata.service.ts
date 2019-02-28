@@ -20,8 +20,6 @@ export class InmemorydataService {
               private loadDataService: PlanerdataService,
               private globals: GlobalVariables) { }
 
-
-
   Cleardata() {
     delete this.gruppenAdmin;
   }
@@ -31,8 +29,8 @@ export class InmemorydataService {
     return this.http.get<VTeilnehmer[]>(url);
   }
 
-  getTermineProUser(idGruppe: number) {
-    if(!this.termineProUser) {
+  getTermineProUser(idGruppe: number, loadAnyway: boolean = false) {
+    if(!this.termineProUser || loadAnyway) {
       let url = `${environment.apiUrl}/api/termine/termine_group_date/` + idGruppe;
       this.http.get<TerminHeaderTeilnehmer[]>(url).subscribe(res => {
         this.terminDatenProUser = res;
@@ -75,15 +73,15 @@ export class InmemorydataService {
   }
 
   // Gruppen pro User & wenn nur eine Gruppe vorhanden ist, gleich die Termine dieser Gruppe holen
-  getData(idUser: number) {
-    if(!this.gruppenProUser) {
+  getData(idUser: number, loadAnyway: boolean = false) {
+    if(!this.gruppenProUser || loadAnyway) {
       this.globals.isloadingData = true;
       let url = `${environment.apiUrl}/api/gruppen/proUser/` + idUser;
       this.http.get<Gruppe[]>(url).subscribe(result => {
         this.gruppenProUser = result;
-        if (this.GruppenProUserData) {
+        if (this.GruppenProUserData || loadAnyway) {
           if (this.gruppenProUser.length === 1) {  // weitere Daten nur holen, wenn nur eine Gruppe vorhanden ist
-            this.getTermineProUser(this.GruppenProUserData[0].Id)
+            this.getTermineProUser(this.GruppenProUserData[0].Id, loadAnyway)
           } else {
             this.globals.isloadingData = false;
           }

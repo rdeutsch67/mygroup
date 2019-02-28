@@ -153,8 +153,8 @@ input[id=hinweis] {
   color: whitesmoke;
   top: 58px;
   z-index: 1;
-  //width: 23%;
-  width: auto;
+  width: 25%;
+  //width: auto;
   padding: 5px;
   margin: 0px;
   background-color: rgba(184,218,255,0.55);
@@ -178,7 +178,7 @@ input[id=hinweis] {
 .mybtnDebugInfo {
   position: fixed;
   left: 50%;
-  //width: auto;
+  width: auto;
   transform: translateX(-50%);
   border-radius: 15px;
 

@@ -56,11 +56,11 @@
           {{showDataJsonTitle}}
         </button>
 
-        <button *ngIf="editMode"
-                [disabled]="form.invalid"
-                class="btn btn-sm mybtn mybtnSave"
-                (click)="onSubmit()"
-                type="button">
+        <button
+          [disabled]="form.invalid"
+          class="btn btn-sm mybtn mybtnSave"
+          (click)="onSubmit()"
+          type="button">
           <i class="fas fa-save"></i>
           Speichern
         </button>
@@ -288,18 +288,33 @@
 
         <div aria-label="Termin-Edit Toolbar" class="mybottomtoolbar btn-toolbar justify-content-between"
              role="toolbar">
-          <div class="btn-group btn-group-sm mr-2" role="group">
+          <button *ngIf="!inputReadonly || globals.loginUserIstGruppenAdmin"
+                  type="submit"
+                  (click)="onDelete(myTermin)"
+                  class="btn btn-sm btn-danger">
+            <i class="fas fa-trash-alt"></i>
+            Termin löschen
+          </button>
+          <!--<div class="btn-group btn-group-sm mr-2" role="group">
+
             <button *ngIf="editMode" [disabled]="form.invalid"
                     class="btn btn-sm btn-success"
                     type="submit">
               <i class="fas fa-save"></i>
-              Speichern
+              Speichern...
             </button>
             <button *ngIf="!editMode" [disabled]="form.invalid"
                     class="btn btn-sm btn-success"
                     type="submit">
               <i class="fas fa-plus-circle"></i>
               Termin erstellen
+            </button>
+            <button *ngIf="!inputReadonly"
+                    type="submit"
+                    (click)="onDelete(myTermin)"
+                    class="btn btn-sm btn-danger">
+              <i class="fas fa-trash-alt"></i>
+              Termin löschen
             </button>
             <div class="btn-group btn-group-sm" role="group">
               <button (click)="onBack()"
@@ -308,8 +323,16 @@
                 <i class="fas fa-arrow-alt-circle-left"></i>
                 Zurück
               </button>
+
+              &lt;!&ndash;<button *ngIf="globals.logged_in_User.email == myTermin.TnEmail"
+                      type="submit"
+                      (click)="onDelete(myTermin)"
+                      class="btn btn-sm btn-danger">
+                <i class="fas fa-trash-alt"></i>
+                <a *ngIf="globals.bp_isMidScreen || globals.bp_isWideScreen"> Löschen</a>
+              </button>&ndash;&gt;
             </div>
-          </div>
+          </div>-->
           <div class="btn-group btn-group-sm float-right" role="group">
             <button (click)="onShowDataJson('debug-info-page')" class={{showDebugInfoBtnClass}} id="btnShowDataJson"
                     type="button">
