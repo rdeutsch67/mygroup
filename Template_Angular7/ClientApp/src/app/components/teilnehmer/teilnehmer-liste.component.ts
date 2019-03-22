@@ -34,8 +34,6 @@ export class TeilnehmerListeComponent implements OnChanges {
       this.showAllData = true;
       this.myGruppe = <Gruppe>{};
       this.loadAlleTeilnehmerVonUser(id);
-
-
     }
   }
 

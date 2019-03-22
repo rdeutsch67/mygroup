@@ -1,13 +1,31 @@
-
-<div *ngIf="!globals.isloadingData">
-  <p bgcolorDirective>
-    Start editing to see some magic happen :)
-  </p>
-  <app-nav-menu></app-nav-menu>
-  <div class="container-fluid maincontainer">
-    <div class="starter-template">
-      <alert></alert>
-      <router-outlet></router-outlet>
+<div *ngIf="globals.isloadingData">
+<!--  <p>Planer wird geladen, please wait...</p>-->
+<div class="container maincontainer_dataloading">
+  <div class="top_dataloading">
+    <label></label>
+  </div>
+  <div class="card text-center myspinnercard">
+    <div class="card-header myspinnercard_header">
+      Datenaktualisierung aktiv..
+    </div>
+    <div class="card-body myspinnercard_body">
+      <div class="spinner-border mySpinner" role="status" id="loadingspinner">
+        <span class="sr-only">Datenaktualisierung aktiv...</span>
+      </div>
     </div>
   </div>
 </div>
+</div>
+
+  <div *ngIf="!globals.isloadingData">
+    <p bgcolorDirective>
+      Start editing to see some magic happen :)
+    </p>
+    <app-nav-menu></app-nav-menu>
+    <div class="container-fluid maincontainer">
+      <div class="starter-template">
+        <alert></alert>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>

@@ -18,7 +18,8 @@
             "progress": true,
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.scss",
@@ -42,7 +43,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "src/ngsw-config.json"
             }
           }
         },
@@ -76,7 +79,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ]
           }
         },

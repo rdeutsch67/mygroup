@@ -31,7 +31,7 @@ import {InmemorydataService} from '@app/services/inmemorydata.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TerminEditComponent implements OnInit, AfterViewInit {
   title: string;
   master: string;
   dataIsLoading: boolean = true;
@@ -144,7 +144,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
         this.myTermin.DatumBeginn = new Date();
       }
       this.myTermin.IdGruppe = idTermin;
-      //this.myTermin.IdTeilnehmer = this.globals.
+      this.myTermin.IdTeilnehmer = this.globals.logged_in_User.id;
       this.myTermin.GanzerTag = false;
 
 
@@ -214,7 +214,6 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.zzTerminAnzWiederholungen = this.dataService.zzTerminAnzWiederholungen;
     };
 
-
     // initialize the form
     this.createForm();
 
@@ -234,12 +233,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
       //this.backroute = this.backroute.substr(0, aPos);
       this.backrouteId = this.activatedRoute.snapshot.params['routesourceId'];
     }
-
     this.loadData(id);
-  }
-
-  ngOnDestroy() {
-    //this.resizeSubscription.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -590,7 +584,7 @@ export class TerminEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   createForm() {
-    this.InitFormFields();
+    //this.InitFormFields();
     this.onShowDataJson('');
   }
 

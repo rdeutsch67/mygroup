@@ -19,8 +19,17 @@
 }*/
 
 
+/*
 .bgcolor{
   background-color: yellow;
+}
+*/
+
+.maincontainer_dataloading {
+  padding-right: 0px;
+  padding-left: 0px;
+  height: 800px;
+  background-color: rgba(142,196,229,0.2);
 }
 
 .maincontainer {
@@ -28,7 +37,7 @@
   padding-left: 0px;
   //
   height: 800px;
-  background-color: yellow;
+  //background-color: yellow;
 }
 
 @media (min-width: 576px) {
@@ -36,6 +45,34 @@
     padding-right: 10px;
     padding-left: 10px;
   }
+}
+
+.top_dataloading {
+  margin-top:   0px;
+  //  background-color: rgba(142,196,229,0.4);
+}
+
+.myspinnercard {
+  margin-top: 80px;
+  padding-bottom: 15px;
+  margin-bottom: 0px;
+  margin-left: 80px;
+  margin-right: 80px;
+  border-radius: 8px;
+  border-color: rgba(184,218,255,0.95);
+  border-width: 4px;
+  box-shadow: 0 0 3px #5a6268;
+  z-index: 5;
+}
+
+.myspinnercard_body {
+  padding-bottom: 0px;
+
+}
+
+.myspinnercard_header {
+  padding: 3px;
+  background-color: rgba(184,218,255,0.55);
 }
 
 

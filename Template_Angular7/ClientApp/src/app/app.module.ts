@@ -49,6 +49,8 @@ import { GruppeDetailComponent } from './components/gruppe/gruppe-detail/gruppe-
 import {SmoothScrollDirective} from '@app/smoothscroll.directive';
 import {InmemorydataService} from '@app/services/inmemorydata.service';
 import {BackgroundcolorDirective} from '@app/backgroundcolor.directive';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 registerLocaleData(localeDECH);
 
@@ -98,7 +100,8 @@ registerLocaleData(localeDECH);
         provide: DateAdapter,
         useFactory: adapterFactory
       },
-    )
+    ),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   exports: [
     RouterModule

@@ -67,14 +67,23 @@
       </div>
     </div>
 
-    <div *ngIf="!dataIsLoading">
+    <div *ngIf="dataIsLoading">
 
 
-      <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+      <div class="card text-center myspinnercard">
+        <div class="card-header myspinnercard_header">
+          Datenaktualisierung aktiv..
         </div>
+        <div class="card-body myspinnercard_body">
+          <div class="spinner-border mySpinner" role="status" id="loadingspinner">
+            <span class="sr-only">Datenaktualisierung aktiv...</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div *ngIf="!dataIsLoading">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
         <div class="form-group row">
           <!-- Date Picker -->
           <div class="input-group date col-sm-6" id="igdatumbeginn">
@@ -107,7 +116,6 @@
             />
           </div>
         </div>
-
 
         <!--<div *ngIf="selGruppen.length > 0">
           <div class="input-group mb-3">

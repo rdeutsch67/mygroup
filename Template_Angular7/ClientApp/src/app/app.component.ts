@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private router: Router,
               private meta: Meta,
               private breakpointObserver: BreakpointObserver,
-              private globals: GlobalVariables,
+              public globals: GlobalVariables,
               private dataService: InmemorydataService) {
 
     //this.authenticationService.currentUser.subscribe(x => globals.logged_in_User = x);

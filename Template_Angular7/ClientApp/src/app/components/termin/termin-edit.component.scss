@@ -40,7 +40,36 @@ input[id=hinweis] {
   min-width: 12ch; // 12 Zeichen lang, so werden die Textfelder alle gleich lang
 }
 
+/*.spinner-border {
+  margin-top: 150px;
+  margin-left: 45%;
+}
 
+.spinner-label {
+  position: auto;
+  background-color: rgba(184,218,255,0.55);
+  box-shadow: 0 0 5px #5a6268;
+}*/
+
+.myspinnercard {
+  padding-bottom: 15px;
+  margin-bottom: 0px;
+
+  border-radius: 8px;
+  border-color: rgba(184,218,255,0.95);
+  border-width: 2px;
+  box-shadow: 0 0 3px #5a6268;
+  z-index: 5;
+}
+
+.myspinnercard_body {
+  padding-bottom: 0px;
+}
+
+.myspinnercard_header {
+  padding: 3px;
+  background-color: rgba(184,218,255,0.55);
+}
 
 .lbl-pad-right {
   padding-right: 5px;
